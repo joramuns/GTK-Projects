@@ -9,14 +9,18 @@
 #include <string.h>
 #include "Stack/parser.h"
 #include "Stack/nodes.h"
-#define EXPRESSION_SIZE 10
+#define EXPRESSION_SIZE 100
+#define ISDIGIT check_digit(expression[*array_pos]) == 1
+#define ISDOT check_digit(expression[*array_pos]) == 2
 enum input_type {
-    TOK_OPERATOR = 0,
-    TOK_BRACE = 1,
-    TOK_UNARY = 2
+    EMPTY = 0,
+    TOK_NUM,
+    TOK_OPERATOR,
+    TOK_BRACE,
+    TOK_UNARY
 };
 
-int check_digit(char input) {
+int check_digit(char input) {   // check type? enum? 0 - error ?
     int ex_code = 0;
 
     if (input > 47 && input <58) {
@@ -26,6 +30,27 @@ int check_digit(char input) {
     }
 
     return ex_code;
+}
+
+static void parse_double(int *array_pos, char *expression, node *num_stack) {
+    node *last = find_last(num_stack);
+    last->type = 1;
+    while (ISDIGIT) {
+        last->value = last->value * 10.0 + (expression[*array_pos] - '0');
+        *array_pos += 1;
+    }
+    if (ISDOT) {
+        *array_pos += 1;
+        double parse_divider = 1.0;
+        while (ISDIGIT) {
+            parse_divider /= 10.0;
+            last->value = (expression[*array_pos] - '0') * parse_divider + last->value;
+            *array_pos += 1;
+        }
+        if (ISDOT) {
+            printf("ERROR_DOT\n");
+        }
+    }
 }
 
 int main() {
@@ -47,26 +72,14 @@ int main() {
     int array_pos = 0;
 
     while (array_pos < input_len) {
-        if (check_digit(expression[array_pos])) {
-            while (check_digit(expression[array_pos]) == 1) {
-                num_stack->value = num_stack->value * 10.0 + (expression[array_pos] - '0');
-                array_pos++;
-            }
-            if (check_digit(expression[array_pos]) == 2) {
-                array_pos++;
-                double parse_divider = 1.0;
-                while (check_digit(expression[array_pos]) == 1) {
-                    parse_divider /= 10.0;
-                    num_stack->value = (expression[array_pos] - '0') * parse_divider + num_stack->value;
-                    array_pos++;
-                }
-            }
-            printf("%lf\n", num_stack->value);
-            num_stack = push(num_stack);
+        if (check_digit(expression[array_pos]) == 1) {
+            parse_double(&array_pos, expression, num_stack);
+            push(num_stack);
         }
         array_pos++;
     }
-
+    print_node(num_stack);
+    
 
     clean(num_stack);
     clean(oper_stack);
