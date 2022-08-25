@@ -22,5 +22,6 @@ node *push(node *head);
 node *pop(node *head);
 void *clean(node *head);
 node *find_last(node *head);
+void print_node(node *head);
 
 #endif  // SRC_COMMON_NODES_H_

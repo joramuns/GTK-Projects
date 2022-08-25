@@ -6,6 +6,7 @@
 //
 
 #include "nodes.h"
+#include <stdio.h>
 
 node *init_node(void) {
     node *head = (node *)malloc(sizeof(node));
@@ -78,4 +79,15 @@ node *find_last(node *head) {
     }
 
     return last;
+}
+
+void print_node(node *head) {
+    while (head) {
+        if (head->type == 1) {
+            printf("%lf\n", head->value);
+        } else if (head->type != 0){
+            printf("%s\n", head->array);
+        }
+        head = head->next;
+    }
 }
