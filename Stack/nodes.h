@@ -11,6 +11,7 @@
 #include <stdlib.h>
 
 typedef struct node {
+    int number;
     int type;
     char sign;
     double value;
@@ -23,5 +24,6 @@ node *pop(node *head);
 void *clean(node *head);
 node *find_last(node *head);
 void print_node(node *head);
+void push_n_pop(node *dest, node *src);
 
 #endif  // SRC_COMMON_NODES_H_

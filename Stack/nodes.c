@@ -11,6 +11,7 @@
 node *init_node(void) {
     node *head = (node *)malloc(sizeof(node));
     if (head) {
+        head->number = 0;
         head->type = 0;
         head->sign = 0;
         head->value = 0.0;
@@ -25,13 +26,16 @@ node *push(node *head) {
     if (head) {
         next = malloc(sizeof(node));
         if (next) {
+            next->number = 0;
             next->type = 0;
             next->sign = 0;
             next->value = 0.0;
             next->next = NULL;
             node *last = find_last(head);
-            if (last)
+            if (last) {
+                next->number = last->number + 1;
                 last->next = next;
+            }
         } else {
             next = head;
         }
@@ -84,10 +88,19 @@ node *find_last(node *head) {
 void print_node(node *head) {
     while (head) {
         if (head->type == 1) {
-            printf("%lf\n", head->value);
+            printf("%d: %lf\n", head->number, head->value);
         } else if (head->type != 0){
-            printf("%c\n", head->sign);
+            printf("%d: %c\n", head->number, head->sign);
         }
         head = head->next;
     }
+}
+
+void push_n_pop(node *dest, node *src) {
+    node *last_src = find_last(src);
+    push(dest);
+    node *last_dest = find_last(dest);
+    last_dest->type = last_src->type;
+    last_dest->sign = last_src->sign;
+    pop(src);
 }
