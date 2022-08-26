@@ -10,8 +10,8 @@
 #include "Stack/parser.h"
 #include "Stack/nodes.h"
 #define EXPRESSION_SIZE 100
-#define ISDIGIT check_digit(expression[*array_pos]) == 1
-#define ISDOT check_digit(expression[*array_pos]) == 2
+#define ISDIGIT check_input_type(expression[*array_pos]) == 1
+#define ISDOT check_input_type(expression[*array_pos]) == 2
 enum input_type {
     EMPTY = 0,
     TOK_NUM,
@@ -19,21 +19,29 @@ enum input_type {
     TOK_BRACE,
     TOK_UNARY
 };
-
-int check_digit(char input) {   // check type? enum? 0 - error ?
+// stacks - output and queue?
+int check_input_type(char input) {   // check type? enum? 0 - error ?
     int ex_code = 0;
 
     if (input > 47 && input <58) {
         ex_code = 1;
     } else if (input == '.') {
         ex_code = 2;
+    } else if (input == '+' || input == '-') {
+        ex_code = 3;
+    } else if (input == '/' || input == '*') {
+        ex_code = 4;
+    } else if (input == '^') {
+        ex_code = 5;
+    } else if (input == 's' || input == 'c' || input == 't' || input == 'a' || input == 's' || input == 'l') {
+        ex_code = 6;
     }
 
     return ex_code;
 }
 
-static void parse_double(int *array_pos, char *expression, node *num_stack) {
-    node *last = find_last(num_stack);
+static void parse_double(int *array_pos, char *expression, node *output_stack) {
+    node *last = find_last(output_stack);
     last->type = 1;
     while (ISDIGIT) {
         last->value = last->value * 10.0 + (expression[*array_pos] - '0');
@@ -66,23 +74,31 @@ int main() {
     } else {
         printf("We have: %s\n", expression);
     }
-    node *num_stack = init_node();
-    node *oper_stack = init_node();
+    node *output_stack = init_node();
+    node *queue_stack = init_node();
 
     int array_pos = 0;
 
     while (array_pos < input_len) {
-        if (check_digit(expression[array_pos]) == 1) {
-            parse_double(&array_pos, expression, num_stack);
-            push(num_stack);
+        int check_result = check_input_type(expression[array_pos]);
+        if (check_result == 1) {
+            parse_double(&array_pos, expression, output_stack);
+            push(output_stack);
+        } else if (check_result == 3) {
+            queue_stack->type = 3;
+            queue_stack->sign = expression[array_pos];
+            push(queue_stack);
+            array_pos++;
+        } else {
+            array_pos++;
         }
-        array_pos++;
     }
-    print_node(num_stack);
+    print_node(output_stack);
+    print_node(queue_stack);
     
 
-    clean(num_stack);
-    clean(oper_stack);
+    clean(output_stack);
+    clean(queue_stack);
 
     return 0;
 }
