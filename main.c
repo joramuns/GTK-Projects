@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include "Stack/parser.h"
 #include "Stack/nodes.h"
 #define EXPRESSION_SIZE 100
@@ -34,7 +35,7 @@ int main() {
         if (check_result == TOK_NUM) {
             push(output_stack);
             parse_double(&array_pos, expression, output_stack);
-        } else if ((check_result == TOK_OPERATOR_1) || (check_result == TOK_OPERATOR_2) || (check_result == TOK_OPEN_BRACE)) {
+        } else if ((check_result == TOK_OPERATOR_1) || (check_result == TOK_OPERATOR_2) || (check_result == TOK_POW) || (check_result == TOK_OPEN_BRACE)) {
             handle_operator(expression[array_pos], output_stack, queue_stack, check_result);
             array_pos++;
         } else if (check_result == TOK_CLOSE_BRACE) {
@@ -64,10 +65,44 @@ int main() {
     print_node(output_stack);
     printf("Queue stack:\n");
     print_node(queue_stack);
-    
+
+    node *head = output_stack;
+    node *stack_number = init_node();
+    double operand_1 = 0, operand_2 = 0, result = 0;
+    while (head) {
+        if (head->type == TOK_NUM) {
+            push(stack_number);
+            find_last(stack_number)->value = head->value;
+            find_last(stack_number)->type = TOK_NUM;
+        } else if (head->type != 0){
+            operand_2 = find_last(stack_number)->value;
+            pop(stack_number);
+            operand_1 = find_last(stack_number)->value;
+            pop(stack_number);
+            if (head->sign == '+') {
+                result = operand_1 + operand_2;
+            } else if (head->sign == '-') {
+                result = operand_1 - operand_2;
+            } else if (head->sign == '*') {
+                result = operand_1 * operand_2;
+            } else if (head->sign == '/') {
+                result = operand_1 / operand_2;
+            } else if (head->sign == '^') {
+                result = powf(operand_1, operand_2);
+            }
+            push(stack_number);
+            find_last(stack_number)->value = result;
+            find_last(stack_number)->type = TOK_NUM;
+        }
+        head = head->next;
+    }
+
+    printf("Queue stack:\n");
+    print_node(stack_number);
 
     clean(output_stack);
     clean(queue_stack);
+    clean(stack_number);
 
     return 0;
 }
