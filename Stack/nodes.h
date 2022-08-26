@@ -12,7 +12,7 @@
 
 typedef struct node {
     int type;
-    char *array;
+    char sign;
     double value;
     struct node *next;
 } node;
