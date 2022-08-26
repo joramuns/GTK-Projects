@@ -10,56 +10,6 @@
 #include "Stack/parser.h"
 #include "Stack/nodes.h"
 #define EXPRESSION_SIZE 100
-#define ISDIGIT check_input_type(expression[*array_pos]) == 1
-#define ISDOT check_input_type(expression[*array_pos]) == 2
-enum input_type {
-    EMPTY = 0,
-    TOK_NUM,
-    TOK_OPERATOR,
-    TOK_BRACE,
-    TOK_UNARY
-};
-// stacks - output and queue?
-int check_input_type(char input) {   // check type? enum? 0 - error ?
-    int ex_code = 0;
-
-    if (input > 47 && input <58) {
-        ex_code = 1;
-    } else if (input == '.') {
-        ex_code = 2;
-    } else if (input == '+' || input == '-') {
-        ex_code = 3;
-    } else if (input == '/' || input == '*') {
-        ex_code = 4;
-    } else if (input == '^') {
-        ex_code = 5;
-    } else if (input == 's' || input == 'c' || input == 't' || input == 'a' || input == 's' || input == 'l') {
-        ex_code = 6;
-    }
-
-    return ex_code;
-}
-
-static void parse_double(int *array_pos, char *expression, node *output_stack) {
-    node *last = find_last(output_stack);
-    last->type = 1;
-    while (ISDIGIT) {
-        last->value = last->value * 10.0 + (expression[*array_pos] - '0');
-        *array_pos += 1;
-    }
-    if (ISDOT) {
-        *array_pos += 1;
-        double parse_divider = 1.0;
-        while (ISDIGIT) {
-            parse_divider /= 10.0;
-            last->value = (expression[*array_pos] - '0') * parse_divider + last->value;
-            *array_pos += 1;
-        }
-        if (ISDOT) {
-            printf("ERROR_DOT\n");
-        }
-    }
-}
 
 int main() {
     char expression[EXPRESSION_SIZE + 1 + 1] = {0};
@@ -81,19 +31,38 @@ int main() {
 
     while (array_pos < input_len) {
         int check_result = check_input_type(expression[array_pos]);
-        if (check_result == 1) {
-            parse_double(&array_pos, expression, output_stack);
+        if (check_result == TOK_NUM) {
             push(output_stack);
-        } else if (check_result == 3) {
-            queue_stack->type = 3;
-            queue_stack->sign = expression[array_pos];
-            push(queue_stack);
+            parse_double(&array_pos, expression, output_stack);
+        } else if ((check_result == TOK_OPERATOR_1) || (check_result == TOK_OPERATOR_2) || (check_result == TOK_OPEN_BRACE)) {
+            handle_operator(expression[array_pos], output_stack, queue_stack, check_result);
             array_pos++;
+        } else if (check_result == TOK_CLOSE_BRACE) {
+            array_pos++;
+            node *last = find_last(queue_stack);
+            while (last->type != TOK_OPEN_BRACE) {
+                push_n_pop(output_stack, queue_stack);
+                last = find_last(queue_stack);
+                if (last->number == 0) {
+                    printf("BRACE ERROR\n");
+                    break;
+                }
+            }
+            if (last->type == TOK_OPEN_BRACE) {
+                pop(queue_stack);
+            }
         } else {
             array_pos++;
         }
     }
+    int check_queue = find_last(queue_stack)->number;
+    while (check_queue > 0) {
+        push_n_pop(output_stack, queue_stack);
+        check_queue = find_last(queue_stack)->number;
+    }
+    printf("Output stack:\n");
     print_node(output_stack);
+    printf("Queue stack:\n");
     print_node(queue_stack);
     
 
