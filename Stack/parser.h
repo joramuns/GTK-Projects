@@ -12,6 +12,14 @@
 
 // POW 7? what about braces?
 
+enum parser_errors {
+    TOO_LONG_EXPRESSION = 100,
+    WRONG_LONG_OPERATOR = 101,
+    EXPRESSION_TOO_SHORT,
+    EXTRA_DOT_ERROR,
+    BRACE_NOT_PAIRED,
+};
+
 enum input_type {
     EMPTY = 0,
     TOK_NUM = 1,
@@ -24,11 +32,26 @@ enum input_type {
     TOK_UNARY
 };
 
+//  From 'A' to 'J'
+enum parse_long_operators {
+    CODE_ACOS = 65,
+    CODE_ASIN = 66,
+    CODE_ATAN = 67,
+    CODE_SQRT = 68,
+    CODE_SIN = 69,
+    CODE_COS = 70,
+    CODE_TAN = 71,
+    CODE_MOD = 72,
+    CODE_LOG = 73,
+    CODE_LN = 74
+};
 #include <stdio.h>
+#include <string.h>
 #include "nodes.h"
 
 int check_input_type(char input);
 void parse_double(int *array_pos, char *expression, node *output_stack);
 void handle_operator(char operator, node *output_stack, node *queue_stack, int input_type);
+int parse_long_operator(char *expression, int *array_pos);
 
 #endif /* parser_h */

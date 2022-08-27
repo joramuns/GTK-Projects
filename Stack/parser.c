@@ -66,3 +66,52 @@ void handle_operator(char operator, node *output_stack, node *queue_stack, int i
     last_queue->type = input_type;
     last_queue->sign = operator;
 }
+
+int parse_long_operator(char *expression, int *array_pos) {
+    int ex_code = 0, position_move = 0;
+    char *modified_expression = expression + *array_pos;
+    size_t len = strlen(modified_expression);
+    if (len > 4) {
+        position_move = 4;
+        if (strncmp(modified_expression, "acos", 4) == 0) {
+            ex_code = CODE_ACOS;
+        } else if (strncmp(modified_expression, "asin", 4) == 0) {
+            ex_code = CODE_ASIN;
+        } else if (strncmp(modified_expression, "atan", 4) == 0) {
+            ex_code = CODE_ATAN;
+        } else if (strncmp(modified_expression, "sqrt", 4) == 0) {
+            ex_code = CODE_SQRT;
+        }
+    }
+    if (len > 3 && ex_code == 0) {
+        position_move = 3;
+        if (strncmp(modified_expression, "sin", 3) == 0) {
+            ex_code = CODE_SIN;
+        } else if (strncmp(modified_expression, "cos", 3) == 0) {
+            ex_code = CODE_COS;
+        } else if (strncmp(modified_expression, "tan", 3) == 0) {
+            ex_code = CODE_TAN;
+        } else if (strncmp(modified_expression, "mod", 3) == 0) {
+            ex_code = CODE_MOD;
+        } else if (strncmp(modified_expression, "log", 3) == 0) {
+            ex_code = CODE_LOG;
+        }
+    }
+    if (len > 2 && ex_code == 0) {
+        position_move = 2;
+        if (strncmp(modified_expression, "ln", 2) == 0) {
+            ex_code = CODE_LN;
+        } else {
+            position_move = 0;
+            ex_code = WRONG_LONG_OPERATOR;
+        }
+    }
+    if (len <= 2) {
+        ex_code = EXPRESSION_TOO_SHORT;
+    } else {
+        *array_pos += position_move;
+    }
+
+    return ex_code;
+}
+
