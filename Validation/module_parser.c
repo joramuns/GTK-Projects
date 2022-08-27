@@ -116,3 +116,6 @@ int parse_long_operator(char *expression, int *array_pos) {
     return ex_code;
 }
 
+void hello9(void) {
+    printf("d\n");
+}

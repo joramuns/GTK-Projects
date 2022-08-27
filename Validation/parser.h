@@ -54,5 +54,6 @@ int check_input_type(char input);
 void parse_double(int *array_pos, char *expression, node *output_stack);
 void handle_operator(char operator, node *output_stack, node *queue_stack, int input_type);
 int parse_long_operator(char *expression, int *array_pos);
+void hello9(void);
 
 #endif /* parser_h */

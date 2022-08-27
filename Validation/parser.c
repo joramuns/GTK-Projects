@@ -6,6 +6,7 @@
 //
 
 #include "parser.h"
+
 void parse_input(char *expression, node *output_stack) {
     int array_pos = 0;
     node *queue_stack = init_node();
