@@ -18,9 +18,9 @@ enum input_type {
     TOK_DOT = 2,
     TOK_OPERATOR_1 = 3,
     TOK_OPERATOR_2 = 4,
-    TOK_OPEN_BRACE = 5,
-    TOK_CLOSE_BRACE = 6,
-    TOK_POW = 7,
+    TOK_POW = 5,
+    TOK_OPEN_BRACE = 6,
+    TOK_CLOSE_BRACE = 7,
     TOK_UNARY
 };
 

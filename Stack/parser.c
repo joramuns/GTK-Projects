@@ -55,7 +55,9 @@ void parse_double(int *array_pos, char *expression, node *output_stack) {
 
 void handle_operator(char operator, node *output_stack, node *queue_stack, int input_type) {
     node *last_queue = find_last(queue_stack);
-    while (last_queue->number > 0 && last_queue->type >= input_type && last_queue->type < TOK_OPEN_BRACE) {
+    while (last_queue->number > 0 && last_queue->type >= input_type && \
+           last_queue->type < TOK_OPEN_BRACE &&\
+           (last_queue->type != TOK_POW || input_type != TOK_POW)) {
         push_n_pop(output_stack, queue_stack);
         last_queue = find_last(queue_stack);
     }
