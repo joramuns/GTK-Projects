@@ -35,7 +35,8 @@ int main() {
         if (check_result == TOK_NUM) {
             push(output_stack);
             parse_double(&array_pos, expression, output_stack);
-        } else if ((check_result == TOK_OPERATOR_1) || (check_result == TOK_OPERATOR_2) || (check_result == TOK_POW) || (check_result == TOK_OPEN_BRACE)) {
+        } else if ((check_result == TOK_OPERATOR_1) || (check_result == TOK_OPERATOR_2) \
+                   || (check_result == TOK_POW) || (check_result == TOK_OPEN_BRACE)) {
             handle_operator(expression[array_pos], output_stack, queue_stack, check_result);
             array_pos++;
         } else if (check_result == TOK_CLOSE_BRACE) {
@@ -55,7 +56,9 @@ int main() {
         } else if (check_result == TOK_UNARY) {
             int type_unary = parse_long_operator(expression, &array_pos);
             if (type_unary == CODE_MOD) {
-                handle_operator('%', output_stack, queue_stack, TOK_OPERATOR_2);
+                handle_operator(type_unary, output_stack, queue_stack, TOK_OPERATOR_2);
+            } else if (type_unary >= CODE_ACOS && type_unary <= CODE_LN) {
+                handle_operator(type_unary, output_stack, queue_stack, TOK_UNARY);
             } else {
                 printf("LONG OPERATOR ERROR\n");
                 break;
@@ -82,7 +85,7 @@ int main() {
             push(stack_number);
             find_last(stack_number)->value = head->value;
             find_last(stack_number)->type = TOK_NUM;
-        } else if (head->type != 0){
+        } else if (head->type == TOK_OPERATOR_1 || head->type == TOK_OPERATOR_2 || head->type == TOK_POW) {
             operand_2 = find_last(stack_number)->value;
             pop(stack_number);
             operand_1 = find_last(stack_number)->value;
@@ -103,11 +106,36 @@ int main() {
             push(stack_number);
             find_last(stack_number)->value = result;
             find_last(stack_number)->type = TOK_NUM;
+        } else if (head->type == TOK_UNARY) {
+            operand_1 = find_last(stack_number)->value;
+            pop(stack_number);
+            if (head->sign == CODE_ACOS) {
+                result = acos(operand_1);
+            } else if (head->sign == CODE_ASIN) {
+                result = asin(operand_1);
+            } else if (head->sign == CODE_ATAN) {
+                result = atan(operand_1);
+            } else if (head->sign == CODE_SQRT) {
+                result = sqrt(operand_1);
+            } else if (head->sign == CODE_SIN) {
+                result = sin(operand_1);
+            } else if (head->sign == CODE_COS) {
+                result = cos(operand_1);
+            } else if (head->sign == CODE_TAN) {
+                result = tan(operand_1);
+            } else if (head->sign == CODE_LOG) {
+                result = log10(operand_1);
+            } else if (head->sign == CODE_LN) {
+                result = log(operand_1);
+            }
+            push(stack_number);
+            find_last(stack_number)->value = result;
+            find_last(stack_number)->type = TOK_NUM;
         }
         head = head->next;
     }
 
-    printf("Queue stack:\n");
+    printf("Answer stack:\n");
     print_node(stack_number);
 
     clean(output_stack);

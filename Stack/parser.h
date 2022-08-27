@@ -27,12 +27,13 @@ enum input_type {
     TOK_OPERATOR_1 = 3,
     TOK_OPERATOR_2 = 4,
     TOK_POW = 5,
-    TOK_OPEN_BRACE = 6,
-    TOK_CLOSE_BRACE = 7,
-    TOK_UNARY
+    TOK_UNARY = 6,
+    TOK_OPEN_BRACE = 7,
+    TOK_CLOSE_BRACE = 8,
 };
 
-//  From 'A' to 'J'
+//  From 'A' to 'I'
+#define CODE_MOD 37
 enum parse_long_operators {
     CODE_ACOS = 65,
     CODE_ASIN = 66,
@@ -41,9 +42,8 @@ enum parse_long_operators {
     CODE_SIN = 69,
     CODE_COS = 70,
     CODE_TAN = 71,
-    CODE_MOD = 72,
-    CODE_LOG = 73,
-    CODE_LN = 74
+    CODE_LOG = 72,
+    CODE_LN = 73
 };
 #include <stdio.h>
 #include <string.h>
