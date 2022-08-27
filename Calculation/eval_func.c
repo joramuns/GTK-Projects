@@ -35,20 +35,24 @@ double handle_binary_operator(node *head, node *stack_number) {
 
     double operand_2 = find_last(stack_number)->value;
     pop(stack_number);
-    double operand_1 = find_last(stack_number)->value;
-    pop(stack_number);
-    if (head->sign == '+') {
-        result = operand_1 + operand_2;
-    } else if (head->sign == '-') {
-        result = operand_1 - operand_2;
-    } else if (head->sign == '*') {
-        result = operand_1 * operand_2;
-    } else if (head->sign == '/') {
-        result = operand_1 / operand_2;
-    } else if (head->sign == '%') {
-        result = fmod(operand_1, operand_2);
-    } else if (head->sign == '^') {
-        result = powf(operand_1, operand_2);
+    if (stack_number->number != 0) {
+        double operand_1 = find_last(stack_number)->value;
+        pop(stack_number);
+        if (head->sign == '+') {
+            result = operand_1 + operand_2;
+        } else if (head->sign == '-') {
+            result = operand_1 - operand_2;
+        } else if (head->sign == '*') {
+            result = operand_1 * operand_2;
+        } else if (head->sign == '/') {
+            result = operand_1 / operand_2;
+        } else if (head->sign == '%') {
+            result = fmod(operand_1, operand_2);
+        } else if (head->sign == '^') {
+            result = powf(operand_1, operand_2);
+        }
+    } else {
+        printf("OPERATOR ERROR!\n");
     }
 
     return result;
