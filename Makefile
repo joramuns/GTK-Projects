@@ -1,4 +1,9 @@
 all:
-	gcc -c main.c Stack/*.c Calculation/*.c
-	gcc `pkg-config --cflags gtk4` -o test *.o `pkg-config --libs gtk4`
+	gcc -fsanitize=address -g -c main.c calculator.c Validation/*.c Calculation/*.c
+	gcc -fsanitize=address -g -o test *.o
+	./test
+
+gtk:
+	gcc -g -c main.c calculator.c Validation/*.c Calculation/*.c
+	gcc -g -o test *.o `pkg-config --libs gtk4`
 	./test
