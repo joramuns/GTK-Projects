@@ -49,6 +49,7 @@ enum parse_long_operators {
 #include <string.h>
 #include "nodes.h"
 
+void parse_input(char *expression, node *output_stack);
 int check_input_type(char input);
 void parse_double(int *array_pos, char *expression, node *output_stack);
 void handle_operator(char operator, node *output_stack, node *queue_stack, int input_type);
