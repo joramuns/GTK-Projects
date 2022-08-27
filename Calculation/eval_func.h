@@ -12,7 +12,7 @@
 #include "../Validation/nodes.h"
 #include "../Validation/parser.h"
 
-double evaluation(node *output_stack);
+double evaluate(node *output_stack);
 double handle_binary_operator(node *head, node *stack_number);
 double handle_unary_operator(node *head, node *stack_number);
 

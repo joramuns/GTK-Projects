@@ -7,36 +7,17 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "Validation/parser.h"
-#include "Validation/nodes.h"
-#include "Calculation/eval_func.h"
-#define EXPRESSION_SIZE 100
+#include "calculator.h"
 
 int main() {
+    int ex_code = 0;
     char expression[EXPRESSION_SIZE + 1 + 1] = {0};
     fgets(expression, EXPRESSION_SIZE + 1 + 1, stdin);
-    size_t input_len = strlen(expression);
+    double result = 0;
 
-    if (input_len > 0 && expression[input_len - 1] == '\n') {
-        expression[input_len - 1] = '\0';
-        input_len--;
-    }
-    if (input_len > EXPRESSION_SIZE) {
-        printf("ERROR\n");
-    } else {
-        printf("We have: %s\n", expression);
-    }
+    ex_code = calculate(expression, &result);
 
-    node *output_stack = init_node();
-    parse_input(expression, output_stack);
-    printf("Output stack:\n");
-    print_node(output_stack);
+    printf("Answer: %lf\n", result);
 
-    double result = evaluation(output_stack);
-    printf("Answer:\n");
-    printf("%lf\n", result);
-
-    clean(output_stack);
-
-    return 0;
+    return ex_code;
 }

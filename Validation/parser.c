@@ -7,6 +7,23 @@
 
 #include "parser.h"
 
+int validate_input(char *expression) {
+    int ex_code = 0;
+    size_t input_len = strlen(expression);
+
+    if (input_len > 0 && expression[input_len - 1] == '\n') {
+        expression[input_len - 1] = '\0';
+        input_len--;
+    }
+    if (input_len > EXPRESSION_SIZE) {
+        printf("ERROR\n");
+    } else {
+        printf("We have: %s\n", expression);
+    }
+
+    return ex_code;
+}
+
 void parse_input(char *expression, node *output_stack) {
     int array_pos = 0;
     node *queue_stack = init_node();

@@ -31,6 +31,7 @@ START_TEST(first) {
 //    sqrt(cos(sin(2+9*6^1.2-tan(1))))
 //    sqrt(cos(sin(2+9*6^1.2-tan(1))))mod0.1
 //    sqrt(2^2)*5/(4-3mod2)*(4-sqrt(81))
+//    cos(1/3)*sin(1.352^9/(4+3))
     ck_assert_int_eq();
 }
 END_TEST

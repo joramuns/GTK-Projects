@@ -7,7 +7,7 @@
 
 #include "eval_func.h"
 
-double evaluation(node *output_stack) {
+double evaluate(node *output_stack) {
     node *head = output_stack;
     node *stack_number = init_node();
     double result = 0;

@@ -12,6 +12,7 @@
 #include <string.h>
 #include "nodes.h"
 
+#define EXPRESSION_SIZE 100
 #define ISDIGIT check_input_type(expression[*array_pos]) == TOK_NUM
 #define ISDOT check_input_type(expression[*array_pos]) == TOK_DOT
 
@@ -51,6 +52,7 @@ enum parse_long_operators {
     CODE_LN = 73
 };
 
+int validate_input(char *expression);
 void parse_input(char *expression, node *output_stack);
 int check_input_type(char input);
 void parse_double(int *array_pos, char *expression, node *output_stack);
