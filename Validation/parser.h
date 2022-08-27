@@ -21,10 +21,11 @@
 enum parser_errors {
     TOO_LONG_EXPRESSION = 100,
     WRONG_LONG_OPERATOR = 101,
-    EXPRESSION_TOO_SHORT,
-    WRONG_SYMBOLS,
-    EXTRA_DOT_ERROR,
-    BRACE_NOT_PAIRED,
+    EXPRESSION_TOO_SHORT = 102,
+    WRONG_SYMBOLS = 103,
+    EXTRA_DOT_ERROR = 104,
+    EXTRA_CLOSE_BRACE = 105,
+    LONG_OPERATOR_BRACE_ERROR = 106,
 };
 
 enum input_type {
@@ -54,11 +55,11 @@ enum parse_long_operators {
 };
 
 int validate_input(char *expression);
-void parse_input(char *expression, node *output_stack);
+int parse_input(char *expression, node *output_stack);
 int check_input_type(char input);
-void parse_double(int *array_pos, char *expression, node *output_stack);
+void parse_double(size_t *array_pos, char *expression, node *output_stack);
 void handle_operator(char operator, node *output_stack, node *queue_stack, int input_type);
-int parse_long_operator(char *expression, int *array_pos);
+int parse_long_operator(char *expression, size_t *array_pos);
 void hello9(void);
 
 #endif /* parser_h */

@@ -20,14 +20,14 @@ int validate_input(char *expression) {
     }
     if (strspn(expression, "1234567890sincosatanmodsqrtlnlog()+-*/^.") != input_len) {
         ex_code = WRONG_SYMBOLS;
-        printf("!!!%lu\n", strspn(expression, "1234567890sincosatanmodsqrtlnlog()+-*/^"));
     }
 
     return ex_code;
 }
 
-void parse_input(char *expression, node *output_stack) {
-    int array_pos = 0;
+int parse_input(char *expression, node *output_stack) {
+    int ex_code = 0;
+    size_t array_pos = 0;
     node *queue_stack = init_node();
     size_t input_len = strlen(expression);
     while (array_pos < input_len) {
@@ -46,8 +46,10 @@ void parse_input(char *expression, node *output_stack) {
                 push_n_pop(output_stack, queue_stack);
                 last = find_last(queue_stack);
                 if (last->number == 0) {
+                    ex_code = EXTRA_CLOSE_BRACE;
                     printf("BRACE ERROR\n");
-                    break;
+                    array_pos = input_len;
+                    last->type = TOK_OPEN_BRACE;
                 }
             }
             if (last->type == TOK_OPEN_BRACE) {
@@ -60,11 +62,13 @@ void parse_input(char *expression, node *output_stack) {
             } else if (type_unary >= CODE_ACOS && type_unary <= CODE_LN) {
                 handle_operator(type_unary, output_stack, queue_stack, TOK_UNARY);
             } else {
+                ex_code = WRONG_LONG_OPERATOR;
                 printf("LONG OPERATOR ERROR\n");
-                break;
+                array_pos = input_len;
             }
         } else {
-            array_pos++;
+            array_pos = input_len;
+            ex_code = check_result;
         }
     }
     int check_queue = find_last(queue_stack)->number;
@@ -74,4 +78,5 @@ void parse_input(char *expression, node *output_stack) {
     }
 
     clean(queue_stack);
+    return ex_code;
 }

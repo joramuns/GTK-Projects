@@ -28,12 +28,14 @@ int check_input_type(char input) {   // check type? enum? 0 - error ?
     } else if (input == 's' || input == 'c' || input == 't' || \
                input == 'a' || input == 'm' || input == 'l') {
         ex_code = TOK_UNARY;
+    } else {
+        ex_code = WRONG_SYMBOLS;
     }
 
     return ex_code;
 }
 
-void parse_double(int *array_pos, char *expression, node *output_stack) {
+void parse_double(size_t *array_pos, char *expression, node *output_stack) {
     node *last = find_last(output_stack);
     last->type = TOK_NUM;
     while (ISDIGIT) {
@@ -68,7 +70,7 @@ void handle_operator(char operator, node *output_stack, node *queue_stack, int i
     last_queue->sign = operator;
 }
 
-int parse_long_operator(char *expression, int *array_pos) {
+int parse_long_operator(char *expression, size_t *array_pos) {
     int ex_code = 0, position_move = 0;
     char *modified_expression = expression + *array_pos;
     size_t len = strlen(modified_expression);
@@ -111,6 +113,10 @@ int parse_long_operator(char *expression, int *array_pos) {
         ex_code = EXPRESSION_TOO_SHORT;
     } else {
         *array_pos += position_move;
+        if (modified_expression[*array_pos + 1] != '(' || modified_expression[*array_pos + 2] == ')') {
+            printf("LONG OPERATOR BRACE ERROR\n");
+            ex_code = LONG_OPERATOR_BRACE_ERROR;
+        }
     }
 
     return ex_code;
