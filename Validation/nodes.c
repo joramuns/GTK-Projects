@@ -6,7 +6,6 @@
 //
 
 #include "nodes.h"
-#include <stdio.h>
 
 node *init_node(void) {
     node *head = (node *)malloc(sizeof(node));

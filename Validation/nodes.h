@@ -9,6 +9,7 @@
 #define SRC_COMMON_NODES_H_
 
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef struct node {
     int number;
