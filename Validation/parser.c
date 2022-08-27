@@ -16,9 +16,11 @@ int validate_input(char *expression) {
         input_len--;
     }
     if (input_len > EXPRESSION_SIZE) {
-        printf("ERROR\n");
-    } else {
-        printf("We have: %s\n", expression);
+        ex_code = TOO_LONG_EXPRESSION;
+    }
+    if (strspn(expression, "1234567890sincosatanmodsqrtlnlog()+-*/^.") != input_len) {
+        ex_code = WRONG_SYMBOLS;
+        printf("!!!%lu\n", strspn(expression, "1234567890sincosatanmodsqrtlnlog()+-*/^"));
     }
 
     return ex_code;
