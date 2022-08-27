@@ -89,7 +89,7 @@ void print_node(node *head) {
     while (head) {
         if (head->type == 1) {
             printf("%d: %lf\n", head->number, head->value);
-        } else if (head->type != 0){
+        } else if (head->type != 0) {
             printf("%d: %c\n", head->number, head->sign);
         }
         head = head->next;
