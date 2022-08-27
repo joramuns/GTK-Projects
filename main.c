@@ -52,6 +52,14 @@ int main() {
             if (last->type == TOK_OPEN_BRACE) {
                 pop(queue_stack);
             }
+        } else if (check_result == TOK_UNARY) {
+            int type_unary = parse_long_operator(expression, &array_pos);
+            if (type_unary == CODE_MOD) {
+                handle_operator('%', output_stack, queue_stack, TOK_OPERATOR_2);
+            } else {
+                printf("LONG OPERATOR ERROR\n");
+                break;
+            }
         } else {
             array_pos++;
         }
@@ -87,6 +95,8 @@ int main() {
                 result = operand_1 * operand_2;
             } else if (head->sign == '/') {
                 result = operand_1 / operand_2;
+            } else if (head->sign == '%') {
+                result = fmod(operand_1, operand_2);
             } else if (head->sign == '^') {
                 result = powf(operand_1, operand_2);
             }
