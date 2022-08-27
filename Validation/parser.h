@@ -7,6 +7,11 @@
 
 #ifndef parser_h
 #define parser_h
+
+#include <stdio.h>
+#include <string.h>
+#include "nodes.h"
+
 #define ISDIGIT check_input_type(expression[*array_pos]) == TOK_NUM
 #define ISDOT check_input_type(expression[*array_pos]) == TOK_DOT
 
@@ -45,9 +50,6 @@ enum parse_long_operators {
     CODE_LOG = 72,
     CODE_LN = 73
 };
-#include <stdio.h>
-#include <string.h>
-#include "nodes.h"
 
 void parse_input(char *expression, node *output_stack);
 int check_input_type(char input);
