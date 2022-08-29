@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <gtk/gtk.h>
 #include <string.h>
-#include "main.h"
+#include "main-gtk.h"
 
 void add_text(GtkButton *widget, gpointer data) {
     buttonData *current = data;
