@@ -18,7 +18,7 @@ int validate_input(char *expression) {
     if (input_len > EXPRESSION_SIZE) {
         ex_code = TOO_LONG_EXPRESSION;
     }
-    if (strspn(expression, "1234567890sincosatanmodsqrtlnlog()+-*/^.") != input_len) {
+    if (strspn(expression, "1234567890sincosatnmodsqrtlg()+-*/^.") != input_len) {
         ex_code = WRONG_SYMBOLS;
     }
 

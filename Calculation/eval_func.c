@@ -14,15 +14,22 @@ double evaluate(node *output_stack) {
     while (head) {
         if (head->type == TOK_NUM) {
             result = head->value;
+            push(stack_number);
+            find_last(stack_number)->value = result;
+            find_last(stack_number)->type = TOK_NUM;
         } else if (head->type == TOK_OPERATOR_1 || head->type == TOK_OPERATOR_2 \
                    || head->type == TOK_POW) {
             result = handle_binary_operator(head, stack_number);
+            push(stack_number);
+            find_last(stack_number)->value = result;
+            find_last(stack_number)->type = TOK_NUM;
         } else if (head->type == TOK_UNARY) {
             result = handle_unary_operator(head, stack_number);
+            push(stack_number);
+            find_last(stack_number)->value = result;
+            find_last(stack_number)->type = TOK_NUM;
         }
-        push(stack_number);
-        find_last(stack_number)->value = result;
-        find_last(stack_number)->type = TOK_NUM;
+
         head = head->next;
     }
     clean(stack_number);
@@ -35,7 +42,7 @@ double handle_binary_operator(node *head, node *stack_number) {
 
     double operand_2 = find_last(stack_number)->value;
     pop(stack_number);
-    if (stack_number->number != 0) {
+    if (find_last(stack_number)->number != 0) {
         double operand_1 = find_last(stack_number)->value;
         pop(stack_number);
         if (head->sign == '+') {

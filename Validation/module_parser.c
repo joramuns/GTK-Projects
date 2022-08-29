@@ -113,7 +113,7 @@ int parse_long_operator(char *expression, size_t *array_pos) {
         ex_code = EXPRESSION_TOO_SHORT;
     } else {
         *array_pos += position_move;
-        if (modified_expression[*array_pos + 1] != '(' || modified_expression[*array_pos + 2] == ')') {
+        if (modified_expression[*array_pos] != '(' || modified_expression[*array_pos + 1] == ')') {
             printf("LONG OPERATOR BRACE ERROR\n");
             ex_code = LONG_OPERATOR_BRACE_ERROR;
         }
