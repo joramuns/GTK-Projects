@@ -9,4 +9,4 @@ gtk:
 	./test
 
 clean:
-	rm -rf *.o
+	rm -rf *.o test
