@@ -13,7 +13,7 @@
 #include "nodes.h"
 
 #define EXPRESSION_SIZE 100
-#define EXPRESSION_SYMBOLS "1234567890sincosatnmodsqrtlg()+-*/^. "
+#define EXPRESSION_SYMBOLS "1234567890acdgilmnoqrst()+-*/^. "
 #define ISDIGIT check_input_type(expression[*array_pos]) == TOK_NUM
 #define ISDOT check_input_type(expression[*array_pos]) == TOK_DOT
 
