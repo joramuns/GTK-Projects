@@ -45,6 +45,14 @@ START_TEST(first) {
 //    (cos(1/3)*sinsin(1.352^9/(4+3))/76.56)*log(150)
 //    sinsin(1)
 //    sin()
+//    sin(
+//        sinn
+//        si
+//        si(1)
+//        si(())
+//        sin(())
+//    2+(-(-(-(-1)))
+//    2+(-(-(-(-1))))
     ck_assert_int_eq();
 }
 END_TEST
