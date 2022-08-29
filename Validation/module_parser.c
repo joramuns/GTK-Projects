@@ -7,8 +7,7 @@
 
 #include "parser.h"
 
-// stacks - output and queue?
-int check_input_type(char input) {   // check type? enum? 0 - error ?
+int check_input_type(char input) {
     int ex_code = 0;
 
     if (input > 47 && input < 58) {
@@ -36,6 +35,7 @@ int check_input_type(char input) {   // check type? enum? 0 - error ?
 }
 
 void parse_double(size_t *array_pos, char *expression, node *output_stack) {
+    push(output_stack);
     node *last = find_last(output_stack);
     last->type = TOK_NUM;
     while (ISDIGIT) {
@@ -111,9 +111,9 @@ int parse_long_operator(char *expression, size_t *array_pos) {
     }
     if (len <= 2) {
         ex_code = EXPRESSION_TOO_SHORT;
-    } else {
+    } else if (ex_code < 100) {
         *array_pos += position_move;
-        if (modified_expression[*array_pos] != '(' || modified_expression[*array_pos + 1] == ')') {
+        if (expression[*array_pos] != '(' || expression[(*array_pos) + 1] == ')' || expression[(*array_pos) + 1] == '\0') {
             printf("LONG OPERATOR BRACE ERROR\n");
             ex_code = LONG_OPERATOR_BRACE_ERROR;
         }
@@ -122,6 +122,38 @@ int parse_long_operator(char *expression, size_t *array_pos) {
     return ex_code;
 }
 
-void hello9(void) {
-    printf("d\n");
+void handle_unary(char *expression, size_t array_pos, node *output_stack) {
+    if ((array_pos == 0) || (expression[array_pos - 1]) == '(') {
+        push(output_stack);
+        find_last(output_stack)->type = TOK_NUM;
+        find_last(output_stack)->value = 0;
+    }
+}
+
+int handle_close_brace(node *output_stack, node *queue_stack) {
+    int ex_code = 0;
+
+    node *last = find_last(queue_stack);
+    while (last->type != TOK_OPEN_BRACE) {
+        push_n_pop(output_stack, queue_stack);
+        last = find_last(queue_stack);
+        if (last->number == 0) {
+            ex_code = BRACE_NUMBER;
+            last->type = TOK_OPEN_BRACE;
+        }
+    }
+    if (last->type == TOK_OPEN_BRACE && ex_code == 0) {
+        pop(queue_stack);
+    }
+
+    return ex_code;
+}
+
+void clean_queue_stack(node *output_stack, node *queue_stack) {
+    int check_queue = find_last(queue_stack)->number;
+    while (check_queue > 0) {
+        push_n_pop(output_stack, queue_stack);
+        check_queue = find_last(queue_stack)->number;
+    }
+    clean(queue_stack);
 }

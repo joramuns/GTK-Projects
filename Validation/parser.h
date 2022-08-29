@@ -13,6 +13,7 @@
 #include "nodes.h"
 
 #define EXPRESSION_SIZE 100
+#define EXPRESSION_SYMBOLS "1234567890sincosatnmodsqrtlg()+-*/^."
 #define ISDIGIT check_input_type(expression[*array_pos]) == TOK_NUM
 #define ISDOT check_input_type(expression[*array_pos]) == TOK_DOT
 
@@ -24,8 +25,10 @@ enum parser_errors {
     EXPRESSION_TOO_SHORT = 102,
     WRONG_SYMBOLS = 103,
     EXTRA_DOT_ERROR = 104,
-    EXTRA_CLOSE_BRACE = 105,
+    BRACE_NUMBER = 105,
     LONG_OPERATOR_BRACE_ERROR = 106,
+    EMPTY_BRACES = 107,
+    EXTRA_SIGNS = 108,
 };
 
 enum input_type {
@@ -60,6 +63,9 @@ int check_input_type(char input);
 void parse_double(size_t *array_pos, char *expression, node *output_stack);
 void handle_operator(char operator, node *output_stack, node *queue_stack, int input_type);
 int parse_long_operator(char *expression, size_t *array_pos);
-void hello9(void);
+int validate_stack(node *output_stack);
+void handle_unary(char *expression, size_t array_pos, node *output_stack);
+int handle_close_brace(node *output_stack, node *queue_stack);
+void clean_queue_stack(node *output_stack, node *queue_stack);
 
 #endif /* parser_h */

@@ -13,6 +13,7 @@ int calculate(char* expression, double *result) {
     node *output_stack = init_node();
     ex_code = validate_input(expression);
     if (ex_code == 0) ex_code = parse_input(expression, output_stack);
+    if (ex_code == 0) ex_code = validate_stack(output_stack);
     if (ex_code == 0) *result = evaluate(output_stack);
     clean(output_stack);
 
