@@ -116,7 +116,8 @@ int parse_long_operator(char *expression, size_t *array_pos) {
     } else if (ex_code < 100) {
         *array_pos += position_move;
         if (ex_code != CODE_MOD) {
-            if (expression[*array_pos] != '(' || expression[(*array_pos) + 1] == ')' || expression[(*array_pos) + 1] == '\0') {
+            if (expression[*array_pos] != '(' || expression[(*array_pos) + 1] == ')' \
+                || expression[(*array_pos) + 1] == '\0') {
                 printf("LONG OPERATOR BRACE ERROR\n");
                 ex_code = LONG_OPERATOR_BRACE_ERROR;
             }
@@ -126,7 +127,7 @@ int parse_long_operator(char *expression, size_t *array_pos) {
     return ex_code;
 }
 
-void handle_unary(char *expression, size_t array_pos, node *output_stack) {
+void handle_unary(const char *expression, size_t array_pos, node *output_stack) {
     if ((array_pos == 0) || (expression[array_pos - 1]) == '(') {
         push(output_stack);
         find_last(output_stack)->type = TOK_NUM;
@@ -146,7 +147,7 @@ int handle_close_brace(node *output_stack, node *queue_stack) {
             last->type = TOK_OPEN_BRACE;
         }
     }
-    if (last->type == TOK_OPEN_BRACE && ex_code == 0) {
+    if (ex_code == 0) {
         pop(queue_stack);
     }
 

@@ -64,7 +64,7 @@ void parse_double(size_t *array_pos, char *expression, node *output_stack);
 void handle_operator(char operator, node *output_stack, node *queue_stack, int input_type);
 int parse_long_operator(char *expression, size_t *array_pos);
 int validate_stack(node *output_stack);
-void handle_unary(char *expression, size_t array_pos, node *output_stack);
+void handle_unary(const char *expression, size_t array_pos, node *output_stack);
 int handle_close_brace(node *output_stack, node *queue_stack);
 void clean_queue_stack(node *output_stack, node *queue_stack);
 
