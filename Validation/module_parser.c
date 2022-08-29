@@ -27,6 +27,8 @@ int check_input_type(char input) {
     } else if (input == 's' || input == 'c' || input == 't' || \
                input == 'a' || input == 'm' || input == 'l') {
         ex_code = TOK_UNARY;
+    } else if (input == ' ') {
+        ex_code = 0;
     } else {
         ex_code = WRONG_SYMBOLS;
     }
@@ -113,9 +115,11 @@ int parse_long_operator(char *expression, size_t *array_pos) {
         ex_code = EXPRESSION_TOO_SHORT;
     } else if (ex_code < 100) {
         *array_pos += position_move;
-        if (expression[*array_pos] != '(' || expression[(*array_pos) + 1] == ')' || expression[(*array_pos) + 1] == '\0') {
-            printf("LONG OPERATOR BRACE ERROR\n");
-            ex_code = LONG_OPERATOR_BRACE_ERROR;
+        if (ex_code != CODE_MOD) {
+            if (expression[*array_pos] != '(' || expression[(*array_pos) + 1] == ')' || expression[(*array_pos) + 1] == '\0') {
+                printf("LONG OPERATOR BRACE ERROR\n");
+                ex_code = LONG_OPERATOR_BRACE_ERROR;
+            }
         }
     }
 
