@@ -55,6 +55,8 @@ int parse_input(char *expression, node *output_stack) {
             } else {
                 ex_code = type_unary;
             }
+        } else if (check_result == 0) {
+            array_pos++;
         } else {
             ex_code = check_result;
         }
