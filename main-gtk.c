@@ -46,10 +46,14 @@ void get_result(GtkButton *widget, gpointer data) {
     GtkText *entry = current->entry;
     GtkEntryBuffer *entryBuffer = gtk_text_get_buffer(entry);
     double result = 0;
-    calculate((char *)gtk_entry_buffer_get_text(entryBuffer), &result);
+    int ex_code = calculate((char *)gtk_entry_buffer_get_text(entryBuffer), &result);
     char buffer[100] = {0};
-    sprintf(buffer, "%g", result);
-    gtk_entry_buffer_set_text(entryBuffer, buffer, (int) strlen(buffer));
+    if (ex_code == 0) {
+        sprintf(buffer, "%g", result);
+    } else {
+        sprintf(buffer, "Error: %d", ex_code);
+    }
+    gtk_entry_buffer_set_text(entryBuffer, buffer, strlen(buffer));
 }
 
 void set_zero(GtkButton *widget, gpointer data) {
