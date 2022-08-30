@@ -1,0 +1,13 @@
+text {
+    background-color: white;
+    font-family: monospace;
+    font-size: 18pt;
+    padding: 5px;
+    border: 2px;
+}
+
+button {
+    color: green;
+    font-family: monospace;
+    font-size: 18pt;
+}

@@ -6,21 +6,22 @@
     <property name="title">DUCKIN SMART CALC</property>
     <child>
       <object id="grid" class="GtkGrid">
-      <property name="column-spacing">5</property>
-      <property name="row-spacing">5</property>
-      <property name="margin-top">10</property>
-      <property name="margin-bottom">10</property>
-      <property name="margin-start">10</property>
-      <property name="margin-end">10</property>
+          <property name="row-homogeneous">TRUE</property>
+          <property name="column-homogeneous">TRUE</property>
+          <property name="column-spacing">5</property>
+          <property name="row-spacing">5</property>
+          <property name="margin-top">10</property>
+          <property name="margin-bottom">10</property>
+          <property name="margin-start">10</property>
+          <property name="margin-end">10</property>
         <child>
             <object id="entry" class="GtkText">
                 <property name="can-focus">TRUE</property>
                 <property name="editable">TRUE</property>
                 <layout>
                     <property name="column">0</property>
-                    <property name="column-span">5</property>
+                    <property name="column-span">6</property>
                     <property name="row">0</property>
-                    <property name="row-span">2</property>
                 </layout>
             </object>
         </child>
@@ -209,7 +210,7 @@
             <property name="label">(</property>
             <layout>
               <property name="column">4</property>
-              <property name="row">0</property>
+              <property name="row">1</property>
             </layout>
           </object>
         </child>
