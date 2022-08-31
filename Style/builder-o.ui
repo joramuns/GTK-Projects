@@ -323,6 +323,22 @@
             </layout>
           </object>
         </child>
+        <child>
+            <object class="GtkOverlay" id="overlay">
+                <layout>
+                  <property name="column">0</property>
+                  <property name="row">7</property>
+                  <property name="column-span">6</property>
+                  <property name="row-span">6</property>
+                </layout>
+                <child>
+                    <object class="GtkDrawingArea" id="area"></object>
+                </child>
+                <child>
+                    <object class="GtkGrid" id="gridPlot"></object>
+                </child>
+            </object>
+        </child>
       </object>
     </child>
   </object>
