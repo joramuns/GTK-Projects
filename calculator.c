@@ -35,8 +35,8 @@ int calculate_var(char* expression, double *result, double var) {
 
     node *output_stack = init_node();
     ex_code = validate_input(expression);
-    if (ex_code == 0) ex_code = parse_input(expression, output_stack);
-    if (ex_code == VARIABLE_INSIDE) ex_code = validate_stack(output_stack);
+    if (ex_code == VARIABLE_INSIDE) ex_code = parse_input(expression, output_stack);
+    if (ex_code == 0) ex_code = validate_stack(output_stack);
     if (ex_code == 0) {
         replace_variable(output_stack, var);
         *result = evaluate(output_stack);
