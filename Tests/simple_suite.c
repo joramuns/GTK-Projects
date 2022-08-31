@@ -53,6 +53,18 @@ START_TEST(first) {
 //    sin(()) = ERROR (107)
 //    2+(-(-(-(-1))) = ERROR (105)
 //    2+(-(-(-(-1)))) = 3
+//    .4+.4
+//    2.2.2.2
+//    .sin(3)
+//    sin(3).
+//    3X
+//    XX
+//    8*XX
+//    X8
+//    8*X.
+//    8*Xsin(4)
+//    sin(X)
+//    sin(X*6)
     ck_assert_int_eq();
 }
 END_TEST

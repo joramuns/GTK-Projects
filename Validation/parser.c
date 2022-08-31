@@ -22,7 +22,8 @@ int validate_input(char *expression) {
         ex_code = WRONG_SYMBOLS;
     }
     if (strchr(expression, 'X') != 0) {
-        ex_code = VARIABLE_INSIDE;
+        ex_code = check_variable(expression);
+        if (ex_code == 0) ex_code = VARIABLE_INSIDE;
     }
 
     return ex_code;
@@ -35,8 +36,8 @@ int parse_input(char *expression, node *output_stack) {
     size_t input_len = strlen(expression);
     while (array_pos < input_len) {
         int check_result = check_input_type(expression[array_pos]);
-        if (check_result == TOK_NUM) {
-            parse_double(&array_pos, expression, output_stack);
+        if (check_result == TOK_NUM || check_result == TOK_DOT) {
+            ex_code = parse_double(&array_pos, expression, output_stack);
         } else if ((check_result == TOK_OPERATOR_1) || (check_result == TOK_OPERATOR_2) \
                    || (check_result == TOK_POW) || (check_result == TOK_OPEN_BRACE)) {
             if (check_result == TOK_OPERATOR_1) handle_unary(expression, array_pos, output_stack);

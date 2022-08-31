@@ -29,7 +29,8 @@ enum parser_errors {
     LONG_OPERATOR_BRACE_ERROR = 106,
     EMPTY_BRACES = 107,
     EXTRA_SIGNS = 108,
-    VARIABLE_INSIDE = 109
+    VARIABLE_INSIDE = 109,
+    SURROUNDING_VARIABLE = 110,
 };
 
 enum input_type {
@@ -61,12 +62,13 @@ enum parse_long_operators {
 int validate_input(char *expression);
 int parse_input(char *expression, node *output_stack);
 int check_input_type(char input);
-void parse_double(size_t *array_pos, char *expression, node *output_stack);
+int parse_double(size_t *array_pos, char *expression, node *output_stack);
 void handle_operator(char operator, node *output_stack, node *queue_stack, int input_type);
 int parse_long_operator(char *expression, size_t *array_pos);
 int validate_stack(node *output_stack);
 void handle_unary(const char *expression, size_t array_pos, node *output_stack);
 int handle_close_brace(node *output_stack, node *queue_stack);
 void clean_queue_stack(node *output_stack, node *queue_stack);
+int check_variable(char *expression);
 
 #endif /* parser_h */

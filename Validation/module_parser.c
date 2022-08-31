@@ -36,7 +36,31 @@ int check_input_type(char input) {
     return ex_code;
 }
 
-void parse_double(size_t *array_pos, char *expression, node *output_stack) {
+int check_variable(char *expression) {
+    int ex_code = 0, array_pos = 0, check_backward = 0;
+    size_t len = strlen(expression);
+    while (array_pos++ < len) {
+        if (expression[array_pos] == 'X') {
+            if (array_pos > 0) {
+                check_backward = check_input_type(expression[array_pos - 1]);
+                if (check_backward == TOK_NUM || check_backward == TOK_DOT || check_backward == TOK_CLOSE_BRACE) {
+                    ex_code = SURROUNDING_VARIABLE;
+                }
+            }
+            int check_forward = check_input_type(expression[array_pos + 1]);
+            if (check_forward == TOK_NUM || check_forward == TOK_DOT || \
+                check_forward == TOK_UNARY ||\
+                check_forward == TOK_OPEN_BRACE) {
+                ex_code = SURROUNDING_VARIABLE;
+            }
+        }
+    }
+
+    return ex_code;
+}
+
+int parse_double(size_t *array_pos, char *expression, node *output_stack) {
+    int ex_code = 0;
     push(output_stack);
     node *last = find_last(output_stack);
     last->type = TOK_NUM;
@@ -57,10 +81,13 @@ void parse_double(size_t *array_pos, char *expression, node *output_stack) {
                 *array_pos += 1;
             }
             if (ISDOT) {
+                ex_code = EXTRA_DOT_ERROR;
                 printf("ERROR_DOT\n");
             }
         }
     }
+
+    return ex_code;
 }
 
 void handle_operator(char operator, node *output_stack, node *queue_stack, int input_type) {

@@ -11,9 +11,10 @@
 #include "main-gtk.h"
 
 static void draw_plot(gdouble clipX1, gdouble clipX2, cairo_t *cr, char *output) {
-    for (gdouble x = clipX1; x < clipX2; x += 0.005) {
+    int ex_code = 0;
+    for (gdouble x = clipX1; x < clipX2 && ex_code == 0; x += 0.005) {
         double y = 0;
-        calculate_var(output, &y, x);
+        ex_code = calculate_var(output, &y, x);
         double resultAtan = fabs(fabs(atan(y)) - M_PI_2);
         if (resultAtan <= 0.005 || isnan(y))
             cairo_new_sub_path(cr);
