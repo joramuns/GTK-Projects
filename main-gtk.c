@@ -47,11 +47,12 @@ static void draw_grid(int width, int height, cairo_t *cr, gdouble dx) {
 void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer user_data) {
     gdouble dx = 2, dy = 2;
     gdouble i, clipX1 = 0.0, clipY1 = 0.0, clipX2 = 0.0, clipY2 = 0.0;
-    cairo_set_source_rgba(cr, 0.55, 0.55, 0.91, 1);
+    cairo_set_source_rgba(cr, 0.1, 0.1, 0.8, 0.8);
     cairo_paint(cr);
     cairo_translate(cr, 800 / 2, 300 / 2);
     /* измениять scale для разных маштабов */
 //    cairo_scale(cr, scaleX, -scaleY);
+    cairo_scale(cr, 50, -50);
     /* определить границы графика */
     cairo_device_to_user_distance(cr, &dx, &dy);
     cairo_clip_extents(cr, &clipX1, &clipY1, &clipX2, &clipY2);
@@ -66,7 +67,7 @@ void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpoint
     draw_grid(width, height, cr, dx);
     //
     cairo_set_line_width(cr, dx);
-    cairo_set_source_rgba(cr, 0.99, 0.98, 1, 1);
+    cairo_set_source_rgba(cr, 1, 0, 0, 1);
     draw_plot(clipX1, clipX2, cr, user_data);
     cairo_stroke(cr);
 }
