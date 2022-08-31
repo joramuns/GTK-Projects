@@ -10,22 +10,10 @@
 #include <string.h>
 #include "main-gtk.h"
 
-char* replace_var(char* str, char find, char replace){
-    char *current_pos = strchr(str,find);
-    while (current_pos) {
-        *current_pos = replace;
-        current_pos = strchr(current_pos,find);
-    }
-    return str;
-}
-
 static void draw_plot(gdouble clipX1, gdouble clipX2, cairo_t *cr, char *output) {
-    char var_output[strlen(output)];
     for (gdouble x = clipX1; x < clipX2; x += 0.005) {
-        strcpy(var_output, output);
-        replace(var_output, 'X', )
         double y = 0;
-        calculate(output, &y); // output, x
+        calculate_var(output, &y, x);
         double resultAtan = fabs(fabs(atan(y)) - M_PI_2);
         if (resultAtan <= 0.005 || isnan(y))
             cairo_new_sub_path(cr);
@@ -79,21 +67,23 @@ void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpoint
     //
     cairo_set_line_width(cr, dx);
     cairo_set_source_rgba(cr, 0.99, 0.98, 1, 1);
-    char *output = user_data;
-    draw_plot(clipX1, clipX2, cr, output);
+    draw_plot(clipX1, clipX2, cr, user_data);
     cairo_stroke(cr);
 }
 
 void add_grid_plot(char *output) {
-    GtkBuilder *build = gtk_builder_new_from_file("Style/plot-o.ui");
+    GtkBuilder *build = gtk_builder_new_from_file("./Style/plot-o.ui");
     GtkWidget *windowPlot = GTK_WIDGET(gtk_builder_get_object(build, "windowPlot"));
     GtkWidget *area = GTK_WIDGET(gtk_builder_get_object(build, "area"));
-    gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(area), graph_draw, output, NULL);
+    char *output_malloced = malloc(strlen(output) + 1);
+    strcpy(output_malloced, output);
+    gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(area), graph_draw, output_malloced, NULL);
     GtkWidget *overlay = GTK_WIDGET(gtk_builder_get_object(build, "overlay"));
     GtkWidget *gridPlot = GTK_WIDGET(gtk_builder_get_object(build, "gridPlot"));
     gtk_overlay_set_child(GTK_OVERLAY(overlay), area);
     gtk_overlay_add_overlay(GTK_OVERLAY(overlay), gridPlot);
     gtk_widget_show(windowPlot);
+//    free(output_malloced);
 }
 
 void quit_cb (GtkWindow *window)
@@ -138,7 +128,10 @@ void get_result(GtkButton *widget, gpointer data) {
     if (ex_code == 0) {
         sprintf(buffer, "%g", result);
     } else if (ex_code == VARIABLE_INSIDE) {
-        
+        char *output_malloced = malloc(strlen(output) + 1);
+        strcpy(output_malloced, output);
+        add_grid_plot(output_malloced);
+        free(output_malloced);
     } else {
         sprintf(buffer, "Error: %d", ex_code);
     }
@@ -154,7 +147,7 @@ void set_zero(GtkButton *widget, gpointer data) {
 
 static void activate (GtkApplication *app, gpointer user_data) {
     GtkBuilder *builder = gtk_builder_new();
-    gtk_builder_add_from_file(builder, "Style/builder-o.ui", NULL);
+    gtk_builder_add_from_file(builder, "./Style/builder-o.ui", NULL);
 
     GObject *window = gtk_builder_get_object(builder, "window");
     gtk_window_set_application(GTK_WINDOW (window), app);
@@ -199,7 +192,6 @@ static void activate (GtkApplication *app, gpointer user_data) {
 int main (int argc, char **argv) {
     GtkApplication *app;
     int status;
-
 
     buttonData *buttons[32*sizeof(buttonData)] = {0};
 
