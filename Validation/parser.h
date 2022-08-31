@@ -13,7 +13,7 @@
 #include "nodes.h"
 
 #define EXPRESSION_SIZE 100
-#define EXPRESSION_SYMBOLS "1234567890acdgilmnoqrst()+-*/^. "
+#define EXPRESSION_SYMBOLS "1234567890acdgilmnoqrst()+-*/^. X"
 #define ISDIGIT check_input_type(expression[*array_pos]) == TOK_NUM
 #define ISDOT check_input_type(expression[*array_pos]) == TOK_DOT
 
@@ -29,6 +29,7 @@ enum parser_errors {
     LONG_OPERATOR_BRACE_ERROR = 106,
     EMPTY_BRACES = 107,
     EXTRA_SIGNS = 108,
+    VARIABLE_INSIDE = 109
 };
 
 enum input_type {

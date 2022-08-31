@@ -8,7 +8,9 @@
 #include <stdio.h>
 #include <string.h>
 #include "calculator.h"
-
+//Unary minus and plus
+//Bracers handling - log(.. has no error
+//Exit codes to finish
 int main() {
     int ex_code = 0;
     char expression[EXPRESSION_SIZE + 1 + 1] = {0};

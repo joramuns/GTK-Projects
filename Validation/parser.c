@@ -21,6 +21,9 @@ int validate_input(char *expression) {
     if (strspn(expression, EXPRESSION_SYMBOLS) != input_len) {
         ex_code = WRONG_SYMBOLS;
     }
+    if (strchr(expression, 'X') != 0) {
+        ex_code = VARIABLE_INSIDE;
+    }
 
     return ex_code;
 }

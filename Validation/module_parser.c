@@ -10,7 +10,7 @@
 int check_input_type(char input) {
     int ex_code = 0;
 
-    if (input > 47 && input < 58) {
+    if ((input > 47 && input < 58) || input == 'X') {
         ex_code = TOK_NUM;
     } else if (input == '.') {
         ex_code = TOK_DOT;
@@ -40,20 +40,25 @@ void parse_double(size_t *array_pos, char *expression, node *output_stack) {
     push(output_stack);
     node *last = find_last(output_stack);
     last->type = TOK_NUM;
-    while (ISDIGIT) {
-        last->value = last->value * 10.0 + (expression[*array_pos] - '0');
+    if (expression[*array_pos] == 'X') {
+        last->sign = 'X';
         *array_pos += 1;
-    }
-    if (ISDOT) {
-        *array_pos += 1;
-        double parse_divider = 1.0;
+    } else {
         while (ISDIGIT) {
-            parse_divider /= 10.0;
-            last->value = (expression[*array_pos] - '0') * parse_divider + last->value;
+            last->value = last->value * 10.0 + (expression[*array_pos] - '0');
             *array_pos += 1;
         }
         if (ISDOT) {
-            printf("ERROR_DOT\n");
+            *array_pos += 1;
+            double parse_divider = 1.0;
+            while (ISDIGIT) {
+                parse_divider /= 10.0;
+                last->value = (expression[*array_pos] - '0') * parse_divider + last->value;
+                *array_pos += 1;
+            }
+            if (ISDOT) {
+                printf("ERROR_DOT\n");
+            }
         }
     }
 }

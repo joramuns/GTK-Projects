@@ -107,8 +107,8 @@
           </object>
         </child>
         <child>
-          <object id="buttonsign" class="GtkButton">
-            <property name="label">±</property>
+          <object id="buttonvar" class="GtkButton">
+            <property name="label">X</property>
             <layout>
               <property name="column">0</property>
               <property name="row">5</property>

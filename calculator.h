@@ -14,5 +14,7 @@
 #include "Calculation/eval_func.h"
 
 int calculate(char* expression, double *result);
+void replace_variable(node *output_stack, double var);
+int calculate_var(char* expression, double *result, double var);
 
 #endif /* calculator_h */
