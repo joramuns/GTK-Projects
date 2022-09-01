@@ -49,6 +49,8 @@
 		B714448428B776590057A2D1 /* parser.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = parser.c; sourceTree = "<group>"; };
 		B714448628B7767D0057A2D1 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		B714448C28B777860057A2D1 /* No GUI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "No GUI"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B75E763D28C10654001D97C6 /* draw_func.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = draw_func.c; sourceTree = "<group>"; };
+		B75E763E28C106B1001D97C6 /* input_handling.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = input_handling.c; sourceTree = "<group>"; };
 		B765A21428BD1A8B0099D6F7 /* main-gtk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "main-gtk.h"; sourceTree = "<group>"; };
 		B76BF26E28B13527001AAD5D /* main-gtk.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "main-gtk.c"; sourceTree = "<group>"; };
 		B78B049128AE8439006184B3 /* C7_SmartCalc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = C7_SmartCalc; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,6 +96,17 @@
 			path = Validation;
 			sourceTree = "<group>";
 		};
+		B75E763C28C0F81D001D97C6 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				B76BF26E28B13527001AAD5D /* main-gtk.c */,
+				B75E763E28C106B1001D97C6 /* input_handling.c */,
+				B75E763D28C10654001D97C6 /* draw_func.c */,
+				B765A21428BD1A8B0099D6F7 /* main-gtk.h */,
+			);
+			path = GUI;
+			sourceTree = "<group>";
+		};
 		B78B048828AE8439006184B3 = {
 			isa = PBXGroup;
 			children = (
@@ -101,8 +114,7 @@
 				B714448628B7767D0057A2D1 /* main.c */,
 				B7D765DB28BA7D4F00D2423A /* calculator.h */,
 				B7D765DC28BA7D4F00D2423A /* calculator.c */,
-				B76BF26E28B13527001AAD5D /* main-gtk.c */,
-				B765A21428BD1A8B0099D6F7 /* main-gtk.h */,
+				B75E763C28C0F81D001D97C6 /* GUI */,
 				B7BFFF1728BF837F00C2E99E /* Style */,
 				B714447C28B776000057A2D1 /* Validation */,
 				B7CD5DEE28B9338F0045C64A /* Calculation */,
