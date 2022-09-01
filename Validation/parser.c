@@ -38,8 +38,8 @@ int parse_input(char *expression, node *output_stack) {
         int check_result = check_input_type(expression[array_pos]);
         if (check_result == TOK_NUM || check_result == TOK_DOT) {
             ex_code = parse_double(&array_pos, expression, output_stack);
-        } else if ((check_result == TOK_OPERATOR_1) || (check_result == TOK_OPERATOR_2) \
-                   || (check_result == TOK_POW) || (check_result == TOK_OPEN_BRACE)) {
+        } else if ((check_result == TOK_OPERATOR_1) || (check_result == TOK_OPERATOR_2) ||
+                   (check_result == TOK_POW) || (check_result == TOK_OPEN_BRACE)) {
             if (check_result == TOK_OPERATOR_1) handle_unary(expression, array_pos, output_stack);
             handle_operator(expression[array_pos], output_stack, queue_stack, check_result);
             array_pos++;

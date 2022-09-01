@@ -7,7 +7,7 @@
 
 #include "calculator.h"
 
-int calculate(char* expression, double *result) {
+int calculate(char *expression, double *result) {
     int ex_code = 0;
 
     node *output_stack = init_node();
@@ -30,7 +30,7 @@ void replace_variable(node *output_stack, double var) {
     }
 }
 
-int calculate_var(char* expression, double *result, double var) {
+int calculate_var(char *expression, double *result, double var) {
     int ex_code = 0;
 
     node *output_stack = init_node();

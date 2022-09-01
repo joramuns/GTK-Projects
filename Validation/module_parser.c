@@ -24,8 +24,7 @@ int check_input_type(char input) {
         ex_code = TOK_OPEN_BRACE;
     } else if (input == ')') {
         ex_code = TOK_CLOSE_BRACE;
-    } else if (input == 's' || input == 'c' || input == 't' || \
-               input == 'a' || input == 'm' || input == 'l') {
+    } else if (input == 's' || input == 'c' || input == 't' || input == 'a' || input == 'm' || input == 'l') {
         ex_code = TOK_UNARY;
     } else if (input == ' ') {
         ex_code = 0;
@@ -43,13 +42,13 @@ int check_variable(char *expression) {
         if (expression[array_pos] == 'X') {
             if (array_pos > 0) {
                 check_backward = check_input_type(expression[array_pos - 1]);
-                if (check_backward == TOK_NUM || check_backward == TOK_DOT || check_backward == TOK_CLOSE_BRACE) {
+                if (check_backward == TOK_NUM || check_backward == TOK_DOT ||
+                    check_backward == TOK_CLOSE_BRACE) {
                     ex_code = SURROUNDING_VARIABLE;
                 }
             }
             int check_forward = check_input_type(expression[array_pos + 1]);
-            if (check_forward == TOK_NUM || check_forward == TOK_DOT || \
-                check_forward == TOK_UNARY ||\
+            if (check_forward == TOK_NUM || check_forward == TOK_DOT || check_forward == TOK_UNARY ||
                 check_forward == TOK_OPEN_BRACE) {
                 ex_code = SURROUNDING_VARIABLE;
             }
@@ -90,10 +89,9 @@ int parse_double(size_t *array_pos, char *expression, node *output_stack) {
     return ex_code;
 }
 
-void handle_operator(char operator, node *output_stack, node *queue_stack, int input_type) {
+void handle_operator(char operator_tok, node *output_stack, node *queue_stack, int input_type) {
     node *last_queue = find_last(queue_stack);
-    while (last_queue->number > 0 && last_queue->type >= input_type && \
-           last_queue->type < TOK_OPEN_BRACE &&\
+    while (last_queue->number > 0 && last_queue->type >= input_type && last_queue->type < TOK_OPEN_BRACE &&
            (last_queue->type != TOK_POW || input_type != TOK_POW)) {
         push_n_pop(output_stack, queue_stack);
         last_queue = find_last(queue_stack);
@@ -101,7 +99,7 @@ void handle_operator(char operator, node *output_stack, node *queue_stack, int i
     push(queue_stack);
     last_queue = find_last(queue_stack);
     last_queue->type = input_type;
-    last_queue->sign = operator;
+    last_queue->sign = operator_tok;
 }
 
 int parse_long_operator(char *expression, size_t *array_pos) {
@@ -148,8 +146,8 @@ int parse_long_operator(char *expression, size_t *array_pos) {
     } else if (ex_code < 100) {
         *array_pos += position_move;
         if (ex_code != CODE_MOD) {
-            if (expression[*array_pos] != '(' || expression[(*array_pos) + 1] == ')' \
-                || expression[(*array_pos) + 1] == '\0') {
+            if (expression[*array_pos] != '(' || expression[(*array_pos) + 1] == ')' ||
+                expression[(*array_pos) + 1] == '\0') {
                 printf("LONG OPERATOR BRACE ERROR\n");
                 ex_code = LONG_OPERATOR_BRACE_ERROR;
             }

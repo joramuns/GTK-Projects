@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <string.h>
+
 #include "nodes.h"
 
 #define EXPRESSION_SIZE 100
@@ -63,7 +64,7 @@ int validate_input(char *expression);
 int parse_input(char *expression, node *output_stack);
 int check_input_type(char input);
 int parse_double(size_t *array_pos, char *expression, node *output_stack);
-void handle_operator(char operator, node *output_stack, node *queue_stack, int input_type);
+void handle_operator(char operator_tok, node *output_stack, node *queue_stack, int input_type);
 int parse_long_operator(char *expression, size_t *array_pos);
 int validate_stack(node *output_stack);
 void handle_unary(const char *expression, size_t array_pos, node *output_stack);

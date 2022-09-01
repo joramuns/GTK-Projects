@@ -17,8 +17,7 @@ double evaluate(node *output_stack) {
             push(stack_number);
             find_last(stack_number)->value = result;
             find_last(stack_number)->type = TOK_NUM;
-        } else if (head->type == TOK_OPERATOR_1 || head->type == TOK_OPERATOR_2 \
-                   || head->type == TOK_POW) {
+        } else if (head->type == TOK_OPERATOR_1 || head->type == TOK_OPERATOR_2 || head->type == TOK_POW) {
             result = handle_binary_operator(head, stack_number);
             push(stack_number);
             find_last(stack_number)->value = result;
