@@ -48,6 +48,7 @@ static void draw_grid(int width, int height, cairo_t *cr, gdouble dx) {
 }
 
 void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer user_data) {
+    g_print("TEST\n");
     gdouble dx = 2, dy = 2;
     gdouble i, clipX1 = 0.0, clipY1 = 0.0, clipX2 = 0.0, clipY2 = 0.0;
     cairo_set_source_rgba(cr, 0.1, 0.1, 0.8, 0.8);
@@ -143,11 +144,15 @@ void get_result(GtkButton *widget, gpointer data) {
         strcpy(output_malloced, output);
         add_grid_plot(output_malloced);
         //
-        GtkBuilder *builder = gtk_builder_new();
-        gtk_builder_add_from_file(builder, "./Style/builder-o.ui", NULL);
-        GtkWidget *area = GTK_WIDGET(gtk_builder_get_object(builder, "area"));
-        gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(area), graph_draw, output_malloced, NULL);
-        g_object_unref(builder);
+//        GtkBuilder *builder = gtk_builder_new();
+//        gtk_builder_add_from_file(builder, "./Style/builder-o.ui", NULL);
+//        GtkWidget *area = GTK_WIDGET(gtk_builder_get_object(builder, "area"));
+//        gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(area), graph_draw, output_malloced, NULL);
+//        GtkWidget *overlay = GTK_WIDGET(gtk_builder_get_object(builder, "overlay"));
+//        GtkWidget *gridPlot = GTK_WIDGET(gtk_builder_get_object(builder, "gridPlot"));
+//        gtk_overlay_set_child(GTK_OVERLAY(overlay), area);
+//        gtk_overlay_add_overlay(GTK_OVERLAY(overlay), gridPlot);
+//        g_object_unref(builder);
         //
         free(output_malloced);
     } else {
@@ -174,7 +179,7 @@ static void activate (GtkApplication *app, gpointer user_data) {
     GtkCssProvider *cssProvider = gtk_css_provider_new();
     GdkDisplay *display = gtk_widget_get_display(GTK_WIDGET(window));
 //    gtk_css_provider_load_from_data(cssProvider, "text {background-color: white; font-family: monospace; font-size: 18pt;}", -1);
-    gtk_css_provider_load_from_path(cssProvider, "Style/theme.css");
+    gtk_css_provider_load_from_path(cssProvider, "./Style/theme.css");
     gtk_style_context_add_provider_for_display(display, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     g_object_unref(cssProvider);
 
@@ -209,12 +214,12 @@ static void activate (GtkApplication *app, gpointer user_data) {
     GtkEntry *entry_res;
     entry_res = (GtkEntry *) gtk_builder_get_object(builder, "entry_res");
     gtk_entry_set_alignment(GTK_ENTRY(entry_res), 1);
-    GtkWidget *area = GTK_WIDGET(gtk_builder_get_object(builder, "area"));
-    gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(area), graph_draw, NULL, NULL);
-    GtkWidget *overlay = GTK_WIDGET(gtk_builder_get_object(builder, "overlay"));
-    GtkWidget *gridPlot = GTK_WIDGET(gtk_builder_get_object(builder, "gridPlot"));
-    gtk_overlay_set_child(GTK_OVERLAY(overlay), area);
-    gtk_overlay_add_overlay(GTK_OVERLAY(overlay), gridPlot);
+//    GtkWidget *area = GTK_WIDGET(gtk_builder_get_object(builder, "area"));
+//    gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(area), graph_draw, NULL, NULL);
+//    GtkWidget *overlay = GTK_WIDGET(gtk_builder_get_object(builder, "overlay"));
+//    GtkWidget *gridPlot = GTK_WIDGET(gtk_builder_get_object(builder, "gridPlot"));
+//    gtk_overlay_set_child(GTK_OVERLAY(overlay), area);
+//    gtk_overlay_add_overlay(GTK_OVERLAY(overlay), gridPlot);
 
     gtk_widget_show (GTK_WIDGET(window));
     g_object_unref(builder);
@@ -228,6 +233,7 @@ int main (int argc, char **argv) {
 
     app = gtk_application_new ("org.gtk.example", G_APPLICATION_FLAGS_NONE);
     g_signal_connect (app, "activate", G_CALLBACK (activate), &buttons);
+
     status = g_application_run (G_APPLICATION (app), argc, argv);
     g_object_unref (app);
 

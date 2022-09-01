@@ -41,11 +41,20 @@ int parse_input(char *expression, node *output_stack) {
         } else if ((check_result == TOK_OPERATOR_1) || (check_result == TOK_OPERATOR_2) ||
                    (check_result == TOK_POW) || (check_result == TOK_OPEN_BRACE)) {
             if (check_result == TOK_OPERATOR_1) handle_unary(expression, array_pos, output_stack);
+            if (array_pos > 0 && check_result == TOK_OPEN_BRACE) {
+                int before_brace = check_input_type(expression[array_pos - 1]);
+                    if (before_brace != TOK_OPERATOR_1 && before_brace != TOK_OPERATOR_2 && before_brace != TOK_POW && before_brace != TOK_OPEN_BRACE) {
+                        ex_code = WRONG_SYMBOLS;
+                    }
+            }
             handle_operator(expression[array_pos], output_stack, queue_stack, check_result);
             array_pos++;
         } else if (check_result == TOK_CLOSE_BRACE) {
-            if (expression[array_pos - 1] == '(') {
+            int after_brace = check_input_type(expression[array_pos + 1]);
+            if (array_pos > 0 && expression[array_pos - 1] == '(') {
                 ex_code = EMPTY_BRACES;
+            } else if (after_brace != TOK_OPERATOR_1 && after_brace != TOK_OPERATOR_2 && after_brace != TOK_POW && after_brace != TOK_CLOSE_BRACE && expression[array_pos + 1] != '\0') {
+                ex_code = WRONG_SYMBOLS;
             } else {
                 array_pos++;
                 ex_code = handle_close_brace(output_stack, queue_stack);

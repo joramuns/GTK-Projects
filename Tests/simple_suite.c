@@ -65,6 +65,9 @@ START_TEST(first) {
 //    8*Xsin(4)
 //    sin(X)
 //    sin(X*6)
+//    (2)3
+//    sin(2)*6
+//    2(3)
     ck_assert_int_eq();
 }
 END_TEST
