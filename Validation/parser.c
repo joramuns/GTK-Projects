@@ -43,7 +43,7 @@ int parse_input(char *expression, node *output_stack) {
             if (check_result == TOK_OPERATOR_1) handle_unary(expression, array_pos, output_stack);
             if (array_pos > 0 && check_result == TOK_OPEN_BRACE) {
                 int before_brace = check_input_type(expression[array_pos - 1]);
-                    if (before_brace != TOK_OPERATOR_1 && before_brace != TOK_OPERATOR_2 && before_brace != TOK_POW && before_brace != TOK_OPEN_BRACE) {
+                    if (before_brace == TOK_NUM) {
                         ex_code = WRONG_SYMBOLS;
                     }
             }
