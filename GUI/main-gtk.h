@@ -8,6 +8,9 @@
 #ifndef main_h
 #define main_h
 
+#include <stdio.h>
+#include <gtk/gtk.h>
+#include <string.h>
 #include "../calculator.h"
 
 typedef struct {
@@ -25,9 +28,9 @@ void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpoint
 void add_grid_plot(char *output);
 
 /*                          input handling                                      */
-void add_text(GtkButton *widget, gpointer data)
-void del_text(GtkButton *widget, gpointer data)
-void get_result(GtkButton *widget, gpointer data)
-void set_zero(GtkButton *widget, gpointer data)
+void add_text(GtkButton *widget, gpointer data);
+void del_text(GtkButton *widget, gpointer data);
+void get_result(GtkButton *widget, gpointer data);
+void set_zero(GtkButton *widget, gpointer data);
 
 #endif /* main_h */

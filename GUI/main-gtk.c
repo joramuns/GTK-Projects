@@ -5,9 +5,6 @@
 //  Created by Joramun Sasin on 8/18/22.
 //
 
-#include <stdio.h>
-#include <gtk/gtk.h>
-#include <string.h>
 #include "main-gtk.h"
 
 void quit_cb (GtkWindow *window)
