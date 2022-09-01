@@ -100,9 +100,9 @@
 			isa = PBXGroup;
 			children = (
 				B76BF26E28B13527001AAD5D /* main-gtk.c */,
+				B765A21428BD1A8B0099D6F7 /* main-gtk.h */,
 				B75E763E28C106B1001D97C6 /* input_handling.c */,
 				B75E763D28C10654001D97C6 /* draw_func.c */,
-				B765A21428BD1A8B0099D6F7 /* main-gtk.h */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
