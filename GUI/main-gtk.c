@@ -30,15 +30,31 @@ static void activate (GtkApplication *app, gpointer user_data) {
     /* input */
     GtkEntry *entry_func;
     entry_func = (GtkEntry *) gtk_builder_get_object(builder, "entry_func");
-    gtk_entry_set_alignment(GTK_ENTRY(entry_func), 1);
     gtk_entry_set_max_length(GTK_ENTRY(entry_func), EXPRESSION_SIZE);
     /* output*/
     GtkEntry *entry_res;
     entry_res = (GtkEntry *) gtk_builder_get_object(builder, "entry_res");
-    gtk_entry_set_alignment(GTK_ENTRY(entry_res), 1);
+    /* codominant and dominant */
+    GtkEntry *dom_x = (GtkEntry *) gtk_builder_get_object(builder, "entry_dom_x");
+    gtk_entry_set_placeholder_text(dom_x, "Dominant X");
+    GtkEntry *dom_y = (GtkEntry *) gtk_builder_get_object(builder, "entry_dom_y");
+    gtk_entry_set_placeholder_text(dom_y, "Dominant Y");
+    GtkEntry *codom_x = (GtkEntry *) gtk_builder_get_object(builder, "entry_codom_x");
+    gtk_entry_set_placeholder_text(codom_x, "Codominant X");
+    GtkEntry *codom_y = (GtkEntry *) gtk_builder_get_object(builder, "entry_codom_y");
+    gtk_entry_set_placeholder_text(codom_y, "Codominant Y");
 
     /* buttons */
     buttonData *buttons = user_data;
+
+    /* draw area */
+    GtkWidget *area = GTK_WIDGET(gtk_builder_get_object(builder, "area"));
+    gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(area), graph_draw, NULL, NULL);
+    GtkWidget *overlay = GTK_WIDGET(gtk_builder_get_object(builder, "overlay"));
+    GtkWidget *gridPlot = GTK_WIDGET(gtk_builder_get_object(builder, "gridPlot"));
+    gtk_overlay_set_child(GTK_OVERLAY(overlay), area);
+    gtk_overlay_add_overlay(GTK_OVERLAY(overlay), gridPlot);
+
 
     char *names[] = {"button0", "button1", "button2", "button3", "button4", "button5", "button6", "button7", "button8", "button9", "buttondot", "buttonsum", "buttonsub", "buttonmul", "buttondiv", "quit", "buttondel", "buttonres", "buttonzero", "buttonpow", "buttonopenbrace", "buttonclosebrace", "buttonacos", "buttonasin", "buttonatan", "buttonsqrt", "buttonsin", "buttoncos", "buttonmod", "buttontan", "buttonlog", "buttonln", "buttonvar"};
     char *values[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "+", "-", "*", "/", NULL, NULL, NULL, NULL, "^", "(", ")", "acos(", "asin(", "atan(", "sqrt(", "sin(", "cos(", "mod", "tan(", "log(", "ln(", "X"};
@@ -62,12 +78,6 @@ static void activate (GtkApplication *app, gpointer user_data) {
         }
     }
 
-//    GtkWidget *area = GTK_WIDGET(gtk_builder_get_object(builder, "area"));
-//    gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(area), graph_draw, NULL, NULL);
-//    GtkWidget *overlay = GTK_WIDGET(gtk_builder_get_object(builder, "overlay"));
-//    GtkWidget *gridPlot = GTK_WIDGET(gtk_builder_get_object(builder, "gridPlot"));
-//    gtk_overlay_set_child(GTK_OVERLAY(overlay), area);
-//    gtk_overlay_add_overlay(GTK_OVERLAY(overlay), gridPlot);
 
     gtk_widget_show (GTK_WIDGET(window));
     g_object_unref(builder);
