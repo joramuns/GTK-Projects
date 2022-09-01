@@ -12,7 +12,8 @@
 
 typedef struct {
     GtkButton *button;
-    GtkText *entry;
+    GtkEntry *entry;
+    GtkEntry *entry_res;
     char *value;
     char *name;
 } buttonData;

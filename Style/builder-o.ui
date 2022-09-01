@@ -14,13 +14,24 @@
           <property name="margin-bottom">10</property>
           <property name="margin-start">10</property>
           <property name="margin-end">10</property>
+          <child>
+              <object id="entry_func" class="GtkEntry">
+                  <property name="can-focus">TRUE</property>
+                  <property name="editable">TRUE</property>
+                  <layout>
+                      <property name="column">0</property>
+                      <property name="column-span">6</property>
+                      <property name="row">-1</property>
+                  </layout>
+              </object>
+          </child>
         <child>
-            <object id="entry" class="GtkText">
-                <property name="can-focus">TRUE</property>
-                <property name="editable">TRUE</property>
+            <object id="entry_res" class="GtkEntry">
+                <property name="can-focus">FALSE</property>
+                <property name="editable">FALSE</property>
                 <layout>
-                    <property name="column">0</property>
-                    <property name="column-span">6</property>
+                    <property name="column">4</property>
+                    <property name="column-span">2</property>
                     <property name="row">0</property>
                 </layout>
             </object>

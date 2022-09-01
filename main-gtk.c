@@ -102,8 +102,8 @@ void quit_cb (GtkWindow *window)
 
 void add_text(GtkButton *widget, gpointer data) {
     buttonData *current = data;
-    GtkText *entry = current->entry;
-    GtkEntryBuffer *entryBuffer = gtk_text_get_buffer(entry);
+    GtkEntry *entry = current->entry;
+    GtkEntryBuffer *entryBuffer = gtk_entry_get_buffer(entry);
     size_t length_buf = strlen(gtk_entry_buffer_get_text(entryBuffer));
     char *output = (char *) malloc(1 + length_buf + strlen(current->value));
     strcpy(output, gtk_entry_buffer_get_text(entryBuffer));
@@ -114,8 +114,8 @@ void add_text(GtkButton *widget, gpointer data) {
 
 void del_text(GtkButton *widget, gpointer data) {
     buttonData *current = data;
-    GtkText *entry = current->entry;
-    GtkEntryBuffer *entryBuffer = gtk_text_get_buffer(entry);
+    GtkEntry *entry = current->entry;
+    GtkEntryBuffer *entryBuffer = gtk_entry_get_buffer(entry);
     size_t length_buf = strlen(gtk_entry_buffer_get_text(entryBuffer));
     char *output = (char *) malloc(1 + length_buf);
     if (length_buf > 0) {
@@ -128,8 +128,10 @@ void del_text(GtkButton *widget, gpointer data) {
 
 void get_result(GtkButton *widget, gpointer data) {
     buttonData *current = data;
-    GtkText *entry = current->entry;
-    GtkEntryBuffer *entryBuffer = gtk_text_get_buffer(entry);
+    GtkEntry *entry = current->entry;
+    GtkEntryBuffer *entryBuffer = gtk_entry_get_buffer(entry);
+    GtkEntry *entry_res = current->entry_res;
+    GtkEntryBuffer *entryBuffer_res = gtk_entry_get_buffer(entry_res);
     double result = 0;
     char *output = (char *)gtk_entry_buffer_get_text(entryBuffer);
     int ex_code = calculate(output, &result);
@@ -151,13 +153,13 @@ void get_result(GtkButton *widget, gpointer data) {
     } else {
         sprintf(buffer, "Error: %d", ex_code);
     }
-    gtk_entry_buffer_set_text(entryBuffer, buffer, strlen(buffer));
+    gtk_entry_buffer_set_text(entryBuffer_res, buffer, strlen(buffer));
 }
 
 void set_zero(GtkButton *widget, gpointer data) {
     buttonData *current = data;
-    GtkText *entry = current->entry;
-    GtkEntryBuffer *entryBuffer = gtk_text_get_buffer(entry);
+    GtkEntry *entry = current->entry;
+    GtkEntryBuffer *entryBuffer = gtk_entry_get_buffer(entry);
     gtk_entry_buffer_set_text(entryBuffer, "", 0);
 }
 
@@ -183,22 +185,30 @@ static void activate (GtkApplication *app, gpointer user_data) {
     char *values[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "+", "-", "*", "/", NULL, NULL, NULL, NULL, "^", "(", ")", "acos(", "asin(", "atan(", "sqrt(", "sin(", "cos(", "mod", "tan(", "log(", "ln(", "X"};
 
     for (int i = 0; i < 33; ++i) {
-            buttons[i].name = names[i];
-            buttons[i].value = values[i];
-            buttons[i].entry = (GtkText *) gtk_builder_get_object(builder, "entry");
-            buttons[i].button = (GtkButton *) gtk_builder_get_object(builder, names[i]);
-            if (values[i] != NULL) {
-                g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(add_text), &buttons[i]);
-            } else if (i == 18) {
-                g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(set_zero), &buttons[i]);
-            } else if (i == 17) {
-                g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(get_result), &buttons[i]);
-            } else if (i == 16) {
+        buttons[i].name = names[i];
+        buttons[i].value = values[i];
+        buttons[i].entry = (GtkEntry *) gtk_builder_get_object(builder, "entry_func");
+        buttons[i].entry_res = (GtkEntry *) gtk_builder_get_object(builder, "entry_res");
+        buttons[i].button = (GtkButton *) gtk_builder_get_object(builder, names[i]);
+        if (values[i] != NULL) {
+            g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(add_text), &buttons[i]);
+        } else if (i == 18) {
+            g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(set_zero), &buttons[i]);
+        } else if (i == 17) {
+            g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(get_result), &buttons[i]);
+        } else if (i == 16) {
             g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(del_text), &buttons[i]);
-            } else if (i == 15) {
-                g_signal_connect_swapped (buttons[i].button, "clicked", G_CALLBACK (quit_cb), window);
-            }
+        } else if (i == 15) {
+            g_signal_connect_swapped (buttons[i].button, "clicked", G_CALLBACK (quit_cb), window);
+        }
     }
+    GtkEntry *entry_func;
+    entry_func = (GtkEntry *) gtk_builder_get_object(builder, "entry_func");
+    gtk_entry_set_alignment(GTK_ENTRY(entry_func), 1);
+    gtk_entry_set_max_length(GTK_ENTRY(entry_func), EXPRESSION_SIZE);
+    GtkEntry *entry_res;
+    entry_res = (GtkEntry *) gtk_builder_get_object(builder, "entry_res");
+    gtk_entry_set_alignment(GTK_ENTRY(entry_res), 1);
     GtkWidget *area = GTK_WIDGET(gtk_builder_get_object(builder, "area"));
     gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(area), graph_draw, NULL, NULL);
     GtkWidget *overlay = GTK_WIDGET(gtk_builder_get_object(builder, "overlay"));
