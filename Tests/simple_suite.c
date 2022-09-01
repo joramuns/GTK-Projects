@@ -69,6 +69,12 @@ START_TEST(first) {
 //    sin(2)*6
 //    2(3)
 //    cos(6*3)/5
+//    Xcos((
+//    1sin(3)
+//    sin(3)6
+//    sin(3.3.3)
+//    mod*cos(8)
+//    3modmod2
     ck_assert_int_eq();
 }
 END_TEST
