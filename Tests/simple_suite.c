@@ -68,6 +68,7 @@ START_TEST(first) {
 //    (2)3
 //    sin(2)*6
 //    2(3)
+//    cos(6*3)/5
     ck_assert_int_eq();
 }
 END_TEST
