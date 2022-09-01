@@ -45,14 +45,14 @@ void get_result(GtkButton *widget, gpointer data) {
     char buffer[100] = {0};
     if (ex_code == 0) {
         sprintf(buffer, "%g", result);
-    } else if (ex_code == VARIABLE_INSIDE) {
+    } else if (ex_code == VARIABLE_INSIDE && (ex_code = calculate_var(output, &result, 1)) == 0) {
         char *output_malloced = malloc(strlen(output) + 1);
         strcpy(output_malloced, output);
         add_grid_plot(output_malloced);
         //
-//        GtkBuilder *builder = gtk_builder_new();
-//        gtk_builder_add_from_file(builder, "./Style/builder-o.ui", NULL);
+//        GtkBuilder *builder = gtk_builder_new_from_file("./Style/builder-o.ui");
 //        GtkWidget *area = GTK_WIDGET(gtk_builder_get_object(builder, "area"));
+//        g_print("im here\n");
 //        gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(area), graph_draw, output_malloced, NULL);
 //        GtkWidget *overlay = GTK_WIDGET(gtk_builder_get_object(builder, "overlay"));
 //        GtkWidget *gridPlot = GTK_WIDGET(gtk_builder_get_object(builder, "gridPlot"));
