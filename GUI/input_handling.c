@@ -72,4 +72,7 @@ void set_zero(GtkButton *widget, gpointer data) {
     GtkEntry *entry = current->entry;
     GtkEntryBuffer *entryBuffer = gtk_entry_get_buffer(entry);
     gtk_entry_buffer_set_text(entryBuffer, "", 0);
+    entry = current->entry_res;
+    entryBuffer = gtk_entry_get_buffer(entry);
+    gtk_entry_buffer_set_text(entryBuffer, "", 0);
 }
