@@ -64,6 +64,12 @@ int parse_input(char *expression, node *output_stack) {
             if (type_unary == CODE_MOD) {
                 handle_operator(type_unary, output_stack, queue_stack, TOK_OPERATOR_2);
             } else if (type_unary >= CODE_ACOS && type_unary <= CODE_LN) {
+                if (array_pos > 3) {
+                    int before_brace = check_input_type(expression[array_pos - 4]);
+                        if (before_brace == TOK_NUM) {
+                            ex_code = WRONG_SYMBOLS;
+                        }
+                }
                 handle_operator(type_unary, output_stack, queue_stack, TOK_UNARY);
             } else {
                 ex_code = type_unary;
