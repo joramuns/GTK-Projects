@@ -9,6 +9,8 @@
 
 double x_min = -10;
 double x_max = 10;
+double y_min = -10;
+double y_max = 10;
 
 void quit_cb (GtkWindow *window)
 {
@@ -72,6 +74,8 @@ static void activate (GtkApplication *app, gpointer user_data) {
         gtk_button_set_has_frame(buttons[i].button, 1);
         buttons[i].x_min = dom_min;
         buttons[i].x_max = dom_max;
+        buttons[i].y_min = codom_min;
+        buttons[i].y_max = codom_max;
         buttons[i].area = area;
         if (values[i] != NULL) {
             g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(add_text), &buttons[i]);

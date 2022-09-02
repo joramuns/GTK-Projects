@@ -52,6 +52,16 @@ void get_result(GtkButton *widget, gpointer data) {
     if (strlen(dom_max_val) > 0) {
         sscanf(dom_max_val, "%lf", &x_max);
     }
+    GtkEntryBuffer *codom_min_buff = gtk_entry_get_buffer(current->y_min);
+    char *codom_min_val = (char *)gtk_entry_buffer_get_text(codom_min_buff);
+    if (strlen(codom_min_val) > 0) {
+        sscanf(codom_min_val, "%lf", &y_min);
+    }
+    GtkEntryBuffer *codom_max_buff = gtk_entry_get_buffer(current->y_max);
+    char *codom_max_val = (char *)gtk_entry_buffer_get_text(codom_max_buff);
+    if (strlen(codom_max_val) > 0) {
+        sscanf(codom_max_val, "%lf", &y_max);
+    }
 
     int ex_code = calculate(output, &result);
     char buffer[100] = {0};

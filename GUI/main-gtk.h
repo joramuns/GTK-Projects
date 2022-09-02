@@ -15,6 +15,8 @@
 
 extern double x_min;
 extern double x_max;
+extern double y_min;
+extern double y_max;
 
 typedef struct {
     GtkButton *button;
@@ -24,6 +26,8 @@ typedef struct {
     char *name;
     GtkEntry *x_min;
     GtkEntry *x_max;
+    GtkEntry *y_min;
+    GtkEntry *y_max;
     GtkWidget *area;
 } buttonData;
 
