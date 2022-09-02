@@ -41,26 +41,24 @@ void get_result(GtkButton *widget, gpointer data) {
     GtkEntryBuffer *entryBuffer_res = gtk_entry_get_buffer(entry_res);
     double result = 0;
     char *output = (char *)gtk_entry_buffer_get_text(entryBuffer);
+
+    GtkEntryBuffer *dom_min_buff = gtk_entry_get_buffer(current->x_min);
+    char *dom_min_val = (char *)gtk_entry_buffer_get_text(dom_min_buff);
+    if (strlen(dom_min_val) > 0) {
+        sscanf(dom_min_val, "%lf", &x_min);
+    }
+    GtkEntryBuffer *dom_max_buff = gtk_entry_get_buffer(current->x_max);
+    char *dom_max_val = (char *)gtk_entry_buffer_get_text(dom_max_buff);
+    if (strlen(dom_max_val) > 0) {
+        sscanf(dom_max_val, "%lf", &x_max);
+    }
+
     int ex_code = calculate(output, &result);
     char buffer[100] = {0};
     if (ex_code == 0) {
         sprintf(buffer, "%g", result);
     } else if (ex_code == VARIABLE_INSIDE && (ex_code = calculate_var(output, &result, 1)) == 0) {
-        char *output_malloced = malloc(strlen(output) + 1);
-        strcpy(output_malloced, output);
-        add_grid_plot(output_malloced);
-        //
-//        GtkBuilder *builder = gtk_builder_new_from_file("./Style/builder-o.ui");
-//        GtkWidget *area = GTK_WIDGET(gtk_builder_get_object(builder, "area"));
-//        g_print("im here\n");
-//        gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(area), graph_draw, output_malloced, NULL);
-//        GtkWidget *overlay = GTK_WIDGET(gtk_builder_get_object(builder, "overlay"));
-//        GtkWidget *gridPlot = GTK_WIDGET(gtk_builder_get_object(builder, "gridPlot"));
-//        gtk_overlay_set_child(GTK_OVERLAY(overlay), area);
-//        gtk_overlay_add_overlay(GTK_OVERLAY(overlay), gridPlot);
-//        g_object_unref(builder);
-        //
-        free(output_malloced);
+        gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(current->area), graph_draw, output, NULL);
     } else {
         sprintf(buffer, "Error: %d", ex_code);
     }

@@ -13,3 +13,8 @@ button {
     font-size: 18pt;
 }
 
+checkbutton {
+    color: #ff9999;
+    font-family: monospace;
+    font-size: 16pt;
+}

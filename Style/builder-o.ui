@@ -39,7 +39,7 @@
             </object>
         </child>
         <child>
-            <object id="entry_dom_x" class="GtkEntry">
+            <object id="entry_dom_min" class="GtkEntry">
                 <property name="xalign">1</property>
                 <layout>
                     <property name="column">0</property>
@@ -49,7 +49,7 @@
             </object>
         </child>
         <child>
-            <object id="entry_dom_y" class="GtkEntry">
+            <object id="entry_dom_max" class="GtkEntry">
                 <property name="xalign">1</property>
                 <layout>
                     <property name="column">0</property>
@@ -59,8 +59,9 @@
             </object>
         </child>
         <child>
-            <object id="entry_codom_x" class="GtkEntry">
-                <property name="xalign">1</property>
+            <object id="check_box" class="GtkToggleButton">
+<!--                <property name="xalign">1</property>-->
+                <property name="label">Codominant</property>
                 <layout>
                     <property name="column">0</property>
                     <property name="row">9</property>
@@ -69,11 +70,21 @@
             </object>
         </child>
         <child>
-            <object id="entry_codom_y" class="GtkEntry">
+            <object id="entry_codom_min" class="GtkEntry">
                 <property name="xalign">1</property>
                 <layout>
                     <property name="column">0</property>
                     <property name="row">10</property>
+                    <property name="column-span">2</property>
+                </layout>
+            </object>
+        </child>
+        <child>
+            <object id="entry_codom_max" class="GtkEntry">
+                <property name="xalign">1</property>
+                <layout>
+                    <property name="column">0</property>
+                    <property name="row">11</property>
                     <property name="column-span">2</property>
                 </layout>
             </object>
@@ -402,7 +413,7 @@
                   <property name="column">2</property>
                   <property name="row">7</property>
                   <property name="column-span">4</property>
-                  <property name="row-span">4</property>
+                  <property name="row-span">5</property>
                 </layout>
                 <child>
                     <object class="GtkDrawingArea" id="area"></object>

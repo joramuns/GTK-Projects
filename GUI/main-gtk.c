@@ -7,6 +7,9 @@
 
 #include "main-gtk.h"
 
+double x_min = -10;
+double x_max = 10;
+
 void quit_cb (GtkWindow *window)
 {
   gtk_window_close (window);
@@ -35,14 +38,14 @@ static void activate (GtkApplication *app, gpointer user_data) {
     GtkEntry *entry_res;
     entry_res = (GtkEntry *) gtk_builder_get_object(builder, "entry_res");
     /* codominant and dominant */
-    GtkEntry *dom_x = (GtkEntry *) gtk_builder_get_object(builder, "entry_dom_x");
-    gtk_entry_set_placeholder_text(dom_x, "Dominant X");
-    GtkEntry *dom_y = (GtkEntry *) gtk_builder_get_object(builder, "entry_dom_y");
-    gtk_entry_set_placeholder_text(dom_y, "Dominant Y");
-    GtkEntry *codom_x = (GtkEntry *) gtk_builder_get_object(builder, "entry_codom_x");
-    gtk_entry_set_placeholder_text(codom_x, "Codominant X");
-    GtkEntry *codom_y = (GtkEntry *) gtk_builder_get_object(builder, "entry_codom_y");
-    gtk_entry_set_placeholder_text(codom_y, "Codominant Y");
+    GtkEntry *dom_min = (GtkEntry *) gtk_builder_get_object(builder, "entry_dom_min");
+    gtk_entry_set_placeholder_text(dom_min, "Dominant min");
+    GtkEntry *dom_max = (GtkEntry *) gtk_builder_get_object(builder, "entry_dom_max");
+    gtk_entry_set_placeholder_text(dom_max, "Dominant max");
+    GtkEntry *codom_min = (GtkEntry *) gtk_builder_get_object(builder, "entry_codom_min");
+    gtk_entry_set_placeholder_text(codom_min, "Codominant min");
+    GtkEntry *codom_max = (GtkEntry *) gtk_builder_get_object(builder, "entry_codom_max");
+    gtk_entry_set_placeholder_text(codom_max, "Codominant max");
 
     /* buttons */
     buttonData *buttons = user_data;
@@ -65,6 +68,11 @@ static void activate (GtkApplication *app, gpointer user_data) {
         buttons[i].entry = entry_func;
         buttons[i].entry_res = entry_res;
         buttons[i].button = (GtkButton *) gtk_builder_get_object(builder, names[i]);
+        gtk_button_set_has_frame(buttons[i].button, 0);
+        gtk_button_set_has_frame(buttons[i].button, 1);
+        buttons[i].x_min = dom_min;
+        buttons[i].x_max = dom_max;
+        buttons[i].area = area;
         if (values[i] != NULL) {
             g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(add_text), &buttons[i]);
         } else if (i == 18) {
