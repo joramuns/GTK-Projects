@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <object id="window" class="GtkWindow">
-<!--    <property name="default-width">250</property>-->
-<!--    <property name="default-height">370</property>-->
+<!--    <property name="default-width">500</property>-->
+    <property name="default-height">990</property>
     <property name="title">DUCKIN SMART CALC</property>
     <child>
       <object id="grid" class="GtkGrid">
