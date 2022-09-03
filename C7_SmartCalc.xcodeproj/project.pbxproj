@@ -53,6 +53,7 @@
 		B75E763D28C10654001D97C6 /* draw_func.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = draw_func.c; sourceTree = "<group>"; };
 		B75E763E28C106B1001D97C6 /* input_handling.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = input_handling.c; sourceTree = "<group>"; };
 		B765A21428BD1A8B0099D6F7 /* main-gtk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "main-gtk.h"; sourceTree = "<group>"; };
+		B767CFA828C38F4600E7E033 /* credit_calc_gui.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = credit_calc_gui.c; sourceTree = "<group>"; };
 		B76BF26E28B13527001AAD5D /* main-gtk.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "main-gtk.c"; sourceTree = "<group>"; };
 		B78B049128AE8439006184B3 /* C7_SmartCalc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = C7_SmartCalc; sourceTree = BUILT_PRODUCTS_DIR; };
 		B78EAC0B28BA123800A731D2 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -106,6 +107,7 @@
 				B765A21428BD1A8B0099D6F7 /* main-gtk.h */,
 				B75E763E28C106B1001D97C6 /* input_handling.c */,
 				B75E763D28C10654001D97C6 /* draw_func.c */,
+				B767CFA828C38F4600E7E033 /* credit_calc_gui.c */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
