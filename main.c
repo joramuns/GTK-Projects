@@ -24,10 +24,17 @@ int main() {
     test_case.term = 6;
     test_case.rate = 0.24;
     test_case.type = 1;
+    credit_output test = {0};
 
-    eval_differentiated_credit(test_case);
+    handle_credit_calculator(test_case, &test);
 
-//    printf("Answer: %lf\n", test_case.sum);
+    printf("Total paid: %lf\nOverpaid: %lf\n", test.total_sum, test.overpaid);
+    node *head = test.stack_of_payments;
+    while (find_last(head)->number != 0) {
+        printf("Monthly payment: %lf\n", find_last(head)->value);
+        pop(head);
+    }
+    free(test.stack_of_payments);
 
     return ex_code;
 }

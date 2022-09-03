@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "Validation/nodes.h"
+
 typedef struct credit_input {
     double sum;
     unsigned term;
@@ -18,7 +20,14 @@ typedef struct credit_input {
     unsigned type;
 } credit_input;
 
-int eval_annuity_credit(credit_input input);
-int eval_differentiated_credit(credit_input input);
+typedef struct credit_output {
+    double total_sum;
+    node *stack_of_payments;
+    double overpaid;
+} credit_output;
+
+void handle_credit_calculator(credit_input input, credit_output *output);
+int eval_annuity_credit(credit_input input, credit_output *output);
+int eval_differentiated_credit(credit_input input, credit_output *output);
 
 #endif /* credit_calculator_h */
