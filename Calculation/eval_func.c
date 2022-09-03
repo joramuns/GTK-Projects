@@ -55,7 +55,7 @@ double handle_binary_operator(node *head, node *stack_number) {
         } else if (head->sign == '%') {
             result = fmod(operand_1, operand_2);
         } else if (head->sign == '^') {
-            result = powf(operand_1, operand_2);
+            result = pow(operand_1, operand_2);
         }
     } else {
         printf("OPERATOR ERROR!\n");
