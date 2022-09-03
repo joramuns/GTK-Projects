@@ -1,5 +1,5 @@
 test:
-	gcc -fsanitize=address -g -c main.c calculator.c Validation/*.c Calculation/*.c
+	gcc -fsanitize=address -g -c main.c calculator.c credit_calculator.c Validation/*.c Calculation/*.c
 	gcc -fsanitize=address -g -o test *.o
 	./test
 
