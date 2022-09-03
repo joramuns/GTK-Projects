@@ -12,6 +12,7 @@
 		B714448728B7767D0057A2D1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = B714448628B7767D0057A2D1 /* main.c */; };
 		B714449328B778B00057A2D1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = B714448628B7767D0057A2D1 /* main.c */; };
 		B714449428B786660057A2D1 /* nodes.c in Sources */ = {isa = PBXBuildFile; fileRef = B714448028B776250057A2D1 /* nodes.c */; };
+		B7A8049D28C365B100ED5745 /* credit_calculator.c in Sources */ = {isa = PBXBuildFile; fileRef = B7A8049B28C35D9600ED5745 /* credit_calculator.c */; };
 		B7CD5DE728B90D950045C64A /* parser.c in Sources */ = {isa = PBXBuildFile; fileRef = B714448428B776590057A2D1 /* parser.c */; };
 		B7D765D128BA55DF00D2423A /* module_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = B7D765D028BA55DF00D2423A /* module_parser.c */; };
 		B7D765D228BA574D00D2423A /* module_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = B7D765D028BA55DF00D2423A /* module_parser.c */; };
@@ -55,6 +56,8 @@
 		B76BF26E28B13527001AAD5D /* main-gtk.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "main-gtk.c"; sourceTree = "<group>"; };
 		B78B049128AE8439006184B3 /* C7_SmartCalc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = C7_SmartCalc; sourceTree = BUILT_PRODUCTS_DIR; };
 		B78EAC0B28BA123800A731D2 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		B7A8049A28C35D9600ED5745 /* credit_calculator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = credit_calculator.h; sourceTree = "<group>"; };
+		B7A8049B28C35D9600ED5745 /* credit_calculator.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = credit_calculator.c; sourceTree = "<group>"; };
 		B7BFFF1728BF837F00C2E99E /* Style */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Style; sourceTree = "<group>"; };
 		B7CD5DEB28B92C7D0045C64A /* check_main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = check_main.c; sourceTree = "<group>"; };
 		B7CD5DEC28B92D0A0045C64A /* check_main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = check_main.h; sourceTree = "<group>"; };
@@ -114,6 +117,8 @@
 				B714448628B7767D0057A2D1 /* main.c */,
 				B7D765DB28BA7D4F00D2423A /* calculator.h */,
 				B7D765DC28BA7D4F00D2423A /* calculator.c */,
+				B7A8049A28C35D9600ED5745 /* credit_calculator.h */,
+				B7A8049B28C35D9600ED5745 /* credit_calculator.c */,
 				B75E763C28C0F81D001D97C6 /* GUI */,
 				B7BFFF1728BF837F00C2E99E /* Style */,
 				B714447C28B776000057A2D1 /* Validation */,
@@ -229,12 +234,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7A8049D28C365B100ED5745 /* credit_calculator.c in Sources */,
+				B714449328B778B00057A2D1 /* main.c in Sources */,
 				B7D765DE28BA7F2800D2423A /* calculator.c in Sources */,
 				B7D765DA28BA63EB00D2423A /* eval_func.c in Sources */,
 				B7D765D228BA574D00D2423A /* module_parser.c in Sources */,
 				B7CD5DE728B90D950045C64A /* parser.c in Sources */,
 				B714449428B786660057A2D1 /* nodes.c in Sources */,
-				B714449328B778B00057A2D1 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
