@@ -12,6 +12,7 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include "../calculator.h"
+#include "../credit_calculator.h"
 
 extern double x_min;
 extern double x_max;
@@ -30,6 +31,12 @@ typedef struct {
     GtkEntry *y_max;
     GtkWidget *area;
 } buttonData;
+
+typedef struct entry_input {
+    GtkEntry *sum_entry;
+    GtkEntry *term_entry;
+    GtkEntry *rate_entry;
+} entry_input;
 
 void quit_window (GtkWindow *window);
 
