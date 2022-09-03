@@ -12,12 +12,12 @@ double x_max = 10;
 double y_min = -10;
 double y_max = 10;
 
-void quit_cb (GtkWindow *window)
-{
+
+
+
+void quit_window (GtkWindow *window) {
   gtk_window_close (window);
 }
-
-
 
 static void activate (GtkApplication *app, gpointer user_data) {
     GtkBuilder *builder = gtk_builder_new();
@@ -61,10 +61,10 @@ static void activate (GtkApplication *app, gpointer user_data) {
     gtk_overlay_add_overlay(GTK_OVERLAY(overlay), gridPlot);
 
 
-    char *names[] = {"button0", "button1", "button2", "button3", "button4", "button5", "button6", "button7", "button8", "button9", "buttondot", "buttonsum", "buttonsub", "buttonmul", "buttondiv", "quit", "buttondel", "buttonres", "buttonzero", "buttonpow", "buttonopenbrace", "buttonclosebrace", "buttonacos", "buttonasin", "buttonatan", "buttonsqrt", "buttonsin", "buttoncos", "buttonmod", "buttontan", "buttonlog", "buttonln", "buttonvar"};
-    char *values[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "+", "-", "*", "/", NULL, NULL, NULL, NULL, "^", "(", ")", "acos(", "asin(", "atan(", "sqrt(", "sin(", "cos(", "mod", "tan(", "log(", "ln(", "X"};
+    char *names[] = {"button0", "button1", "button2", "button3", "button4", "button5", "button6", "button7", "button8", "button9", "buttondot", "buttonsum", "buttonsub", "buttonmul", "buttondiv", "quit", "buttondel", "buttonres", "buttonzero", "buttonpow", "buttonopenbrace", "buttonclosebrace", "buttonacos", "buttonasin", "buttonatan", "buttonsqrt", "buttonsin", "buttoncos", "buttonmod", "buttontan", "buttonlog", "buttonln", "buttonvar", "buttoncredit"};
+    char *values[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "+", "-", "*", "/", NULL, NULL, NULL, NULL, "^", "(", ")", "acos(", "asin(", "atan(", "sqrt(", "sin(", "cos(", "mod", "tan(", "log(", "ln(", "X", NULL};
 
-    for (int i = 0; i < 33; ++i) {
+    for (int i = 0; i < 34; ++i) {
         buttons[i].name = names[i];
         buttons[i].value = values[i];
         buttons[i].entry = entry_func;
@@ -86,7 +86,9 @@ static void activate (GtkApplication *app, gpointer user_data) {
         } else if (i == 16) {
             g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(del_text), &buttons[i]);
         } else if (i == 15) {
-            g_signal_connect_swapped (buttons[i].button, "clicked", G_CALLBACK (quit_cb), window);
+            g_signal_connect_swapped (buttons[i].button, "clicked", G_CALLBACK (quit_window), window);
+        } else if (i == 33) {
+            g_signal_connect(buttons[i].button, "clicked", G_CALLBACK (credit_calc_window), &buttons[i]);
         }
     }
 
@@ -99,7 +101,7 @@ int main (int argc, char **argv) {
     GtkApplication *app;
     int status;
 
-    buttonData *buttons[32*sizeof(buttonData)] = {0};
+    buttonData *buttons[33*sizeof(buttonData)] = {0};
 
     app = gtk_application_new ("org.gtk.example", G_APPLICATION_FLAGS_NONE);
     g_signal_connect (app, "activate", G_CALLBACK (activate), &buttons);

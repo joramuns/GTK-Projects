@@ -60,7 +60,6 @@
         </child>
         <child>
             <object id="check_box" class="GtkToggleButton">
-<!--                <property name="xalign">1</property>-->
                 <property name="label">Codominant</property>
                 <layout>
                     <property name="column">0</property>
