@@ -15,9 +15,9 @@ static void draw_plot(gdouble clipX1, gdouble clipX2, cairo_t *cr, char *output)
             double y = 0;
             ex_code = calculate_var(output, &y, x);
             double resultAtan = fabs(fabs(atan(y)) - M_PI_2);
-//            if (resultAtan <= (x_max - x_min)/1000 || isnan(y))
-//                cairo_new_sub_path(cr);
-//            else
+            if (resultAtan <= (x_max - x_min)/1000 || isnan(y))
+                cairo_new_sub_path(cr);
+            else
                 cairo_line_to(cr, x, y);
         }
     }
