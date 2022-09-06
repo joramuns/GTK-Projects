@@ -8,7 +8,7 @@
 #include "credit_calculator.h"
 
 void handle_credit_calculator(credit_input input, credit_output *output) {
-    input.rate = input.rate / 12;
+    input.rate = input.rate / 1200;
     if (input.type == 0) {
         eval_annuity_credit(input, output);
     } else if (input.type == 1) {
