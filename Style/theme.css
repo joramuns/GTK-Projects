@@ -2,13 +2,13 @@ text {
 /*    background-color: #ff9999;*/
     font-family: monospace;
     font-size: 18pt;
-    color: #ff9999;
+    color: red;
     padding: 5px;
 /*    border: 2px;*/
 }
 
 button {
-    color: #ff9999;
+    color: red;
     font-family: monospace;
     font-size: 18pt;
 }
