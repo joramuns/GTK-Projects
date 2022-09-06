@@ -76,6 +76,7 @@ START_TEST(first) {
 //    mod*cos(8)
 //    3modmod2
 //    X5
+//    sin(X)mod1
     ck_assert_int_eq();
 }
 END_TEST

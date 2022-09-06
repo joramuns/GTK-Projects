@@ -51,9 +51,10 @@ int parse_input(char *expression, node *output_stack) {
             array_pos++;
         } else if (check_result == TOK_CLOSE_BRACE) {
             int after_brace = check_input_type(expression[array_pos + 1]);
+            size_t temp_array_pos = array_pos + 1;
             if (array_pos > 0 && expression[array_pos - 1] == '(') {
                 ex_code = EMPTY_BRACES;
-            } else if (after_brace != TOK_OPERATOR_1 && after_brace != TOK_OPERATOR_2 && after_brace != TOK_POW && after_brace != TOK_CLOSE_BRACE && expression[array_pos + 1] != '\0') {
+            } else if (after_brace != TOK_OPERATOR_1 && after_brace != TOK_OPERATOR_2 && after_brace != TOK_POW && after_brace != TOK_CLOSE_BRACE && parse_long_operator(expression, &temp_array_pos) != CODE_MOD && expression[array_pos + 1] != '\0') {
                 ex_code = WRONG_SYMBOLS;
             } else {
                 array_pos++;
