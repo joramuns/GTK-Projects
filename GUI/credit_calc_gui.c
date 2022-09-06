@@ -21,17 +21,18 @@ void execute_credit_func(GtkButton *widget, gpointer data) {
 
     credit_input test_case = {0};
     sscanf(output_sum, "%lf", &test_case.sum);
-    sscanf(output_term, "%lf", &test_case.term);
+    sscanf(output_term, "%u", &test_case.term);
     sscanf(output_rate, "%lf", &test_case.rate);
     test_case.type = 1;
     credit_output test = {0};
-    g_print("%lf\n", test_case.sum);
+    g_print("%g\n", test_case.sum);
+    g_print("%u\n", test_case.term);
     handle_credit_calculator(test_case, &test);
 
-    printf("Total paid: %lf\nOverpaid: %lf\n", test.total_sum, test.overpaid);
+    printf("Total paid: %g\nOverpaid: %g\n", test.total_sum, test.overpaid);
     node *head = test.stack_of_payments;
     while (find_last(head)->number != 0) {
-        g_print("Monthly payment: %lf\n", find_last(head)->value);
+        g_print("Monthly payment: %g\n", find_last(head)->value);
         pop(head);
     }
     free(test.stack_of_payments);
@@ -42,7 +43,6 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
     GtkBuilder *builder = gtk_builder_new();
     gtk_builder_add_from_file(builder, "./Style/credit-calc-o.ui", NULL);
     GObject *window = gtk_builder_get_object(builder, "window_credit_calc");
-
 
     GtkButton *execute_button = (GtkButton *) gtk_builder_get_object(builder, "execute_credit_calc");
 
