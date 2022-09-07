@@ -23,7 +23,8 @@ void execute_credit_func(GtkButton *widget, gpointer data) {
     sscanf(output_sum, "%lf", &test_case.sum);
     sscanf(output_term, "%u", &test_case.term);
     sscanf(output_rate, "%lf", &test_case.rate);
-    test_case.type = 1;
+    if (gtk_combo_box_get_active(GTK_COMBO_BOX(entry->term_cbt))) test_case.term *= 12;
+    test_case.type = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->type_credit_cbt));
     credit_output test = {0};
     g_print("%g\n", test_case.sum);
     g_print("%u\n", test_case.term);
@@ -62,6 +63,8 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
     one->sum_entry = (GtkEntry *) gtk_builder_get_object(builder, "sum_entry");
     one->term_entry = (GtkEntry *) gtk_builder_get_object(builder, "term_entry");
     one->rate_entry = (GtkEntry *) gtk_builder_get_object(builder, "rate_entry");
+    one->term_cbt = years_or_months;
+    one->type_credit_cbt = type_choice;
     g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_credit_func), one);
     GtkButton *quit_button = (GtkButton *) gtk_builder_get_object(builder, "quit_credit_calc");
     g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(quit_window), window);
