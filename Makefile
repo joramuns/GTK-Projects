@@ -11,6 +11,7 @@ test-noasan:
 gtk:
 	gcc -fsanitize=address -g -c GUI/*.c calculator.c credit_calculator.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
 	gcc -fsanitize=address -g -o test *.o `pkg-config --libs gtk4`
+	$(MAKE) clean
 	./test
 
 gtk-lasan:
@@ -24,4 +25,4 @@ gtk-noasan:
 	./test
 
 clean:
-	rm -rf *.o test
+	rm -rf *.o 
