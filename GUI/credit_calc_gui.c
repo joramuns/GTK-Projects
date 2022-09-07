@@ -44,6 +44,17 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
     gtk_builder_add_from_file(builder, "./Style/credit-calc-o.ui", NULL);
     GObject *window = gtk_builder_get_object(builder, "window_credit_calc");
 
+    /* Comboboxes */
+    GtkComboBoxText *percentage_cbt = (GtkComboBoxText *) gtk_builder_get_object(builder, "percents");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(percentage_cbt), 0);
+    GtkComboBoxText *years_or_months = (GtkComboBoxText *) gtk_builder_get_object(builder, "years_or_months");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(years_or_months), 0);
+    GtkComboBoxText *currency_cbt = (GtkComboBoxText *) gtk_builder_get_object(builder, "currency");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(currency_cbt), 0);
+    GtkComboBoxText *type_choice = (GtkComboBoxText *) gtk_builder_get_object(builder, "type_choice");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(type_choice), 0);
+
+    /* Buttons */
     GtkButton *execute_button = (GtkButton *) gtk_builder_get_object(builder, "execute_credit_calc");
 
     entry_input *one = malloc(1*sizeof(entry_input));
@@ -52,12 +63,6 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
     one->term_entry = (GtkEntry *) gtk_builder_get_object(builder, "term_entry");
     one->rate_entry = (GtkEntry *) gtk_builder_get_object(builder, "rate_entry");
     g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_credit_func), one);
-//    GtkEntry *entry[3*sizeof(GtkEntry *)] = {0};
-//    GtkEntry *entry = (GtkEntry *) gtk_builder_get_object(builder, "sum_entry");
-//    *entry[0] = (GtkEntry *) gtk_builder_get_object(builder, "sum_entry");
-//    *entry[1] = (GtkEntry *) gtk_builder_get_object(builder, "term_entry");
-//    *entry[2] = (GtkEntry *) gtk_builder_get_object(builder, "rate_entry");
-//    g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_credit_func), entry);
     GtkButton *quit_button = (GtkButton *) gtk_builder_get_object(builder, "quit_credit_calc");
     g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(quit_window), window);
 
@@ -65,5 +70,4 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
     g_object_unref(builder);
 }
 
-//buttonData *buttons = user_data;
-//buttonData *buttons[33*sizeof(buttonData)] = {0}
+

@@ -6,8 +6,6 @@
         <property name="title">DUCKIN SMART CALC</property>
         <child>
             <object id="grid" class="GtkGrid">
-                <property name="row-homogeneous">TRUE</property>
-                <property name="column-homogeneous">TRUE</property>
                 <property name="column-spacing">5</property>
                 <property name="row-spacing">5</property>
                 <property name="margin-top">10</property>
@@ -19,7 +17,7 @@
                         <property name="label">Sum</property>
                         <layout>
                             <property name="column">0</property>
-                            <property name="column-span">2</property>
+                            <property name="column-span">1</property>
                             <property name="row">0</property>
                         </layout>
                     </object>
@@ -29,7 +27,7 @@
                         <property name="label">Term</property>
                         <layout>
                             <property name="column">0</property>
-                            <property name="column-span">2</property>
+                            <property name="column-span">1</property>
                             <property name="row">1</property>
                         </layout>
                     </object>
@@ -39,7 +37,7 @@
                         <property name="label">Rate</property>
                         <layout>
                             <property name="column">0</property>
-                            <property name="column-span">2</property>
+                            <property name="column-span">1</property>
                             <property name="row">2</property>
                         </layout>
                     </object>
@@ -50,8 +48,8 @@
                         <property name="editable">TRUE</property>
                         <property name="xalign">1</property>
                         <layout>
-                            <property name="column">2</property>
-                            <property name="column-span">4</property>
+                            <property name="column">1</property>
+                            <property name="column-span">1</property>
                             <property name="row">0</property>
                         </layout>
                     </object>
@@ -62,16 +60,28 @@
                         <property name="editable">TRUE</property>
                         <property name="xalign">1</property>
                         <layout>
-                            <property name="column">2</property>
-                            <property name="column-span">2</property>
+                            <property name="column">1</property>
+                            <property name="column-span">1</property>
                             <property name="row">1</property>
                         </layout>
                     </object>
                 </child>
                 <child>
+                    <object id="currency" class="GtkComboBoxText">
+                        <layout>
+                            <property name="column">2</property>
+                            <property name="column-span">1</property>
+                            <property name="row">0</property>
+                        </layout>
+                        <items>
+                          <item id="currency_id">rubles</item>
+                        </items>
+                    </object>
+                </child>
+                <child>
                     <object id="years_or_months" class="GtkComboBoxText">
                         <layout>
-                            <property name="column">4</property>
+                            <property name="column">2</property>
                             <property name="column-span">1</property>
                             <property name="row">1</property>
                         </layout>
@@ -82,13 +92,25 @@
                     </object>
                 </child>
                 <child>
+                    <object id="percents" class="GtkComboBoxText">
+                        <layout>
+                            <property name="column">2</property>
+                            <property name="column-span">1</property>
+                            <property name="row">2</property>
+                        </layout>
+                        <items>
+                          <item id="percents_id">%</item>
+                        </items>
+                    </object>
+                </child>
+                <child>
                     <object id="rate_entry" class="GtkEntry">
                         <property name="can-focus">TRUE</property>
                         <property name="editable">TRUE</property>
                         <property name="xalign">1</property>
                         <layout>
-                            <property name="column">2</property>
-                            <property name="column-span">4</property>
+                            <property name="column">1</property>
+                            <property name="column-span">1</property>
                             <property name="row">2</property>
                         </layout>
                     </object>
@@ -97,7 +119,7 @@
                     <object id="type_choice" class="GtkComboBoxText">
                         <layout>
                             <property name="column">0</property>
-                            <property name="column-span">6</property>
+                            <property name="column-span">3</property>
                             <property name="row">3</property>
                         </layout>
                         <items>
@@ -112,7 +134,7 @@
                         <layout>
                             <property name="column">0</property>
                             <property name="row">4</property>
-                            <property name="column-span">6</property>
+                            <property name="column-span">3</property>
                         </layout>
                     </object>
                 </child>
@@ -122,7 +144,7 @@
                         <layout>
                             <property name="column">0</property>
                             <property name="row">5</property>
-                            <property name="column-span">6</property>
+                            <property name="column-span">3</property>
                         </layout>
                     </object>
                 </child>
