@@ -30,10 +30,21 @@ void execute_credit_func(GtkButton *widget, gpointer data) {
     g_print("%u\n", test_case.term);
     handle_credit_calculator(test_case, &test);
 
-    printf("Total paid: %g\nOverpaid: %g\n", test.total_sum, test.overpaid);
+    /* GtkTextBuffer *result_buffer = (GtkTextBuffer *) gtk_text_view_get_buffer(entry->result_tw); */
+    GtkTextIter iter;
+    gtk_text_buffer_get_start_iter(entry->result_buffer, &iter);
+
+
+    char *autobuffer = NULL;
+    asprintf(&autobuffer, "Total paid: %g\nOverpaid: %g\n", test.total_sum, test.overpaid);
+    gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
+    free(autobuffer);
+    
     node *head = test.stack_of_payments;
     while (find_last(head)->number != 0) {
-        g_print("Monthly payment: %g\n", find_last(head)->value);
+        asprintf(&autobuffer, "Monthly payment: %g\n", find_last(head)->value);
+        gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
+        free(autobuffer);
         pop(head);
     }
     free(test.stack_of_payments);
@@ -55,6 +66,15 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
     GtkComboBoxText *type_choice = (GtkComboBoxText *) gtk_builder_get_object(builder, "type_choice");
     gtk_combo_box_set_active(GTK_COMBO_BOX(type_choice), 0);
 
+    /* Result text */
+    GtkTextView *result_tw = (GtkTextView *) gtk_builder_get_object(builder, "result");
+    GtkTextBuffer *result_buffer = gtk_text_view_get_buffer(result_tw);
+    /* GtkTextIter iter; */
+    /* GtkTextMark *mark = gtk_text_buffer_get_insert(result_buffer); */
+    /* gtk_text_buffer_get_iter_at_mark(result_buffer, &iter, mark); */
+    /* gtk_text_buffer_insert(result_buffer, &iter, "text", 5); */
+    /* gtk_text_view_set_buffer(result_tw, result_buffer); */
+    
     /* Buttons */
     GtkButton *execute_button = (GtkButton *) gtk_builder_get_object(builder, "execute_credit_calc");
 
@@ -65,6 +85,7 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
     one->rate_entry = (GtkEntry *) gtk_builder_get_object(builder, "rate_entry");
     one->term_cbt = years_or_months;
     one->type_credit_cbt = type_choice;
+    one->result_buffer = result_buffer;
     g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_credit_func), one);
     GtkButton *quit_button = (GtkButton *) gtk_builder_get_object(builder, "quit_credit_calc");
     g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(quit_window), window);

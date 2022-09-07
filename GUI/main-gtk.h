@@ -38,6 +38,7 @@ typedef struct entry_input {
     GtkEntry *rate_entry;
     GtkComboBoxText *term_cbt;
     GtkComboBoxText *type_credit_cbt;
+    GtkTextBuffer *result_buffer;
 } entry_input;
 
 void quit_window (GtkWindow *window);
