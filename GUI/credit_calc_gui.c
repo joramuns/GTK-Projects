@@ -5,7 +5,7 @@
 //  Created by Joramun Sasin on 9/3/22.
 //
 
-#include "main-gtk.h"
+#include "../main-gtk.h"
 
 void execute_credit_func(GtkButton *widget, gpointer data) {
     entry_input *entry = data;

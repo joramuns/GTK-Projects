@@ -7,8 +7,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "calculator.h"
-#include "credit_calculator.h"
+#include "Calculation/calculator.h"
+#include "Calculation/credit_calculator.h"
 //Unary minus and plus
 //Bracers handling - log(.. has no error
 //Exit codes to finish

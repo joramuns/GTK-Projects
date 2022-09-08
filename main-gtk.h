@@ -11,8 +11,8 @@
 #include <stdio.h>
 #include <gtk/gtk.h>
 #include <string.h>
-#include "../calculator.h"
-#include "../credit_calculator.h"
+#include "Calculation/calculator.h"
+#include "Calculation/credit_calculator.h"
 
 extern double x_min;
 extern double x_max;

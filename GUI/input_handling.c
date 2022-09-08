@@ -5,7 +5,7 @@
 //  Created by Joramun Sasin on 9/1/22.
 //
 
-#include "main-gtk.h"
+#include "../main-gtk.h"
 
 void add_text(GtkButton *widget, gpointer data) {
     buttonData *current = data;

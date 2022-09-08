@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "Validation/nodes.h"
+#include "../Validation/nodes.h"
 
 typedef struct credit_input {
     double sum;

@@ -5,7 +5,7 @@
 //  Created by Joramun Sasin on 9/1/22.
 //
 
-#include "main-gtk.h"
+#include "../main-gtk.h"
 #define SCREENSIZE 185
 
 static void draw_plot(gdouble clipX1, gdouble clipX2, cairo_t *cr, char *output) {
