@@ -2,6 +2,7 @@ test:
 	gcc -fsanitize=address -g -c main.c Validation/*.c Calculation/*.c
 	gcc -fsanitize=address -g -o test *.o
 	./test
+	$(MAKE) fclean
 
 test-noasan:
 	gcc -g -c main.c Validation/*.c Calculation/*.c
