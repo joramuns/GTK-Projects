@@ -13,6 +13,7 @@
 #include <string.h>
 #include "Calculation/calculator.h"
 #include "Calculation/credit_calculator.h"
+#include "Calculation/deposit_calculator.h"
 
 extern double x_min;
 extern double x_max;
@@ -56,5 +57,6 @@ void set_zero(GtkButton *widget, gpointer data);
 
 /*                         credit calculator                                    */
 void credit_calc_window(GtkButton *widget, gpointer data);
+void deposit_calc_window(GtkButton *widget, gpointer data);
 
 #endif /* main_h */

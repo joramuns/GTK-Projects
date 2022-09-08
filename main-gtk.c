@@ -61,10 +61,10 @@ static void activate (GtkApplication *app, gpointer user_data) {
     gtk_overlay_add_overlay(GTK_OVERLAY(overlay), gridPlot);
 
 
-    char *names[] = {"button0", "button1", "button2", "button3", "button4", "button5", "button6", "button7", "button8", "button9", "buttondot", "buttonsum", "buttonsub", "buttonmul", "buttondiv", "quit", "buttondel", "buttonres", "buttonzero", "buttonpow", "buttonopenbrace", "buttonclosebrace", "buttonacos", "buttonasin", "buttonatan", "buttonsqrt", "buttonsin", "buttoncos", "buttonmod", "buttontan", "buttonlog", "buttonln", "buttonvar", "buttoncredit"};
-    char *values[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "+", "-", "*", "/", NULL, NULL, NULL, NULL, "^", "(", ")", "acos(", "asin(", "atan(", "sqrt(", "sin(", "cos(", "mod", "tan(", "log(", "ln(", "X", NULL};
+    char *names[] = {"button0", "button1", "button2", "button3", "button4", "button5", "button6", "button7", "button8", "button9", "buttondot", "buttonsum", "buttonsub", "buttonmul", "buttondiv", "quit", "buttondel", "buttonres", "buttonzero", "buttonpow", "buttonopenbrace", "buttonclosebrace", "buttonacos", "buttonasin", "buttonatan", "buttonsqrt", "buttonsin", "buttoncos", "buttonmod", "buttontan", "buttonlog", "buttonln", "buttonvar", "buttoncredit", "buttondeposit"};
+    char *values[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "+", "-", "*", "/", NULL, NULL, NULL, NULL, "^", "(", ")", "acos(", "asin(", "atan(", "sqrt(", "sin(", "cos(", "mod", "tan(", "log(", "ln(", "X", NULL, NULL};
 
-    for (int i = 0; i < 34; ++i) {
+    for (int i = 0; i < 35; ++i) {
         buttons[i].name = names[i];
         buttons[i].value = values[i];
         buttons[i].entry = entry_func;
@@ -89,6 +89,8 @@ static void activate (GtkApplication *app, gpointer user_data) {
             g_signal_connect_swapped (buttons[i].button, "clicked", G_CALLBACK (quit_window), window);
         } else if (i == 33) {
             g_signal_connect(buttons[i].button, "clicked", G_CALLBACK (credit_calc_window), &buttons[i]);
+        } else if (i == 34) {
+            g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(deposit_calc_window), &buttons[i]);
         }
     }
 
@@ -101,7 +103,7 @@ int main (int argc, char **argv) {
     GtkApplication *app;
     int status;
 
-    buttonData *buttons[33*sizeof(buttonData)] = {0};
+    buttonData *buttons[34*sizeof(buttonData)] = {0};
 
     app = gtk_application_new ("org.gtk.example", G_APPLICATION_FLAGS_NONE);
     g_signal_connect (app, "activate", G_CALLBACK (activate), &buttons);

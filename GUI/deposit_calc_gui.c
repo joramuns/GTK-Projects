@@ -7,7 +7,7 @@
 
 #include "../main-gtk.h"
 
-void execute_deposit_func(GtkButton *widget, gpointer data) {
+void execute_credit_func(GtkButton *widget, gpointer data) {
     entry_input *entry = data;
 
     GtkEntryBuffer *sum_entry_buf = gtk_entry_get_buffer(entry->sum_entry);
@@ -51,9 +51,9 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
 
 }
 
-void deposit_calc_window(GtkButton *widget, gpointer data) {
+void credit_calc_window(GtkButton *widget, gpointer data) {
     GtkBuilder *builder = gtk_builder_new();
-    gtk_builder_add_from_file(builder, "./Style/deposit-calc-o.ui", NULL);
+    gtk_builder_add_from_file(builder, "./Style/credit-calc-o.ui", NULL);
     GObject *window = gtk_builder_get_object(builder, "window_credit_calc");
 
     /* Comboboxes */
@@ -69,6 +69,11 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     /* Result text */
     GtkTextView *result_tw = (GtkTextView *) gtk_builder_get_object(builder, "result");
     GtkTextBuffer *result_buffer = gtk_text_view_get_buffer(result_tw);
+    /* GtkTextIter iter; */
+    /* GtkTextMark *mark = gtk_text_buffer_get_insert(result_buffer); */
+    /* gtk_text_buffer_get_iter_at_mark(result_buffer, &iter, mark); */
+    /* gtk_text_buffer_insert(result_buffer, &iter, "text", 5); */
+    /* gtk_text_view_set_buffer(result_tw, result_buffer); */
     
     /* Buttons */
     GtkButton *execute_button = (GtkButton *) gtk_builder_get_object(builder, "execute_credit_calc");
@@ -81,7 +86,7 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     one->term_cbt = years_or_months;
     one->type_credit_cbt = type_choice;
     one->result_buffer = result_buffer;
-    g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_deposit_func), one);
+    g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_credit_func), one);
     GtkButton *quit_button = (GtkButton *) gtk_builder_get_object(builder, "quit_credit_calc");
     g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(quit_window), window);
 
