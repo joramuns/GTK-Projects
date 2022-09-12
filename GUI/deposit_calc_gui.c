@@ -7,7 +7,7 @@
 
 #include "../main-gtk.h"
 
-void execute_credit_func(GtkButton *widget, gpointer data) {
+void execute_deposit_func(GtkButton *widget, gpointer data) {
     entry_input *entry = data;
 
     GtkEntryBuffer *sum_entry_buf = gtk_entry_get_buffer(entry->sum_entry);
@@ -19,41 +19,55 @@ void execute_credit_func(GtkButton *widget, gpointer data) {
     GtkEntryBuffer *rate_entry_buf = gtk_entry_get_buffer(entry->rate_entry);
     char *output_rate = (char *)gtk_entry_buffer_get_text(rate_entry_buf);
 
-    credit_input test_case = {0};
-    sscanf(output_sum, "%lf", &test_case.sum);
-    sscanf(output_term, "%u", &test_case.term);
-    sscanf(output_rate, "%lf", &test_case.rate);
-    if (gtk_combo_box_get_active(GTK_COMBO_BOX(entry->term_cbt))) test_case.term *= 12;
-    test_case.type = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->type_credit_cbt));
-    credit_output test = {0};
-    g_print("%g\n", test_case.sum);
-    g_print("%u\n", test_case.term);
-    handle_credit_calculator(test_case, &test);
-
-    /* GtkTextBuffer *result_buffer = (GtkTextBuffer *) gtk_text_view_get_buffer(entry->result_tw); */
-    GtkTextIter iter;
-    gtk_text_buffer_get_start_iter(entry->result_buffer, &iter);
-
-
-    char *autobuffer = NULL;
-    asprintf(&autobuffer, "Total paid: %g\nOverpaid: %g\n", test.total_sum, test.overpaid);
-    gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
-    free(autobuffer);
-    
-    node *head = test.stack_of_payments;
-    while (find_last(head)->number != 0) {
-        asprintf(&autobuffer, "Monthly payment: %g\n", find_last(head)->value);
-        gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
-        free(autobuffer);
-        pop(head);
+    deposit_input cont = {0};
+    sscanf(output_sum, "%lf", &cont.deposit);
+    sscanf(output_term, "%u", &cont.term);
+    sscanf(output_rate, "%lf", &cont.rate);
+    unsigned input_term = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->term_cbt));
+    if (input_term == 1) {
+        cont.term *= 30;
+    } else if (input_term == 2) {
+        cont.term *= 365;
     }
-    free(test.stack_of_payments);
+    unsigned input_period = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->type_payouts));
+    if (input_period == 0) {
+        cont.freq_payment = DAILY;
+    } else if (input_period == 1) {
+        cont.freq_payment = WEEKLY;
+    } else if (input_period == 2) {
+        cont.freq_payment = MONTHLY;
+    } else if (input_period == 3) {
+        cont.freq_payment = QUARTERLY;
+    } else if (input_period == 4) {
+        cont.freq_payment = YEARLY;
+    }
+    cont.capitalization = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->type_credit_cbt));
+    handle_deposit_calc(cont);
+
+/*     /1* GtkTextBuffer *result_buffer = (GtkTextBuffer *) gtk_text_view_get_buffer(entry->result_tw); *1/ */
+/*     GtkTextIter iter; */
+/*     gtk_text_buffer_get_start_iter(entry->result_buffer, &iter); */
+
+
+    /* char *autobuffer = NULL; */
+    /* asprintf(&autobuffer, "Total paid: %g\nOverpaid: %g\n", test.total_sum, test.overpaid); */
+    /* gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1); */
+    /* free(autobuffer); */
+    
+    /* node *head = test.stack_of_payments; */
+    /* while (find_last(head)->number != 0) { */
+    /*     asprintf(&autobuffer, "Monthly payment: %g\n", find_last(head)->value); */
+    /*     gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1); */
+    /*     free(autobuffer); */
+    /*     pop(head); */
+    /* } */
+    /* free(test.stack_of_payments); */
 
 }
 
-void credit_calc_window(GtkButton *widget, gpointer data) {
+void deposit_calc_window(GtkButton *widget, gpointer data) {
     GtkBuilder *builder = gtk_builder_new();
-    gtk_builder_add_from_file(builder, "./Style/credit-calc-o.ui", NULL);
+    gtk_builder_add_from_file(builder, "./Style/deposit-calc-o.ui", NULL);
     GObject *window = gtk_builder_get_object(builder, "window_credit_calc");
 
     /* Comboboxes */
@@ -65,6 +79,8 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
     gtk_combo_box_set_active(GTK_COMBO_BOX(currency_cbt), 0);
     GtkComboBoxText *type_choice = (GtkComboBoxText *) gtk_builder_get_object(builder, "type_choice");
     gtk_combo_box_set_active(GTK_COMBO_BOX(type_choice), 0);
+    GtkComboBoxText *type_payouts = (GtkComboBoxText *) gtk_builder_get_object(builder, "type_payouts");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(type_payouts), 0);
 
     /* Result text */
     GtkTextView *result_tw = (GtkTextView *) gtk_builder_get_object(builder, "result");
@@ -86,7 +102,8 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
     one->term_cbt = years_or_months;
     one->type_credit_cbt = type_choice;
     one->result_buffer = result_buffer;
-    g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_credit_func), one);
+    one->type_payouts = type_payouts;
+    g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_deposit_func), one);
     GtkButton *quit_button = (GtkButton *) gtk_builder_get_object(builder, "quit_credit_calc");
     g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(quit_window), window);
 
