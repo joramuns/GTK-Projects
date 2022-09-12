@@ -117,16 +117,13 @@
                     </object>
                 </child>
                 <child>
-                    <object id="type_choice" class="GtkComboBoxText">
+                    <object id="type_choice" class="GtkCheckButton">
+                        <property name="label">Capitalization</property>
                         <layout>
                             <property name="column">0</property>
                             <property name="column-span">3</property>
                             <property name="row">3</property>
                         </layout>
-                        <items>
-                          <item id="annuity">with payouts</item>
-                          <item id="differentiated">capitalized</item>
-                        </items>
                     </object>
                 </child>
                 <child>
@@ -146,12 +143,28 @@
                     </object>
                 </child>
                 <child>
+                    <object id="withdrawal_box" class="GtkScrolledWindow">
+                        <property name="min-content-height">150</property>
+                        <property name="has-frame">1</property>
+                        <layout>
+                            <property name="row">5</property>
+                            <property name="column">0</property>
+                            <property name="column-span">3</property>
+                            <property name="row-span">3</property>
+                        </layout>
+                        <child>
+                            <object id="test_plus" class="GtkButton">
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
                     <object id="resultbox" class="GtkScrolledWindow">
                         <property name="min-content-height">150</property>
 
                         <property name="has-frame">1</property>
                         <layout>
-                            <property name="row">5</property>
+                            <property name="row">8</property>
                             <property name="column">0</property>
                             <property name="column-span">3</property>
                             <property name="row-span">3</property>
@@ -170,7 +183,7 @@
                         <property name="label">Execute</property>
                         <layout>
                             <property name="column">0</property>
-                            <property name="row">8</property>
+                            <property name="row">11</property>
                             <property name="column-span">3</property>
                         </layout>
                     </object>
@@ -180,7 +193,7 @@
                         <property name="label">Quit</property>
                         <layout>
                             <property name="column">0</property>
-                            <property name="row">9</property>
+                            <property name="row">12</property>
                             <property name="column-span">3</property>
                         </layout>
                     </object>

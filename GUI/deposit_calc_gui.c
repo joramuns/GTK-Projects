@@ -41,7 +41,8 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
     } else if (input_period == 4) {
         cont.freq_payment = YEARLY;
     }
-    cont.capitalization = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->type_credit_cbt));
+    /* cont.capitalization = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->type_credit_cbt)); */
+    cont.capitalization = gtk_check_button_get_active(GTK_CHECK_BUTTON(entry->type_credit_cbt));
     handle_deposit_calc(cont);
 
 /*     /1* GtkTextBuffer *result_buffer = (GtkTextBuffer *) gtk_text_view_get_buffer(entry->result_tw); *1/ */
@@ -77,8 +78,7 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     gtk_combo_box_set_active(GTK_COMBO_BOX(years_or_months), 0);
     GtkComboBoxText *currency_cbt = (GtkComboBoxText *) gtk_builder_get_object(builder, "currency");
     gtk_combo_box_set_active(GTK_COMBO_BOX(currency_cbt), 0);
-    GtkComboBoxText *type_choice = (GtkComboBoxText *) gtk_builder_get_object(builder, "type_choice");
-    gtk_combo_box_set_active(GTK_COMBO_BOX(type_choice), 0);
+    GtkCheckButton *type_choice = (GtkCheckButton *) gtk_builder_get_object(builder, "type_choice");
     GtkComboBoxText *type_payouts = (GtkComboBoxText *) gtk_builder_get_object(builder, "type_payouts");
     gtk_combo_box_set_active(GTK_COMBO_BOX(type_payouts), 0);
 
@@ -100,7 +100,7 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     one->term_entry = (GtkEntry *) gtk_builder_get_object(builder, "term_entry");
     one->rate_entry = (GtkEntry *) gtk_builder_get_object(builder, "rate_entry");
     one->term_cbt = years_or_months;
-    one->type_credit_cbt = type_choice;
+    one->type_credit_cbt = (GtkWidget *) type_choice;
     one->result_buffer = result_buffer;
     one->type_payouts = type_payouts;
     g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_deposit_func), one);

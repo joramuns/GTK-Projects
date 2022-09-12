@@ -38,7 +38,7 @@ typedef struct entry_input {
     GtkEntry *term_entry;
     GtkEntry *rate_entry;
     GtkComboBoxText *term_cbt;
-    GtkComboBoxText *type_credit_cbt;
+    GtkWidget *type_credit_cbt;
     GtkTextBuffer *result_buffer;
     GtkComboBoxText *type_payouts;
 } entry_input;

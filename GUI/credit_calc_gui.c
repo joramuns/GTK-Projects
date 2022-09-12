@@ -79,7 +79,7 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
     one->term_entry = (GtkEntry *) gtk_builder_get_object(builder, "term_entry");
     one->rate_entry = (GtkEntry *) gtk_builder_get_object(builder, "rate_entry");
     one->term_cbt = years_or_months;
-    one->type_credit_cbt = type_choice;
+    one->type_credit_cbt = (GtkWidget *) type_choice;
     one->result_buffer = result_buffer;
     g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_credit_func), one);
     GtkButton *quit_button = (GtkButton *) gtk_builder_get_object(builder, "quit_credit_calc");
