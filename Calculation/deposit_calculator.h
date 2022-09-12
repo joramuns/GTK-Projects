@@ -32,4 +32,6 @@ typedef struct deposit_input {
     double total_profit;
 } deposit_input;
 
+int handle_deposit_calc(deposit_input cont);
+
 #endif /* deposit_calculator_h */
