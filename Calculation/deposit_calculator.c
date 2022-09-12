@@ -17,12 +17,12 @@ int handle_deposit_calc(deposit_input cont) {
         cont.payout += cont.daily_income;
         if ((term_count % cont.freq_payment) == 0) {
             cont.payout = bank_rounding(cont.payout);
+            cont.total_profit += cont.payout;
             if (cont.capitalization) {
                 cont.deposit += cont.payout;
                 cont.payout = 0;
             } else {
                 printf("Profit = %.2lf\n", cont.payout);
-                cont.total_profit += cont.payout;
                 cont.payout = 0;
             }
         }
