@@ -25,29 +25,27 @@ void execute_credit_func(GtkButton *widget, gpointer data) {
     sscanf(output_rate, "%lf", &test_case.rate);
     if (gtk_combo_box_get_active(GTK_COMBO_BOX(entry->term_cbt))) test_case.term *= 12;
     test_case.type = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->type_credit_cbt));
-    credit_output test = {0};
-    g_print("%g\n", test_case.sum);
-    g_print("%u\n", test_case.term);
-    handle_credit_calculator(test_case, &test);
 
-    /* GtkTextBuffer *result_buffer = (GtkTextBuffer *) gtk_text_view_get_buffer(entry->result_tw); */
+    credit_output cont_output = {0};
+    handle_credit_calculator(test_case, &cont_output);
+
     GtkTextIter iter;
     gtk_text_buffer_get_start_iter(entry->result_buffer, &iter);
 
 
     char *autobuffer = NULL;
-    asprintf(&autobuffer, "Total paid: %g\nOverpaid: %g\n", test.total_sum, test.overpaid);
+    asprintf(&autobuffer, "Total paid: %g\nOverpaid: %g\n", cont_output.total_sum, cont_output.overpaid);
     gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
     free(autobuffer);
     
-    node *head = test.stack_of_payments;
+    node *head = cont_output.stack_of_payments;
     while (find_last(head)->number != 0) {
         asprintf(&autobuffer, "Monthly payment: %g\n", find_last(head)->value);
         gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
         free(autobuffer);
         pop(head);
     }
-    free(test.stack_of_payments);
+    clean(cont_output.stack_of_payments);
 
 }
 
