@@ -43,6 +43,11 @@ typedef struct entry_input {
     GtkComboBoxText *type_payouts;
 } entry_input;
 
+typedef struct wd_cont {
+    GtkScrolledWindow *withdrawal_window;
+    GtkEntry *entry_withdrawal;
+} wd_cont;
+
 void quit_window (GtkWindow *window);
 
 /*                          drawing graph                                       */

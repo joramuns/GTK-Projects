@@ -144,7 +144,7 @@
                 </child>
                 <child>
                     <object id="withdrawal_list" class="GtkScrolledWindow">
-                        <property name="min-content-height">150</property>
+                        <!-- <property name="max-content-height">150</property> -->
                         <property name="has-frame">1</property>
                         <layout>
                             <property name="row">5</property>
@@ -152,13 +152,6 @@
                             <property name="column-span">6</property>
                             <property name="row-span">2</property>
                         </layout>
-                        <child>
-                            <object id="withdrawal_text" class="GtkTextView">
-                                <property name="editable">1</property>
-                                <property name="cursor-visible">0</property>
-                                <property name="wrap-mode">GTK_WRAP_WORD</property>
-                            </object>
-                        </child>
                     </object>
                 </child>
                 <child>

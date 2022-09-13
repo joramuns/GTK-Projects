@@ -70,6 +70,13 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
 
 }
 
+void add_withdrawal_func(GtkButton *button, gpointer data_struct) {
+    wd_cont *withdrawal_cont = data_struct; 
+    GtkWidget *test_button = gtk_button_new();
+    g_print("window %p\n", withdrawal_cont->withdrawal_window);
+    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(withdrawal_cont->withdrawal_window), GTK_WIDGET(withdrawal_cont->entry_withdrawal));
+}
+
 void deposit_calc_window(GtkButton *widget, gpointer data) {
     GtkBuilder *builder = gtk_builder_new();
     gtk_builder_add_from_file(builder, "./Style/deposit-calc-o.ui", NULL);
@@ -85,6 +92,53 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     GtkCheckButton *type_choice = (GtkCheckButton *) gtk_builder_get_object(builder, "type_choice");
     GtkComboBoxText *type_payouts = (GtkComboBoxText *) gtk_builder_get_object(builder, "type_payouts");
     gtk_combo_box_set_active(GTK_COMBO_BOX(type_payouts), 0);
+
+    /* Withdrawal block */
+    GtkButton *add_withdrawal = (GtkButton *) gtk_builder_get_object(builder, "withdrawal_plus");
+    GtkEntry *entry_withdrawal = (GtkEntry *) gtk_builder_get_object(builder, "sum_withdrawal_entry");
+    GtkScrolledWindow *withdrawal_window = (GtkScrolledWindow *) gtk_builder_get_object(builder, "withdrawal_list");
+    GtkCellRenderer *renderer;
+    GtkTreeViewColumn *column;
+    GtkTreeStore *store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+    GtkWidget *view_list = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store)); 
+
+    renderer = gtk_cell_renderer_text_new();
+    g_object_set (G_OBJECT (renderer), "foreground", "green", NULL);
+    /* Create a column, associating the "text" attribute of the
+    * cell_renderer to the first column of the model */
+    column = gtk_tree_view_column_new_with_attributes ("Date", renderer, "text", 0, NULL);
+    /* Add the column to the view. */
+    gtk_tree_view_append_column (GTK_TREE_VIEW (view_list), column);
+    column = gtk_tree_view_column_new_with_attributes ("Sum", renderer, "text", 1, NULL);
+    gtk_tree_view_append_column(GTK_TREE_VIEW(view_list), column);
+
+    /* Fill the table */
+    GtkTreeIter iter;
+    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
+    gtk_tree_store_set (store, &iter, 0, "123", 1, "10000", -1);
+    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
+    gtk_tree_store_set (store, &iter, 0, "456", 1, "9999", -1);
+    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
+    gtk_tree_store_set (store, &iter, 0, "789", 1, "7980", -1);
+    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
+    gtk_tree_store_set (store, &iter, 0, "888", 1, "8888888", -1);
+    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
+    gtk_tree_store_set (store, &iter, 0, "456", 1, "9999", -1);
+    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
+    gtk_tree_store_set (store, &iter, 0, "789", 1, "7980", -1);
+    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
+    gtk_tree_store_set (store, &iter, 0, "888", 1, "8888888", -1);
+    /* GtkTreeIter iter2; */
+    /* gtk_tree_store_append (store, &iter2, &iter);  /1* Acquire a child iterator *1/ */
+    /* gtk_tree_store_set (store, &iter2, 0, "Volume 1: Fundamental Algorithms", -1); */
+    /* gtk_tree_view_set_model(view_list, GTK_TREE_MODEL(store)); */
+    gtk_scrolled_window_set_child(withdrawal_window, GTK_WIDGET(view_list));
+
+    g_print("1 window %p\n", withdrawal_window);
+    wd_cont *withdrawal_cont = malloc(1*sizeof(wd_cont));
+    withdrawal_cont->withdrawal_window = withdrawal_window;
+    withdrawal_cont->entry_withdrawal = entry_withdrawal;
+    g_signal_connect(add_withdrawal, "clicked", G_CALLBACK(add_withdrawal_func), withdrawal_cont);
 
     /* Result text */
     GtkTextView *result_tw = (GtkTextView *) gtk_builder_get_object(builder, "result");
