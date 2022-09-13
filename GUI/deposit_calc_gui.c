@@ -43,26 +43,30 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
     }
     /* cont.capitalization = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->type_credit_cbt)); */
     cont.capitalization = gtk_check_button_get_active(GTK_CHECK_BUTTON(entry->type_credit_cbt));
-    handle_deposit_calc(cont);
+    deposit_output cont_output = {0};
+    handle_deposit_calc(cont, &cont_output);
 
-/*     /1* GtkTextBuffer *result_buffer = (GtkTextBuffer *) gtk_text_view_get_buffer(entry->result_tw); *1/ */
-/*     GtkTextIter iter; */
-/*     gtk_text_buffer_get_start_iter(entry->result_buffer, &iter); */
+    GtkTextIter iter;
+    gtk_text_buffer_get_start_iter(entry->result_buffer, &iter);
 
+    char *autobuffer = NULL;
 
-    /* char *autobuffer = NULL; */
-    /* asprintf(&autobuffer, "Total paid: %g\nOverpaid: %g\n", test.total_sum, test.overpaid); */
-    /* gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1); */
-    /* free(autobuffer); */
+    asprintf(&autobuffer, "Deposit sum: %.2lf, term of deposit: %u, interest rate: %g\n", cont.deposit, cont.term, cont.rate);
+    gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
+    free(autobuffer);
+
+    asprintf(&autobuffer, "Earned by deposit: %.2lf\n", cont_output.total_profit);
+    gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
+    free(autobuffer);
     
-    /* node *head = test.stack_of_payments; */
-    /* while (find_last(head)->number != 0) { */
-    /*     asprintf(&autobuffer, "Monthly payment: %g\n", find_last(head)->value); */
-    /*     gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1); */
-    /*     free(autobuffer); */
-    /*     pop(head); */
-    /* } */
-    /* free(test.stack_of_payments); */
+    node *head = cont_output.stack_of_payouts;
+    while (find_last(head)->number != 0) {
+        asprintf(&autobuffer, "Periodic payout: %g\n", find_last(head)->value);
+        gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
+        free(autobuffer);
+        pop(head);
+    }
+    clean(cont_output.stack_of_payouts);
 
 }
 

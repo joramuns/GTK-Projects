@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "../Validation/nodes.h"
+
 #define YEARDAYS 365
 
 enum frequency_payment {
@@ -32,6 +34,11 @@ typedef struct deposit_input {
     double total_profit;
 } deposit_input;
 
-int handle_deposit_calc(deposit_input cont);
+typedef struct deposit_output {
+    double total_profit;
+    node *stack_of_payouts;
+} deposit_output;
+
+int handle_deposit_calc(deposit_input cont, deposit_output *cont_output);
 
 #endif /* deposit_calculator_h */
