@@ -41,12 +41,15 @@ typedef struct entry_input {
     GtkWidget *type_credit_cbt;
     GtkTextBuffer *result_buffer;
     GtkComboBoxText *type_payouts;
+    GtkWidget *wd_tree_view;
+    GtkTreeStore *withdrawal_window;
 } entry_input;
 
 typedef struct wd_cont {
     GtkWidget *wd_tree_view;
     GtkTreeStore *withdrawal_window;
     GtkEntry *entry_withdrawal;
+    GtkEntry *date_withdrawal;
 } wd_cont;
 
 void quit_window (GtkWindow *window);

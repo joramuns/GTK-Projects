@@ -41,10 +41,38 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
     } else if (input_period == 4) {
         cont.freq_payment = YEARLY;
     }
-    /* cont.capitalization = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->type_credit_cbt)); */
+
+    /* Get withdrawal list */
+    GtkTreeStore *store = entry->withdrawal_window;
+    GtkTreeView *tree_view = (GtkTreeView *) entry->wd_tree_view;
+    GtkTreeSelection *tree_selection = gtk_tree_view_get_selection(tree_view);
+    GtkTreeIter iter_wd;
+    gboolean valid_iter;
+    cont.account_movement = malloc(cont.term * sizeof(int));
+    for (int i_am = 0; i_am < cont.term; i_am++) cont.account_movement[i_am] = 0;
+    valid_iter = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(store), &iter_wd);
+    int i_ams = 0, value_ams = 0;
+    while (valid_iter) {
+        gchararray day;
+        gchararray sum;
+        gtk_tree_model_get(GTK_TREE_MODEL(store), &iter_wd, 0, &day, 1, &sum, -1);
+        sscanf(day, "%d", &i_ams);
+        sscanf(sum, "%d", &value_ams);
+        g_print("HI %d, %d\n", i_ams, cont.term);
+        if (i_ams < cont.term) {
+            g_print("Hello\n");
+            cont.account_movement[i_ams] = value_ams;
+        }
+        g_free(day);
+        g_free(sum);
+        valid_iter = gtk_tree_model_iter_next(GTK_TREE_MODEL(store), &iter_wd);
+    }
+
     cont.capitalization = gtk_check_button_get_active(GTK_CHECK_BUTTON(entry->type_credit_cbt));
     deposit_output cont_output = {0};
     handle_deposit_calc(cont, &cont_output);
+
+    free(cont.account_movement);
 
     GtkTextIter iter;
     gtk_text_buffer_get_start_iter(entry->result_buffer, &iter);
@@ -75,19 +103,24 @@ void add_withdrawal_func(GtkButton *button, gpointer data_struct) {
     GtkTreeStore *store = withdrawal_cont->withdrawal_window;
     GtkEntryBuffer *sum_buf = gtk_entry_get_buffer(withdrawal_cont->entry_withdrawal);
     char *sum_char = (char *)gtk_entry_buffer_get_text(sum_buf);
-    GtkTreeIter iter;
-    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
-    gtk_tree_store_set (store, &iter, 0, "123", 1, sum_char, -1);
+    GtkEntryBuffer *date_buf = gtk_entry_get_buffer(withdrawal_cont->date_withdrawal);
+    char *date_char = (char *)gtk_entry_buffer_get_text(date_buf);
+    if (*sum_char && *date_char) {
+        GtkTreeIter iter;
+        gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
+        gtk_tree_store_set (store, &iter, 0, date_char, 1, sum_char, -1);
+    }
 }
 
 void del_withdrawal_func(GtkButton *button, gpointer data_struct) {
+    gboolean valid_iter;
     wd_cont *withdrawal_cont = data_struct; 
     GtkTreeStore *store = withdrawal_cont->withdrawal_window;
     GtkTreeView *tree_view = (GtkTreeView *) withdrawal_cont->wd_tree_view;
     GtkTreeSelection *tree_selection = gtk_tree_view_get_selection(tree_view);
     GtkTreeIter iter;
-    gtk_tree_selection_get_selected(tree_selection, NULL, &iter);
-    gtk_tree_store_remove(store, &iter);
+    valid_iter = gtk_tree_selection_get_selected(tree_selection, NULL, &iter);
+    if (valid_iter) gtk_tree_store_remove(store, &iter);
 }
 
 void deposit_calc_window(GtkButton *widget, gpointer data) {
@@ -110,6 +143,9 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     GtkButton *add_withdrawal = (GtkButton *) gtk_builder_get_object(builder, "withdrawal_plus");
     GtkButton *del_withdrawal = (GtkButton *) gtk_builder_get_object(builder, "withdrawal_minus");
     GtkEntry *entry_withdrawal = (GtkEntry *) gtk_builder_get_object(builder, "sum_withdrawal_entry");
+    gtk_entry_set_placeholder_text(entry_withdrawal, "Replenish or withdraw");
+    GtkEntry *date_withdrawal = (GtkEntry *) gtk_builder_get_object(builder, "sum_withdrawal_date");
+    gtk_entry_set_placeholder_text(date_withdrawal, "Day:");
     GtkScrolledWindow *withdrawal_window = (GtkScrolledWindow *) gtk_builder_get_object(builder, "withdrawal_list");
     GtkCellRenderer *renderer;
     GtkTreeViewColumn *column;
@@ -135,23 +171,19 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     wd_cont *withdrawal_cont = malloc(1*sizeof(wd_cont));
     withdrawal_cont->withdrawal_window = store;
     withdrawal_cont->entry_withdrawal = entry_withdrawal;
+    withdrawal_cont->date_withdrawal = date_withdrawal;
     withdrawal_cont->wd_tree_view = view_list;
     g_signal_connect(add_withdrawal, "clicked", G_CALLBACK(add_withdrawal_func), withdrawal_cont);
     g_signal_connect(del_withdrawal, "clicked", G_CALLBACK(del_withdrawal_func), withdrawal_cont);
+
     /* Result text */
     GtkTextView *result_tw = (GtkTextView *) gtk_builder_get_object(builder, "result");
     GtkTextBuffer *result_buffer = gtk_text_view_get_buffer(result_tw);
-    /* GtkTextIter iter; */
-    /* GtkTextMark *mark = gtk_text_buffer_get_insert(result_buffer); */
-    /* gtk_text_buffer_get_iter_at_mark(result_buffer, &iter, mark); */
-    /* gtk_text_buffer_insert(result_buffer, &iter, "text", 5); */
-    /* gtk_text_view_set_buffer(result_tw, result_buffer); */
     
     /* Buttons */
     GtkButton *execute_button = (GtkButton *) gtk_builder_get_object(builder, "execute_credit_calc");
 
     entry_input *one = malloc(1*sizeof(entry_input));
-
     one->sum_entry = (GtkEntry *) gtk_builder_get_object(builder, "sum_entry");
     one->term_entry = (GtkEntry *) gtk_builder_get_object(builder, "term_entry");
     one->rate_entry = (GtkEntry *) gtk_builder_get_object(builder, "rate_entry");
@@ -159,7 +191,10 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     one->type_credit_cbt = (GtkWidget *) type_choice;
     one->result_buffer = result_buffer;
     one->type_payouts = type_payouts;
+    one->wd_tree_view = view_list;
+    one->withdrawal_window = store;
     g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_deposit_func), one);
+
     GtkButton *quit_button = (GtkButton *) gtk_builder_get_object(builder, "quit_credit_calc");
     g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(quit_window), window);
 
