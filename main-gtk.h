@@ -44,7 +44,8 @@ typedef struct entry_input {
 } entry_input;
 
 typedef struct wd_cont {
-    GtkScrolledWindow *withdrawal_window;
+    GtkWidget *wd_tree_view;
+    GtkTreeStore *withdrawal_window;
     GtkEntry *entry_withdrawal;
 } wd_cont;
 

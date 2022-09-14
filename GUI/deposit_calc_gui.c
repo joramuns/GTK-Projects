@@ -72,9 +72,22 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
 
 void add_withdrawal_func(GtkButton *button, gpointer data_struct) {
     wd_cont *withdrawal_cont = data_struct; 
-    GtkWidget *test_button = gtk_button_new();
-    g_print("window %p\n", withdrawal_cont->withdrawal_window);
-    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(withdrawal_cont->withdrawal_window), GTK_WIDGET(withdrawal_cont->entry_withdrawal));
+    GtkTreeStore *store = withdrawal_cont->withdrawal_window;
+    GtkEntryBuffer *sum_buf = gtk_entry_get_buffer(withdrawal_cont->entry_withdrawal);
+    char *sum_char = (char *)gtk_entry_buffer_get_text(sum_buf);
+    GtkTreeIter iter;
+    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
+    gtk_tree_store_set (store, &iter, 0, "123", 1, sum_char, -1);
+}
+
+void del_withdrawal_func(GtkButton *button, gpointer data_struct) {
+    wd_cont *withdrawal_cont = data_struct; 
+    GtkTreeStore *store = withdrawal_cont->withdrawal_window;
+    GtkTreeView *tree_view = (GtkTreeView *) withdrawal_cont->wd_tree_view;
+    GtkTreeSelection *tree_selection = gtk_tree_view_get_selection(tree_view);
+    GtkTreeIter iter;
+    gtk_tree_selection_get_selected(tree_selection, NULL, &iter);
+    gtk_tree_store_remove(store, &iter);
 }
 
 void deposit_calc_window(GtkButton *widget, gpointer data) {
@@ -95,6 +108,7 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
 
     /* Withdrawal block */
     GtkButton *add_withdrawal = (GtkButton *) gtk_builder_get_object(builder, "withdrawal_plus");
+    GtkButton *del_withdrawal = (GtkButton *) gtk_builder_get_object(builder, "withdrawal_minus");
     GtkEntry *entry_withdrawal = (GtkEntry *) gtk_builder_get_object(builder, "sum_withdrawal_entry");
     GtkScrolledWindow *withdrawal_window = (GtkScrolledWindow *) gtk_builder_get_object(builder, "withdrawal_list");
     GtkCellRenderer *renderer;
@@ -116,30 +130,14 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     GtkTreeIter iter;
     gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
     gtk_tree_store_set (store, &iter, 0, "123", 1, "10000", -1);
-    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
-    gtk_tree_store_set (store, &iter, 0, "456", 1, "9999", -1);
-    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
-    gtk_tree_store_set (store, &iter, 0, "789", 1, "7980", -1);
-    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
-    gtk_tree_store_set (store, &iter, 0, "888", 1, "8888888", -1);
-    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
-    gtk_tree_store_set (store, &iter, 0, "456", 1, "9999", -1);
-    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
-    gtk_tree_store_set (store, &iter, 0, "789", 1, "7980", -1);
-    gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
-    gtk_tree_store_set (store, &iter, 0, "888", 1, "8888888", -1);
-    /* GtkTreeIter iter2; */
-    /* gtk_tree_store_append (store, &iter2, &iter);  /1* Acquire a child iterator *1/ */
-    /* gtk_tree_store_set (store, &iter2, 0, "Volume 1: Fundamental Algorithms", -1); */
-    /* gtk_tree_view_set_model(view_list, GTK_TREE_MODEL(store)); */
     gtk_scrolled_window_set_child(withdrawal_window, GTK_WIDGET(view_list));
 
-    g_print("1 window %p\n", withdrawal_window);
     wd_cont *withdrawal_cont = malloc(1*sizeof(wd_cont));
-    withdrawal_cont->withdrawal_window = withdrawal_window;
+    withdrawal_cont->withdrawal_window = store;
     withdrawal_cont->entry_withdrawal = entry_withdrawal;
+    withdrawal_cont->wd_tree_view = view_list;
     g_signal_connect(add_withdrawal, "clicked", G_CALLBACK(add_withdrawal_func), withdrawal_cont);
-
+    g_signal_connect(del_withdrawal, "clicked", G_CALLBACK(del_withdrawal_func), withdrawal_cont);
     /* Result text */
     GtkTextView *result_tw = (GtkTextView *) gtk_builder_get_object(builder, "result");
     GtkTextBuffer *result_buffer = gtk_text_view_get_buffer(result_tw);
