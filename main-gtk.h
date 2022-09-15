@@ -38,6 +38,7 @@ typedef struct entry_input {
     GtkEntry *sum_entry;
     GtkEntry *term_entry;
     GtkEntry *rate_entry;
+    GtkEntry *tax_rate_entry;
     GtkComboBoxText *term_cbt;
     GtkWidget *type_credit_cbt;
     GtkTextBuffer *result_buffer;

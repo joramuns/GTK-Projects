@@ -1,20 +1,40 @@
-text {
-/*    background-color: #ff9999;*/
-    font-family: monospace;
+window {
+    background-color: #0F5837;
+}
+
+entry, treeview, textview {
+    font-family: 'San Francisco';
+    font-size: 15pt;
+    background-color: #75B095;
+    border: 2px;
+}
+
+text, button, label {
+    font-family: 'San Francisco';
     font-size: 18pt;
-    color: red;
+    color: #002313;
     padding: 5px;
-/*    border: 2px;*/
+    border: 2px;
 }
 
 button {
-    color: red;
-    font-family: monospace;
-    font-size: 18pt;
+    color: #287351;
+    border-style: solid;
+    border-radius: 0;
+    background: #75B095;
 }
 
-checkbutton {
-    color: #ff9999;
-    font-family: monospace;
-    font-size: 16pt;
+button:hover {
+    background: #488D6E;
+    color: #488D6E;
+}
+
+button:active {
+    background: #287351;
+    color: #287351;
+}
+
+button:checked {
+    background: #0F5837;
+    color: #488D6E;
 }

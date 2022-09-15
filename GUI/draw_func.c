@@ -48,7 +48,7 @@ static void draw_grid(int width, int height, cairo_t *cr, gdouble dx) {
 void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer user_data) {
     gdouble dx = 2, dy = 2;
     gdouble i, clipX1 = 0.0, clipY1 = 0.0, clipX2 = 0.0, clipY2 = 0.0;
-    cairo_set_source_rgba(cr, 0.1, 0.1, 0.8, 0.8);
+    cairo_set_source_rgba(cr, 0.29, 0.58, 0.45, 1); // 0.1, 0.1, 0.8, 0.8);
     cairo_paint(cr);
     // TRY
     double x_range = (x_max - x_min)/2;
