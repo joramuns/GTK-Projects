@@ -9,6 +9,7 @@
 
 void execute_deposit_func(GtkButton *widget, gpointer data) {
     entry_input *entry = data;
+    double tax_rate = 0;
 
     GtkEntryBuffer *sum_entry_buf = gtk_entry_get_buffer(entry->sum_entry);
     char *output_sum = (char *)gtk_entry_buffer_get_text(sum_entry_buf);
@@ -19,10 +20,19 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
     GtkEntryBuffer *rate_entry_buf = gtk_entry_get_buffer(entry->rate_entry);
     char *output_rate = (char *)gtk_entry_buffer_get_text(rate_entry_buf);
 
+    GtkEntryBuffer *tax_rate_entry_buf = gtk_entry_get_buffer(entry->tax_rate_entry);
+    char *tax_output_rate = (char *)gtk_entry_buffer_get_text(tax_rate_entry_buf);
+
     deposit_input cont = {0};
     sscanf(output_sum, "%lf", &cont.deposit);
     sscanf(output_term, "%u", &cont.term);
     sscanf(output_rate, "%lf", &cont.rate);
+    sscanf(tax_output_rate, "%lf", &tax_rate);
+    if (tax_rate > 0) {
+        tax_rate /= 100;
+    } else {
+        tax_rate = 0;
+    }
     unsigned input_term = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->term_cbt));
     if (input_term == 1) {
         cont.term *= 30;
@@ -60,15 +70,14 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
         sscanf(sum, "%d", &value_ams);
         g_print("HI %d, %d\n", i_ams, cont.term);
         if (i_ams < cont.term) {
-            g_print("Hello\n");
-            cont.account_movement[i_ams] = value_ams;
+            cont.account_movement[i_ams] += value_ams;
         }
         g_free(day);
         g_free(sum);
         valid_iter = gtk_tree_model_iter_next(GTK_TREE_MODEL(store), &iter_wd);
     }
 
-    cont.capitalization = gtk_check_button_get_active(GTK_CHECK_BUTTON(entry->type_credit_cbt));
+    cont.capitalization = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(entry->type_credit_cbt));
     deposit_output cont_output = {0};
     handle_deposit_calc(cont, &cont_output);
 
@@ -79,11 +88,11 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
 
     char *autobuffer = NULL;
 
-    asprintf(&autobuffer, "Deposit sum: %.2lf, term of deposit: %u, interest rate: %g\n", cont.deposit, cont.term, cont.rate);
+    asprintf(&autobuffer, "%.2lf rubles was deposited into account.\nThe term of deposit: %u days\nAt %.2lf%% rate\nFinal account balance after replenishments, withdrawals and gained profit: %.2lf\n", cont.deposit, cont.term, cont.rate, cont_output.total_profit + cont_output.deposit);
     gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
     free(autobuffer);
 
-    asprintf(&autobuffer, "Earned by deposit: %.2lf\n", cont_output.total_profit);
+    asprintf(&autobuffer, "Earned by deposit: %.2lf\nTax assesed on profit: %.2lf\n", cont_output.total_profit, cont_output.total_profit * tax_rate);
     gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
     free(autobuffer);
     
@@ -131,6 +140,8 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     /* Comboboxes */
     GtkComboBoxText *percentage_cbt = (GtkComboBoxText *) gtk_builder_get_object(builder, "percents");
     gtk_combo_box_set_active(GTK_COMBO_BOX(percentage_cbt), 0);
+    GtkComboBoxText *tax_percentage_cbt = (GtkComboBoxText *) gtk_builder_get_object(builder, "tax_percents");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(tax_percentage_cbt), 0);
     GtkComboBoxText *years_or_months = (GtkComboBoxText *) gtk_builder_get_object(builder, "years_or_months");
     gtk_combo_box_set_active(GTK_COMBO_BOX(years_or_months), 0);
     GtkComboBoxText *currency_cbt = (GtkComboBoxText *) gtk_builder_get_object(builder, "currency");
@@ -153,7 +164,7 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     GtkWidget *view_list = gtk_tree_view_new_with_model(GTK_TREE_MODEL(store)); 
 
     renderer = gtk_cell_renderer_text_new();
-    g_object_set (G_OBJECT (renderer), "foreground", "green", NULL);
+    g_object_set (G_OBJECT (renderer), "background", "green", NULL);
     /* Create a column, associating the "text" attribute of the
     * cell_renderer to the first column of the model */
     column = gtk_tree_view_column_new_with_attributes ("Date", renderer, "text", 0, NULL);
@@ -187,6 +198,8 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
     one->sum_entry = (GtkEntry *) gtk_builder_get_object(builder, "sum_entry");
     one->term_entry = (GtkEntry *) gtk_builder_get_object(builder, "term_entry");
     one->rate_entry = (GtkEntry *) gtk_builder_get_object(builder, "rate_entry");
+    one->tax_rate_entry = (GtkEntry *) gtk_builder_get_object(builder, "tax_rate_entry");
+    gtk_editable_set_text(GTK_EDITABLE(one->tax_rate_entry), "0");
     one->term_cbt = years_or_months;
     one->type_credit_cbt = (GtkWidget *) type_choice;
     one->result_buffer = result_buffer;
