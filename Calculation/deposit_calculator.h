@@ -37,6 +37,7 @@ typedef struct deposit_input {
 
 typedef struct deposit_output {
     double total_profit;
+    double deposit;
     node *stack_of_payouts;
 } deposit_output;
 

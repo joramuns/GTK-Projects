@@ -35,6 +35,7 @@ int handle_deposit_calc(deposit_input cont, deposit_output *cont_output) {
         }
     }
     cont_output->total_profit = cont.total_profit;
+    cont_output->deposit = cont.deposit;
 
     return 0;
 }
