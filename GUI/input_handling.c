@@ -41,6 +41,7 @@ void get_result(GtkButton *widget, gpointer data) {
     GtkEntryBuffer *entryBuffer_res = gtk_entry_get_buffer(entry_res);
     double result = 0;
     char *output = (char *)gtk_entry_buffer_get_text(entryBuffer);
+    gboolean graph_status = gtk_toggle_button_get_active(current->toggle_button);
 
     GtkEntryBuffer *dom_min_buff = gtk_entry_get_buffer(current->x_min);
     char *dom_min_val = (char *)gtk_entry_buffer_get_text(dom_min_buff);
@@ -67,8 +68,16 @@ void get_result(GtkButton *widget, gpointer data) {
     char buffer[100] = {0};
     if (ex_code == 0) {
         sprintf(buffer, "%g", result);
-    } else if (ex_code == VARIABLE_INSIDE && (ex_code = calculate_var(output, &result, 1)) == 0) {
+    } else if (ex_code == VARIABLE_INSIDE && (graph_status == 1) && (ex_code = calculate_var(output, &result, 1)) == 0) {
         gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(current->area), graph_draw, output, NULL);
+        sprintf(buffer, "Graph");
+    } else if (ex_code == VARIABLE_INSIDE && (graph_status == 0)) {
+        ex_code = calculate_var(output, &result, x_min);
+        if (ex_code == 0) {
+            sprintf(buffer, "%g", result);
+        } else {
+            sprintf(buffer, "Error: %d", ex_code);
+        }
     } else {
         sprintf(buffer, "Error: %d", ex_code);
     }

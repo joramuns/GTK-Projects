@@ -19,6 +19,37 @@ void quit_window (GtkWindow *window) {
   gtk_window_close (window);
 }
 
+void toggle_graph_func(GtkToggleButton *togglebutton, gpointer user_data) {
+    buttonData *current = user_data;
+    gboolean status = gtk_toggle_button_get_active(togglebutton);
+
+        gtk_editable_set_editable(GTK_EDITABLE(current->x_max), status);
+        gtk_editable_set_text(GTK_EDITABLE(current->x_max), "");
+        gtk_editable_set_text(GTK_EDITABLE(current->x_min), "");
+        gtk_editable_set_editable(GTK_EDITABLE(current->y_min), status);
+        gtk_editable_set_text(GTK_EDITABLE(current->y_min), "");
+        gtk_editable_set_editable(GTK_EDITABLE(current->y_max), status);
+        gtk_editable_set_text(GTK_EDITABLE(current->y_max), "");
+
+
+    if (status) {
+        gtk_entry_set_placeholder_text(current->x_min, "Dominant min");
+        gtk_entry_set_placeholder_text(current->x_max, "Dominant max");
+        gtk_entry_set_placeholder_text(current->y_min, "Codominant min");
+        gtk_entry_set_placeholder_text(current->y_max, "Codominant max");
+        x_min = -10;
+        x_max = 10;
+        y_min = -10;
+        y_max = 10;
+    } else {
+        x_min = 0;
+        gtk_entry_set_placeholder_text(current->x_min, "X value");
+        gtk_entry_set_placeholder_text(current->x_max, "inactive");
+        gtk_entry_set_placeholder_text(current->y_min, "inactive");
+        gtk_entry_set_placeholder_text(current->y_max, "inactive");
+    }
+}
+
 static void activate (GtkApplication *app, gpointer user_data) {
     GtkBuilder *builder = gtk_builder_new();
     gtk_builder_add_from_file(builder, "./Style/builder-o.ui", NULL);
@@ -40,6 +71,8 @@ static void activate (GtkApplication *app, gpointer user_data) {
     GtkEntry *entry_res;
     entry_res = (GtkEntry *) gtk_builder_get_object(builder, "entry_res");
     /* codominant and dominant */
+    GtkToggleButton *graph_check = (GtkToggleButton *) gtk_builder_get_object(builder, "check_box");
+    gtk_toggle_button_set_active(graph_check, 1);
     GtkEntry *dom_min = (GtkEntry *) gtk_builder_get_object(builder, "entry_dom_min");
     gtk_entry_set_placeholder_text(dom_min, "Dominant min");
     GtkEntry *dom_max = (GtkEntry *) gtk_builder_get_object(builder, "entry_dom_max");
@@ -77,6 +110,7 @@ static void activate (GtkApplication *app, gpointer user_data) {
         buttons[i].y_min = codom_min;
         buttons[i].y_max = codom_max;
         buttons[i].area = area;
+        buttons[i].toggle_button = graph_check;
         if (values[i] != NULL) {
             g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(add_text), &buttons[i]);
         } else if (i == 18) {
@@ -93,7 +127,7 @@ static void activate (GtkApplication *app, gpointer user_data) {
             g_signal_connect(buttons[i].button, "clicked", G_CALLBACK(deposit_calc_window), &buttons[i]);
         }
     }
-
+    g_signal_connect(graph_check, "toggled", G_CALLBACK(toggle_graph_func), &buttons[0]);
 
     gtk_widget_show (GTK_WIDGET(window));
     g_object_unref(builder);

@@ -31,6 +31,7 @@ typedef struct {
     GtkEntry *y_min;
     GtkEntry *y_max;
     GtkWidget *area;
+    GtkToggleButton *toggle_button;
 } buttonData;
 
 typedef struct entry_input {
