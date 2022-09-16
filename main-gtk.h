@@ -58,7 +58,7 @@ void quit_window (GtkWindow *window);
 
 /*                          drawing graph                                       */
 static void draw_plot(gdouble clipX1, gdouble clipX2, cairo_t *cr, char *output);
-static void draw_grid(int width, int height, cairo_t *cr, gdouble dx);
+static void draw_grid(double width, double height, cairo_t *cr, gdouble dx);
 void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer user_data);
 
 /*                          input handling                                      */
