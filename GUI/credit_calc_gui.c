@@ -8,6 +8,7 @@
 #include "../main-gtk.h"
 
 void execute_credit_func(GtkButton *widget, gpointer data) {
+    int ex_code = 0;
     entry_input *entry = data;
 
     GtkEntryBuffer *sum_entry_buf = gtk_entry_get_buffer(entry->sum_entry);
@@ -18,32 +19,44 @@ void execute_credit_func(GtkButton *widget, gpointer data) {
 
     GtkEntryBuffer *rate_entry_buf = gtk_entry_get_buffer(entry->rate_entry);
     char *output_rate = (char *)gtk_entry_buffer_get_text(rate_entry_buf);
+    
+    ex_code = validate_input_numbers(output_sum);
+    if (ex_code == 0) ex_code = validate_input_numbers(output_term);
+    if (ex_code == 0) ex_code = validate_input_numbers(output_rate);
+    if (ex_code == 0) ex_code = (strchr(output_term, '.') == NULL) ? 0 : WRONG_SYMBOLS;
+    if (ex_code == 0) ex_code = validate_extra_dot(output_sum);
+    if (ex_code == 0) ex_code = validate_extra_dot(output_rate);
 
     credit_input test_case = {0};
-    sscanf(output_sum, "%lf", &test_case.sum);
-    sscanf(output_term, "%u", &test_case.term);
-    sscanf(output_rate, "%lf", &test_case.rate);
-    if (gtk_combo_box_get_active(GTK_COMBO_BOX(entry->term_cbt))) test_case.term *= 12;
-    test_case.type = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->type_credit_cbt));
-
     credit_output cont_output = {0};
-    handle_credit_calculator(test_case, &cont_output);
+    if (ex_code == 0) {
+        sscanf(output_sum, "%lf", &test_case.sum);
+        sscanf(output_term, "%u", &test_case.term);
+        if (test_case.term == 0) ex_code = WRONG_SYMBOLS;
+        sscanf(output_rate, "%lf", &test_case.rate);
+        if (gtk_combo_box_get_active(GTK_COMBO_BOX(entry->term_cbt))) test_case.term *= 12;
+        test_case.type = gtk_combo_box_get_active(GTK_COMBO_BOX(entry->type_credit_cbt));
+        handle_credit_calculator(test_case, &cont_output);
+    }
 
     GtkTextIter iter;
     gtk_text_buffer_get_start_iter(entry->result_buffer, &iter);
 
-
-    char *autobuffer = NULL;
-    asprintf(&autobuffer, "Total paid: %g\nOverpaid: %g\n", cont_output.total_sum, cont_output.overpaid);
-    gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
-    free(autobuffer);
-    
-    node *head = cont_output.stack_of_payments;
-    while (find_last(head)->number != 0) {
-        asprintf(&autobuffer, "Monthly payment: %g\n", find_last(head)->value);
+    if (ex_code == 0) {
+        char *autobuffer = NULL;
+        asprintf(&autobuffer, "Total paid: %.2lf\nOverpaid: %.2lf\n", cont_output.total_sum, cont_output.overpaid);
         gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
         free(autobuffer);
-        pop(head);
+    
+        node *head = cont_output.stack_of_payments;
+        while (find_last(head)->number != 0) {
+            asprintf(&autobuffer, "Monthly payment: %.2lf\n", find_last(head)->value);
+            gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
+            free(autobuffer);
+            pop(head);
+        }
+    } else {
+        gtk_text_buffer_insert(entry->result_buffer, &iter, "Invalid input!\n", -1);
     }
     clean(cont_output.stack_of_payments);
 
