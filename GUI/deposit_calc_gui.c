@@ -69,16 +69,17 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
     GtkTreeSelection *tree_selection = gtk_tree_view_get_selection(tree_view);
     GtkTreeIter iter_wd;
     gboolean valid_iter;
-    cont.account_movement = malloc(cont.term * sizeof(int));
+    cont.account_movement = malloc(cont.term * sizeof(double));
     for (int i_am = 0; i_am < cont.term; i_am++) cont.account_movement[i_am] = 0;
     valid_iter = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(store), &iter_wd);
-    int i_ams = 0, value_ams = 0;
+    int i_ams = 0;
+    double value_ams = 0;
     while (valid_iter) {
         gchararray day;
         gchararray sum;
         gtk_tree_model_get(GTK_TREE_MODEL(store), &iter_wd, 0, &day, 1, &sum, -1);
         sscanf(day, "%d", &i_ams);
-        sscanf(sum, "%d", &value_ams);
+        sscanf(sum, "%lf", &value_ams);
         if (i_ams < cont.term) {
             cont.account_movement[i_ams] += value_ams;
         }
@@ -132,9 +133,19 @@ void add_withdrawal_func(GtkButton *button, gpointer data_struct) {
     GtkEntryBuffer *date_buf = gtk_entry_get_buffer(withdrawal_cont->date_withdrawal);
     char *date_char = (char *)gtk_entry_buffer_get_text(date_buf);
     if (*sum_char && *date_char) {
-        GtkTreeIter iter;
-        gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
-        gtk_tree_store_set (store, &iter, 0, date_char, 1, sum_char, -1);
+        if (*sum_char == '-') sum_char++;
+        int ex_code = validate_input_numbers(sum_char);
+        if (ex_code == 0) ex_code = validate_extra_dot(sum_char);
+        if (ex_code == 0) ex_code = validate_input_numbers(date_char);
+        if (ex_code == 0) ex_code = (strchr(date_char, '.') == NULL) ? 0 : WRONG_SYMBOLS;
+        if (ex_code == 0) {
+            GtkTreeIter iter;
+            sum_char = (char *) gtk_entry_buffer_get_text(sum_buf);
+            gtk_tree_store_append (store, &iter, NULL);  /* Acquire an iterator */
+            gtk_tree_store_set (store, &iter, 0, date_char, 1, sum_char, -1);
+            gtk_editable_set_text(GTK_EDITABLE(withdrawal_cont->entry_withdrawal), "");
+            gtk_editable_set_text(GTK_EDITABLE(withdrawal_cont->date_withdrawal), "");
+        }
     }
 }
 

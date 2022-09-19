@@ -19,8 +19,6 @@
 #define ISDIGIT check_input_type(expression[*array_pos]) == TOK_NUM
 #define ISDOT check_input_type(expression[*array_pos]) == TOK_DOT
 
-// POW 7? what about braces?
-
 enum parser_errors {
     TOO_LONG_EXPRESSION = 100,
     WRONG_LONG_OPERATOR = 101,

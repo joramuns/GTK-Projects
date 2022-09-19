@@ -33,7 +33,7 @@ typedef struct deposit_input {
     unsigned capitalization;
     double daily_income;
     double total_profit;
-    int *account_movement;
+    double *account_movement;
 } deposit_input;
 
 typedef struct deposit_output {
