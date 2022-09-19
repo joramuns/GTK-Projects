@@ -37,16 +37,30 @@ int validate_input_numbers(char *expression) {
         expression[input_len - 1] = '\0';
         input_len--;
     }
+    if (input_len == 0) {
+        ex_code = EXPRESSION_TOO_SHORT;
+    }
     if (input_len > EXPRESSION_SIZE) {
         ex_code = TOO_LONG_EXPRESSION;
     }
     if (strspn(expression, EXPRESSION_SYMBOLS_NUMBERS) != input_len) {
         ex_code = WRONG_SYMBOLS;
     }
-    /* if (strchr(expression, 'X') != 0) { */
-    /*     ex_code = check_variable(expression); */
-    /*     if (ex_code == 0) ex_code = VARIABLE_INSIDE; */
-    /* } */
+
+    return ex_code;
+}
+
+int validate_extra_dot(char *expression) {
+    int ex_code = 0;
+
+    char *test = strchr(expression, '.');
+    if (test != NULL) {
+        test++;
+        char *test_2 = strchr(test, '.'); 
+        if (test_2 != NULL || *test == '\0') {
+            ex_code = WRONG_SYMBOLS;
+        }
+    }
 
     return ex_code;
 }

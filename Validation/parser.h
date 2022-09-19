@@ -63,6 +63,7 @@ enum parse_long_operators {
 
 int validate_input(char *expression);
 int validate_input_numbers(char *expression);
+int validate_extra_dot(char *expression);
 int parse_input(char *expression, node *output_stack);
 int check_input_type(char input);
 int parse_double(size_t *array_pos, char *expression, node *output_stack);

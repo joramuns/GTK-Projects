@@ -28,6 +28,10 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
     if (ex_code == 0) ex_code = validate_input_numbers(output_term);
     if (ex_code == 0) ex_code = validate_input_numbers(output_rate);
     if (ex_code == 0) ex_code = validate_input_numbers(tax_output_rate);
+    if (ex_code == 0) ex_code = (strchr(output_term, '.') == NULL) ? 0 : WRONG_SYMBOLS;
+    if (ex_code == 0) ex_code = validate_extra_dot(output_sum);
+    if (ex_code == 0) ex_code = validate_extra_dot(output_rate);
+    if (ex_code == 0) ex_code = validate_extra_dot(tax_output_rate);
     deposit_input cont = {0};
     if (ex_code == 0) {
         sscanf(output_sum, "%lf", &cont.deposit);
