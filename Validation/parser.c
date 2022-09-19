@@ -29,6 +29,28 @@ int validate_input(char *expression) {
     return ex_code;
 }
 
+int validate_input_numbers(char *expression) {
+    int ex_code = 0;
+    size_t input_len = strlen(expression);
+
+    if (input_len > 0 && expression[input_len - 1] == '\n') {
+        expression[input_len - 1] = '\0';
+        input_len--;
+    }
+    if (input_len > EXPRESSION_SIZE) {
+        ex_code = TOO_LONG_EXPRESSION;
+    }
+    if (strspn(expression, EXPRESSION_SYMBOLS_NUMBERS) != input_len) {
+        ex_code = WRONG_SYMBOLS;
+    }
+    /* if (strchr(expression, 'X') != 0) { */
+    /*     ex_code = check_variable(expression); */
+    /*     if (ex_code == 0) ex_code = VARIABLE_INSIDE; */
+    /* } */
+
+    return ex_code;
+}
+
 int parse_input(char *expression, node *output_stack) {
     int ex_code = 0;
     size_t array_pos = 0;

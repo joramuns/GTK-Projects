@@ -15,6 +15,7 @@
 
 #define EXPRESSION_SIZE 100
 #define EXPRESSION_SYMBOLS "1234567890acdgilmnoqrst()+-*/^. X"
+#define EXPRESSION_SYMBOLS_NUMBERS "1234567890."
 #define ISDIGIT check_input_type(expression[*array_pos]) == TOK_NUM
 #define ISDOT check_input_type(expression[*array_pos]) == TOK_DOT
 
@@ -61,6 +62,7 @@ enum parse_long_operators {
 };
 
 int validate_input(char *expression);
+int validate_input_numbers(char *expression);
 int parse_input(char *expression, node *output_stack);
 int check_input_type(char input);
 int parse_double(size_t *array_pos, char *expression, node *output_stack);

@@ -12,6 +12,7 @@
 #include <math.h>
 
 #include "../Validation/nodes.h"
+#include "../Validation/parser.h"
 
 #define YEARDAYS 365
 

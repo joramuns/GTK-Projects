@@ -8,6 +8,7 @@
 #include "../main-gtk.h"
 
 void execute_deposit_func(GtkButton *widget, gpointer data) {
+    int ex_code = 0;
     entry_input *entry = data;
     double tax_rate = 0;
 
@@ -23,11 +24,17 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
     GtkEntryBuffer *tax_rate_entry_buf = gtk_entry_get_buffer(entry->tax_rate_entry);
     char *tax_output_rate = (char *)gtk_entry_buffer_get_text(tax_rate_entry_buf);
 
+    ex_code = validate_input_numbers(output_sum); 
+    if (ex_code == 0) ex_code = validate_input_numbers(output_term);
+    if (ex_code == 0) ex_code = validate_input_numbers(output_rate);
+    if (ex_code == 0) ex_code = validate_input_numbers(tax_output_rate);
     deposit_input cont = {0};
-    sscanf(output_sum, "%lf", &cont.deposit);
-    sscanf(output_term, "%u", &cont.term);
-    sscanf(output_rate, "%lf", &cont.rate);
-    sscanf(tax_output_rate, "%lf", &tax_rate);
+    if (ex_code == 0) {
+        sscanf(output_sum, "%lf", &cont.deposit);
+        sscanf(output_term, "%u", &cont.term);
+        sscanf(output_rate, "%lf", &cont.rate);
+        sscanf(tax_output_rate, "%lf", &tax_rate);
+    }
     if (tax_rate > 0) {
         tax_rate /= 100;
     } else {
@@ -68,7 +75,6 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
         gtk_tree_model_get(GTK_TREE_MODEL(store), &iter_wd, 0, &day, 1, &sum, -1);
         sscanf(day, "%d", &i_ams);
         sscanf(sum, "%d", &value_ams);
-        g_print("HI %d, %d\n", i_ams, cont.term);
         if (i_ams < cont.term) {
             cont.account_movement[i_ams] += value_ams;
         }
@@ -79,7 +85,10 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
 
     cont.capitalization = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(entry->type_credit_cbt));
     deposit_output cont_output = {0};
-    handle_deposit_calc(cont, &cont_output);
+
+    if (ex_code == 0) {
+        handle_deposit_calc(cont, &cont_output);
+    }
 
     free(cont.account_movement);
 
@@ -87,21 +96,25 @@ void execute_deposit_func(GtkButton *widget, gpointer data) {
     gtk_text_buffer_get_start_iter(entry->result_buffer, &iter);
 
     char *autobuffer = NULL;
-
-    asprintf(&autobuffer, "%.2lf rubles was deposited into account.\nThe term of deposit: %u days\nAt %.2lf%% rate\nFinal account balance after replenishments, withdrawals and gained profit: %.2lf\n", cont.deposit, cont.term, cont.rate, cont_output.total_profit + cont_output.deposit);
-    gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
-    free(autobuffer);
-
-    asprintf(&autobuffer, "Earned by deposit: %.2lf\nTax assesed on profit: %.2lf\n", cont_output.total_profit, cont_output.total_profit * tax_rate);
-    gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
-    free(autobuffer);
     
-    node *head = cont_output.stack_of_payouts;
-    while (find_last(head)->number != 0) {
-        asprintf(&autobuffer, "Periodic payout: %g\n", find_last(head)->value);
+    if (ex_code == 0) {
+        asprintf(&autobuffer, "%.2lf rubles was deposited into account.\nThe term of deposit: %u days\nAt %.2lf%% rate\nFinal account balance after replenishments, withdrawals and gained profit: %.2lf\n", cont.deposit, cont.term, cont.rate, cont_output.deposit);
         gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
         free(autobuffer);
-        pop(head);
+
+        asprintf(&autobuffer, "Earned by deposit: %.2lf\nTax assesed on profit: %.2lf\n", cont_output.total_profit, cont_output.total_profit * tax_rate);
+        gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
+        free(autobuffer);
+        
+        node *head = cont_output.stack_of_payouts;
+        while (find_last(head)->number != 0) {
+            asprintf(&autobuffer, "Periodic payout: %g\n", find_last(head)->value);
+            gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
+            free(autobuffer);
+            pop(head);
+        }
+    } else {
+        gtk_text_buffer_insert(entry->result_buffer, &iter, "Invalid input!\n", -1);
     }
     clean(cont_output.stack_of_payouts);
 
