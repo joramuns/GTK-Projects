@@ -1,9 +1,5 @@
 #include "deposit_calculator.h"
 
-double bank_rounding(double value) {
-    return roundf(value * 100) / 100;
-}
-
 int handle_deposit_calc(deposit_input cont, deposit_output *cont_output) {
     cont.rate /= 100;
     cont_output->stack_of_payouts = init_node();

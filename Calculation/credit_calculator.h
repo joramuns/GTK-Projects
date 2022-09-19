@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "bank_rounding.h"
 #include "../Validation/nodes.h"
 #include "../Validation/parser.h"
 

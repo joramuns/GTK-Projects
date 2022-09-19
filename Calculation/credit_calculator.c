@@ -22,7 +22,8 @@ int eval_annuity_credit(credit_input input, credit_output *output) {
     double capitalize_rate = powf((1 + input.rate), input.term);
 
     double payment = input.sum * ((input.rate * capitalize_rate) / (capitalize_rate - 1));
-    output->total_sum = payment * input.term;
+    payment = bank_rounding(payment);
+    output->total_sum = bank_rounding(payment * input.term);
     output->overpaid = output->total_sum - input.sum;
     while (input.term-- > 0) {
         push(output->stack_of_payments);
