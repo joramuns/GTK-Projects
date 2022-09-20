@@ -1,6 +1,6 @@
 test:
-	gcc -fsanitize=address -g -c main.c Validation/*.c Calculation/*.c
-	gcc -fsanitize=address -g -o test *.o
+	gcc -fsanitize=address -g -c Tests/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
+	gcc -fsanitize=address -g -o test *.o `pkg-config --cflags --libs check`
 	./test
 	$(MAKE) fclean
 

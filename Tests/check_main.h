@@ -10,6 +10,9 @@
 #include <stdio.h>
 #include <check.h>
 
+#include "../Calculation/calculator.h"
+
+#define TOL 1e-6
 Suite *simple_suite(void);
 
 #endif /* check_main_h */

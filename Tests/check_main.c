@@ -12,7 +12,7 @@ int main() {
         simple_suite(),
     };
 
-    SRunner *sr = srunner_create(suites_matrix[0]);
+    SRunner *sr = srunner_create(suites_calc[0]);
     srunner_set_fork_status(sr, CK_NOFORK);
 
     for (size_t i = 1; i < 1; i++)
