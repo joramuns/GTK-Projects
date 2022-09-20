@@ -65,6 +65,22 @@ int validate_extra_dot(char *expression) {
     return ex_code;
 }
 
+char *remove_spaces(char *string) {
+    int non_space_count = 0;
+    size_t len = strlen(string);
+
+    char *new_string = malloc(sizeof(char) * (len + 1));
+    for (int i = 0; string[i] != '\0'; i++) {
+        if (string[i] != ' ') {
+            new_string[non_space_count] = string[i];
+            non_space_count++;
+        }
+    }
+    new_string[non_space_count] = '\0';
+
+    return new_string;
+}
+
 int parse_input(char *expression, node *output_stack) {
     int ex_code = 0;
     size_t array_pos = 0;
