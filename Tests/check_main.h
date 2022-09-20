@@ -12,7 +12,7 @@
 
 #include "../Calculation/calculator.h"
 
-#define TOL 1e-6
+#define TOL 1e-06
 Suite *simple_suite(void);
 
 #endif /* check_main_h */
