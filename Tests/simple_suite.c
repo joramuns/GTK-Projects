@@ -203,7 +203,7 @@ START_TEST(s20) {
     double result = 0;
     int ex_code = 0;
     calculate("cos(sin(2+9*6^1.2-tan(1)))", &result);
-    ck_assert_double_eq_tol(result, 0.742186, TOL);
+    ck_assert_double_eq_tol(result, 0.742182, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
 END_TEST
@@ -213,7 +213,7 @@ START_TEST(s21) {
     double result = 0;
     int ex_code = 0;
     calculate("sqrt(cos(sin(2+9*6^1.2-tan(1))))", &result);
-    ck_assert_double_eq_tol(result, 0.861502, TOL);
+    ck_assert_double_eq_tol(result, 0.861500, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
 END_TEST
@@ -223,7 +223,7 @@ START_TEST(s22) {
     double result = 0;
     int ex_code = 0;
     calculate("sqrt(cos(sin(2+9*6^1.2-tan(1))))mod0.1", &result);
-    ck_assert_double_eq_tol(result, 0.061502, TOL);
+    ck_assert_double_eq_tol(result, 0.06150, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
 END_TEST
@@ -242,7 +242,7 @@ END_TEST
 START_TEST(s24) {
     double result = 0;
     int ex_code = 0;
-    calculate("l", &result);
+    calculate("cos(1/3)*sin(1.352^9/(4+3))", &result);
     ck_assert_double_eq_tol(result, 0.787603, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -258,25 +258,6 @@ START_TEST(s25) {
 }
 END_TEST
 
-//    sinn(20) = ERROR (106)
-//    2,2+2 = ERROR (103)
-//    2.2+9,2 = ERROR (103)
-//    (cos(1/3)*sin(1.352^^9/(4+3))/76.56)*log(150) = ERROR (108)
-//    (cos(1/3)*sin(1.3)52^9/(4+3))/76.56)*log(150) = ERROR (103)
-//    cos(1/3)*sin(1.352^9/(4+3))/76.56)*log(150) = ERROR (105)
-//    (cos(1/3)*sin(1.352^9/4+3))/76.56)*log(150) = ERROR (105)
-//    2^^2 = ERROR (108)
-//    (cos(1/3)*sin(1.352^^9/(4+3))/76.56)*log(150) = ERROR (108)
-//    (cos(1/3)*sinsin(1.352^9/(4+3))/76.56)*log(150) = ERROR (106)
-//    sinsin(1) = ERROR (106)
-//    sin() = ERROR (106)
-//    sin( = ERROR (106)
-//    sinn = ERROR (106)
-//    si = ERROR (102)
-//    si(1) = ERROR (101)
-//    si(()) = ERROR (101)
-//    sin(()) = ERROR (107)
-//    2+(-(-(-(-1))) = ERROR (105)
 //    2+(-(-(-(-1)))) = 3
 //    .4+.4
 //    2.2.2.2

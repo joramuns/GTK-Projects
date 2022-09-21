@@ -14,5 +14,6 @@
 
 #define TOL 1e-06
 Suite *simple_suite(void);
+Suite *errors_suite(void);
 
 #endif /* check_main_h */
