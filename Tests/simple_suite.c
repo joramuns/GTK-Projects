@@ -10,8 +10,7 @@
 //    4 + 4 * 2 / ( 1 - 5 ) = 2
 START_TEST(s1) {
     double result = 0;
-    int ex_code = 0;
-    calculate("4 + 4 * 2 / ( 1 - 5 )", &result);
+    int ex_code = calculate("4 + 4 * 2 / ( 1 - 5 )", &result);
     ck_assert_double_eq_tol(result, 2, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -20,8 +19,7 @@ END_TEST
 //    4 + 4 * 2 / 1 - 5 = 7
 START_TEST(s2) {
     double result = 0;
-    int ex_code = 0;
-    calculate("4 + 4 * 2 / 1 - 5", &result);
+    int ex_code = calculate("4 + 4 * 2 / 1 - 5", &result);
     ck_assert_double_eq_tol(result, 7, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -30,8 +28,7 @@ END_TEST
 //    4 + 4 * ( 2 / 1 - 5 ) = -8
 START_TEST(s3) {
     double result = 0;
-    int ex_code = 0;
-    calculate("4 + 4 * ( 2 / 1 - 5 )", &result);
+    int ex_code = calculate("4 + 4 * ( 2 / 1 - 5 )", &result);
     ck_assert_double_eq_tol(result, -8, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -40,8 +37,7 @@ END_TEST
 //    4 + ( 4 * 2 / 1 - 5 ) = 7
 START_TEST(s4) {
     double result = 0;
-    int ex_code = 0;
-    calculate("4 + ( 4 * 2 / 1 - 5 )", &result);
+    int ex_code = calculate("4 + ( 4 * 2 / 1 - 5 )", &result);
     ck_assert_double_eq_tol(result, 7, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -51,8 +47,7 @@ END_TEST
 START_TEST(s5) {
     double result = 0;
     double expected = 7;
-    int ex_code = 0;
-    calculate("4 + 4 * ( 2 /  1 ) - 5", &result);
+    int ex_code = calculate("4 + 4 * ( 2 /  1 ) - 5", &result);
     ck_assert_int_eq(ex_code, 0);
     ck_assert_double_eq_tol(result, expected, TOL);
 }
@@ -61,8 +56,7 @@ END_TEST
 //    4 + ( 4 * 2 / 1 ) - 5 = 7
 START_TEST(s6) {
     double result = 0;
-    int ex_code = 0;
-    calculate("4 + ( 4 * 2 / 1 ) - 5", &result);
+    int ex_code = calculate("4 + ( 4 * 2 / 1 ) - 5", &result);
     ck_assert_double_eq_tol(result, 7, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -71,8 +65,7 @@ END_TEST
 //    ( 4 + 4 * 2 / 1 ) - 5 = 7
 START_TEST(s7) {
     double result = 0;
-    int ex_code = 0;
-    calculate("( 4 + 4 * 2 / 1 ) - 5", &result);
+    int ex_code = calculate("( 4 + 4 * 2 / 1 ) - 5", &result);
     ck_assert_double_eq_tol(result, 7, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -81,8 +74,7 @@ END_TEST
 //    4 + ( 4 * 2 ) / 1 - 5 = 7
 START_TEST(s8) {
     double result = 0;
-    int ex_code = 0;
-    calculate("4 + ( 4 * 2 ) / 1 - 5", &result);
+    int ex_code = calculate("4 + ( 4 * 2 ) / 1 - 5", &result);
     ck_assert_double_eq_tol(result, 7, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -91,8 +83,7 @@ END_TEST
 //    ( 4 + 4 * 2 ) / 1 - 5 = 7
 START_TEST(s9) {
     double result = 0;
-    int ex_code = 0;
-    calculate("( 4 + 4 * 2 ) / 1 - 5", &result);
+    int ex_code = calculate("( 4 + 4 * 2 ) / 1 - 5", &result);
     ck_assert_double_eq_tol(result, 7, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -101,8 +92,7 @@ END_TEST
 //    8 * (7 + 6 * 4) + 3 = 251
 START_TEST(s10) {
     double result = 0;
-    int ex_code = 0;
-    calculate("8 * (7 + 6 * 4) + 3", &result);
+    int ex_code = calculate("8 * (7 + 6 * 4) + 3", &result);
     ck_assert_double_eq_tol(result, 251, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -111,8 +101,7 @@ END_TEST
 //    2 / (3 + 2) * 5 = 2
 START_TEST(s11) {
     double result = 0;
-    int ex_code = 0;
-    calculate("2 / (3 + 2) * 5", &result);
+    int ex_code = calculate("2 / (3 + 2) * 5", &result);
     ck_assert_double_eq_tol(result, 2, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -121,8 +110,7 @@ END_TEST
 //    2+9.3-8^3/4+56.2 = -60.5
 START_TEST(s12) {
     double result = 0;
-    int ex_code = 0;
-    calculate("2+9.3-8^3/4+56.2", &result);
+    int ex_code = calculate("2+9.3-8^3/4+56.2", &result);
     ck_assert_double_eq_tol(result, -60.5, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -131,8 +119,7 @@ END_TEST
 //    2+9.3-8^3/(4+56.2) = 2.795017
 START_TEST(s13) {
     double result = 0;
-    int ex_code = 0;
-    calculate("2+9.3-8^3/(4+56.2)", &result);
+    int ex_code = calculate("2+9.3-8^3/(4+56.2)", &result);
     ck_assert_double_eq_tol(result, 2.795017, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -141,8 +128,7 @@ END_TEST
 //    2^3^2 = 512
 START_TEST(s14) {
     double result = 0;
-    int ex_code = 0;
-    calculate("2^3^2", &result);
+    int ex_code = calculate("2^3^2", &result);
     ck_assert_double_eq_tol(result, 512, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -151,8 +137,7 @@ END_TEST
 //    2^(3^2) = 512
 START_TEST(s15) {
     double result = 0;
-    int ex_code = 0;
-    calculate("2^(3^2)", &result);
+    int ex_code = calculate("2^(3^2)", &result);
     ck_assert_double_eq_tol(result, 512, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -161,8 +146,7 @@ END_TEST
 //    (2^3)^2 = 64
 START_TEST(s16) {
     double result = 0;
-    int ex_code = 0;
-    calculate("(2^3)^2", &result);
+    int ex_code = calculate("(2^3)^2", &result);
     ck_assert_double_eq_tol(result, 64, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -171,8 +155,7 @@ END_TEST
 //    cos(431.2*2^2/8) = -0.390250
 START_TEST(s17) {
     double result = 0;
-    int ex_code = 0;
-    calculate("cos(431.2*2^2/8)", &result);
+    int ex_code = calculate("cos(431.2*2^2/8)", &result);
     ck_assert_double_eq_tol(result, -0.390250, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -181,8 +164,7 @@ END_TEST
 //    3*sin(4+5) = 1.236355
 START_TEST(s18) {
     double result = 0;
-    int ex_code = 0;
-    calculate("3*sin(4+5)", &result);
+    int ex_code = calculate("3*sin(4+5)", &result);
     ck_assert_double_eq_tol(result, 1.236355, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -191,8 +173,7 @@ END_TEST
 //    431.2*2^2/8 = 215.6
 START_TEST(s19) {
     double result = 0;
-    int ex_code = 0;
-    calculate("431.2*2^2/8", &result);
+    int ex_code = calculate("431.2*2^2/8", &result);
     ck_assert_double_eq_tol(result, 215.6, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -201,8 +182,7 @@ END_TEST
 //    cos(sin(2+9*6^1.2-tan(1))) = 0.742186 (0.742182?)
 START_TEST(s20) {
     double result = 0;
-    int ex_code = 0;
-    calculate("cos(sin(2+9*6^1.2-tan(1)))", &result);
+    int ex_code = calculate("cos(sin(2+9*6^1.2-tan(1)))", &result);
     ck_assert_double_eq_tol(result, 0.742182, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -211,8 +191,7 @@ END_TEST
 //    sqrt(cos(sin(2+9*6^1.2-tan(1)))) = 0.861502 (0.861500?)
 START_TEST(s21) {
     double result = 0;
-    int ex_code = 0;
-    calculate("sqrt(cos(sin(2+9*6^1.2-tan(1))))", &result);
+    int ex_code = calculate("sqrt(cos(sin(2+9*6^1.2-tan(1))))", &result);
     ck_assert_double_eq_tol(result, 0.861500, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -221,8 +200,7 @@ END_TEST
 //    sqrt(cos(sin(2+9*6^1.2-tan(1))))mod0.1 = 0.061502 (0.061500?)
 START_TEST(s22) {
     double result = 0;
-    int ex_code = 0;
-    calculate("sqrt(cos(sin(2+9*6^1.2-tan(1))))mod0.1", &result);
+    int ex_code = calculate("sqrt(cos(sin(2+9*6^1.2-tan(1))))mod0.1", &result);
     ck_assert_double_eq_tol(result, 0.06150, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -231,8 +209,7 @@ END_TEST
 //    sqrt(2^2)*5/(4-3mod2)*(4-sqrt(81)) = -16.666667
 START_TEST(s23) {
     double result = 0;
-    int ex_code = 0;
-    calculate("sqrt(2^2)*5/(4-3mod2)*(4-sqrt(81))", &result);
+    int ex_code = calculate("sqrt(2^2)*5/(4-3mod2)*(4-sqrt(81))", &result);
     ck_assert_double_eq_tol(result, -16.666667, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -241,8 +218,7 @@ END_TEST
 //    cos(1/3)*sin(1.352^9/(4+3)) = 0.787603
 START_TEST(s24) {
     double result = 0;
-    int ex_code = 0;
-    calculate("cos(1/3)*sin(1.352^9/(4+3))", &result);
+    int ex_code = calculate("cos(1/3)*sin(1.352^9/(4+3))", &result);
     ck_assert_double_eq_tol(result, 0.787603, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
@@ -251,15 +227,28 @@ END_TEST
 //    (cos(1/3)*sin(1.352^9/(4+3))/76.56)*log(150) = 0.022386
 START_TEST(s25) {
     double result = 0;
-    int ex_code = 0;
-    calculate("(cos(1/3)*sin(1.352^9/(4+3))/76.56)*log(150)", &result);
+    int ex_code = calculate("(cos(1/3)*sin(1.352^9/(4+3))/76.56)*log(150)", &result);
     ck_assert_double_eq_tol(result, 0.022386, TOL);
     ck_assert_int_eq(ex_code, 0);
 }
 END_TEST
 
 //    2+(-(-(-(-1)))) = 3
+START_TEST(s26) {
+    double result = 0;
+    int ex_code = calculate("2+(-(-(-(-1))))", &result);
+    ck_assert_double_eq_tol(result, 3, TOL);
+    ck_assert_int_eq(ex_code, 0);
+}
+END_TEST
 //    .4+.4
+START_TEST(s27) {
+    double result = 0;
+    int ex_code = calculate(".4+.4", &result);
+    ck_assert_double_eq_tol(result, 0.8, TOL);
+    ck_assert_int_eq(ex_code, 0);
+}
+END_TEST
 //    2.2.2.2
 //    .sin(3)
 //    sin(3).
@@ -313,6 +302,8 @@ Suite *simple_suite(void) {
     tcase_add_test(tc, s23);
     tcase_add_test(tc, s24);
     tcase_add_test(tc, s25);
+    tcase_add_test(tc, s26);
+    tcase_add_test(tc, s27);
 
     suite_add_tcase(s, tc);
 
