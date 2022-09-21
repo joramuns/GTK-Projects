@@ -162,6 +162,8 @@ int validate_stack(node *output_stack) {
         ex_code = EXTRA_SIGNS;
     } else if (open_brace != close_brace) {
         ex_code = BRACE_NUMBER;
+    } else if (operator_number == 0) {
+        ex_code = EXPRESSION_TOO_SHORT;
     }
 
     return ex_code;
