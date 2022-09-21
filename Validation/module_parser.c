@@ -81,7 +81,6 @@ int parse_double(size_t *array_pos, char *expression, node *output_stack) {
             }
             if (ISDOT) {
                 ex_code = EXTRA_DOT_ERROR;
-                printf("ERROR_DOT\n");
             }
         }
     }
@@ -148,7 +147,6 @@ int parse_long_operator(char *expression, size_t *array_pos) {
         if (ex_code != CODE_MOD) {
             if (expression[*array_pos] != '(' || expression[(*array_pos) + 1] == ')' ||
                 expression[(*array_pos) + 1] == '\0') {
-                printf("LONG OPERATOR BRACE ERROR\n");
                 ex_code = LONG_OPERATOR_BRACE_ERROR;
             }
         }
