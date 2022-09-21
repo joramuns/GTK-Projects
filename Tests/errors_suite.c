@@ -136,6 +136,81 @@ START_TEST(s19) {
 }
 END_TEST
 
+//    2.2.2.2
+START_TEST(s20) {
+    double result = 0;
+    int ex_code = calculate("2.2.2.2", &result);
+    ck_assert_int_gt(ex_code, 0);
+}
+END_TEST
+//    .sin(3)
+START_TEST(s21) {
+    double result = 0;
+    int ex_code = calculate(".sin(3)", &result);
+    ck_assert_int_gt(ex_code, 0);
+}
+END_TEST
+//    sin(3).
+START_TEST(s22) {
+    double result = 0;
+    int ex_code = calculate("sin(3).", &result);
+    ck_assert_int_gt(ex_code, 0);
+}
+END_TEST
+//    3X
+START_TEST(s23) {
+    double result = 0;
+    int ex_code = calculate("3X", &result);
+    ck_assert_int_gt(ex_code, 0);
+    ck_assert_int_ne(ex_code, 109);
+}
+END_TEST
+//    XX
+START_TEST(s24) {
+    double result = 0;
+    int ex_code = calculate("XX", &result);
+    ck_assert_int_gt(ex_code, 0);
+    ck_assert_int_ne(ex_code, 109);
+}
+END_TEST
+//    8*XX
+START_TEST(s25) {
+    double result = 0;
+    int ex_code = calculate("8*XX", &result);
+    ck_assert_int_gt(ex_code, 0);
+    ck_assert_int_ne(ex_code, 109);
+}
+END_TEST
+//    X8
+START_TEST(s26) {
+    double result = 0;
+    int ex_code = calculate_var("X8", &result, 4);
+    ck_assert_int_gt(ex_code, 0);
+    ck_assert_int_ne(ex_code, 109);
+}
+END_TEST
+//    8*X.
+START_TEST(s27) {
+    double result = 0;
+    int ex_code = calculate("8*X.", &result);
+    ck_assert_int_gt(ex_code, 0);
+    ck_assert_int_ne(ex_code, 109);
+}
+END_TEST
+//    8*Xsin(4)
+START_TEST(s28) {
+    double result = 0;
+    int ex_code = calculate("8*Xsin(4)", &result);
+    ck_assert_int_gt(ex_code, 0);
+    ck_assert_int_ne(ex_code, 109);
+}
+END_TEST
+
+//    Xcos((
+//    X5
+//    1sin(3)
+//    sin(3)6
+//    sin(3.3.3)
 Suite *errors_suite(void) {
     Suite *s = suite_create("Simple math");
     TCase *tc = tcase_create("Simple math");
@@ -159,12 +234,15 @@ Suite *errors_suite(void) {
     tcase_add_test(tc, s17);
     tcase_add_test(tc, s18);
     tcase_add_test(tc, s19);
-    /* tcase_add_test(tc, s20); */
-    /* tcase_add_test(tc, s21); */
-    /* tcase_add_test(tc, s22); */
-    /* tcase_add_test(tc, s23); */
-    /* tcase_add_test(tc, s24); */
-    /* tcase_add_test(tc, s25); */
+    tcase_add_test(tc, s20);
+    tcase_add_test(tc, s21);
+    tcase_add_test(tc, s22);
+    tcase_add_test(tc, s23);
+    tcase_add_test(tc, s24);
+    tcase_add_test(tc, s25);
+    tcase_add_test(tc, s26);
+    tcase_add_test(tc, s27);
+    tcase_add_test(tc, s28);
 
     suite_add_tcase(s, tc);
 

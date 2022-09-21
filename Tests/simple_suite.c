@@ -249,29 +249,17 @@ START_TEST(s27) {
     ck_assert_int_eq(ex_code, 0);
 }
 END_TEST
-//    2.2.2.2
-//    .sin(3)
-//    sin(3).
-//    3X
-//    XX
-//    8*XX
-//    X8
-//    8*X.
-//    8*Xsin(4)
-//    sin(X)
-//    sin(X*6)
-//    (2)3
+
 //    sin(2)*6
-//    2(3)
 //    cos(6*3)/5
-//    Xcos((
-//    1sin(3)
-//    sin(3)6
-//    sin(3.3.3)
+
+//    (2)3
+//    2(3)
+//    sin(X)
+//    sin(X)mod1
+//    sin(X*6)u
 //    mod*cos(8)
 //    3modmod2
-//    X5
-//    sin(X)mod1
 
 Suite *simple_suite(void) {
     Suite *s = suite_create("Simple math");
