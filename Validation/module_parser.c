@@ -60,6 +60,7 @@ int check_variable(char *expression) {
 
 int parse_double(size_t *array_pos, char *expression, node *output_stack) {
     int ex_code = 0;
+    size_t save_pointer = *array_pos + 1;
     push(output_stack);
     node *last = find_last(output_stack);
     last->type = TOK_NUM;
@@ -79,7 +80,7 @@ int parse_double(size_t *array_pos, char *expression, node *output_stack) {
                 last->value = (expression[*array_pos] - '0') * parse_divider + last->value;
                 *array_pos += 1;
             }
-            if (ISDOT) {
+            if (ISDOT || *array_pos == save_pointer) {
                 ex_code = EXTRA_DOT_ERROR;
             }
         }
