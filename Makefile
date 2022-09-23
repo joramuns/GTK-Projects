@@ -1,13 +1,31 @@
-test:
+install:
+
+uninstall:
+
+dvi:
+
+dist:
+
+tests:
+	gcc -g -c main.c Validation/*.c Calculation/*.c
+	gcc -g -o test *.o
+	./test
+
+test-asan:
 	gcc -fsanitize=address -g -c Tests/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
 	gcc -fsanitize=address -g -o test *.o `pkg-config --cflags --libs check`
 	./test
 	$(MAKE) fclean
 
-test-noasan:
-	gcc -g -c main.c Validation/*.c Calculation/*.c
-	gcc -g -o test *.o
+gcov_report:
+	gcc --coverage -c Tests/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
+	gcc --coverage -o test *.o `pkg-config --cflags --libs check`
 	./test
+	lcov -t "test" -o test.info -c -d . --rc lcov_branch_coverage=0
+	genhtml -o report test.info --rc lcov_branch_coverage=0
+
+
+
 
 gtk:
 	gcc -fsanitize=address -g -c main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
@@ -30,4 +48,4 @@ clean:
 
 fclean:
 	$(MAKE) clean
-	rm -rf test
+	rm -rf *.o *.so *.gcda *.a *.gcno *.info mest report
