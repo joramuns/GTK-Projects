@@ -143,7 +143,7 @@ int parse_input(char *expression, node *output_stack) {
 
 int validate_stack(node *output_stack) {
     int ex_code = 0;
-    int operator_number = 0, operand_number = 0, open_brace = 0, close_brace = 0;
+    int operator_number = 0, operand_number = 0, open_brace = 0, close_brace = 0, unary = 0;
     node *head = output_stack;
 
     while (head) {
@@ -155,6 +155,8 @@ int validate_stack(node *output_stack) {
             open_brace++;
         } else if (head->type == TOK_CLOSE_BRACE) {
             close_brace++;
+        } else if (head->type == TOK_UNARY) {
+           unary++; 
         }
         head = head->next;
     }
@@ -162,7 +164,7 @@ int validate_stack(node *output_stack) {
         ex_code = EXTRA_SIGNS;
     } else if (open_brace != close_brace) {
         ex_code = BRACE_NUMBER;
-    } else if (operator_number == 0) {
+    } else if (operator_number == 0 && unary == 0) {
         ex_code = EXPRESSION_TOO_SHORT;
     }
 
