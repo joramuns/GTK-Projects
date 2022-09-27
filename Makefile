@@ -7,29 +7,27 @@ dvi:
 dist:
 
 tests:
-	gcc -g -c main.c Validation/*.c Calculation/*.c
-	gcc -g -o test *.o
+	gcc -g -c Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
+	gcc -g -o test *.o `pkg-config --cflags --libs check`
 	./test
+	$(MAKE) fclean
 
 test-asan:
-	gcc -fsanitize=address -g -c Tests/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
+	gcc -fsanitize=address -g -c Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
 	gcc -fsanitize=address -g -o test *.o `pkg-config --cflags --libs check`
 	./test
 	$(MAKE) fclean
 
 gcov_report:
-	gcc --coverage -c Tests/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
+	gcc --coverage -c Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
 	gcc --coverage -o test *.o `pkg-config --cflags --libs check`
 	./test
 	lcov -t "test" -o test.info -c -d . --rc lcov_branch_coverage=0
 	genhtml -o report test.info --rc lcov_branch_coverage=0
 
-
-
-
 gtk:
-	gcc -fsanitize=address -g -c main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
-	gcc -fsanitize=address -g -o test *.o `pkg-config --libs gtk4`
+	gcc -fsanitize=address -DNDEBUG -g -c main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
+	gcc -fsanitize=address -DNDEBUG -g -o test *.o `pkg-config --libs gtk4`
 	$(MAKE) clean
 	./test
 
@@ -47,5 +45,4 @@ clean:
 	rm -rf *.o 
 
 fclean:
-	$(MAKE) clean
-	rm -rf *.o *.so *.gcda *.a *.gcno *.info mest report
+	rm -rf *.o *.so *.gcda *.a *.gcno *.info test report
