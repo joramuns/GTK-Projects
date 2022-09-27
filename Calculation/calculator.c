@@ -35,14 +35,16 @@ void replace_variable(node *output_stack, double var) {
 int calculate_var(char *expression, double *result, double var) {
     int ex_code = 0;
 
+    char *clean_expression = remove_spaces(expression);
     node *output_stack = init_node();
-    ex_code = validate_input(expression);
-    if (ex_code == VARIABLE_INSIDE) ex_code = parse_input(expression, output_stack);
+    ex_code = validate_input(clean_expression);
+    if (ex_code == VARIABLE_INSIDE) ex_code = parse_input(clean_expression, output_stack);
     if (ex_code == 0) ex_code = validate_stack(output_stack);
     if (ex_code == 0) {
         replace_variable(output_stack, var);
         *result = evaluate(output_stack);
     }
+    free(clean_expression);
     clean(output_stack);
 
     return ex_code;
