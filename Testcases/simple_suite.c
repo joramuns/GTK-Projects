@@ -250,6 +250,14 @@ START_TEST(s27) {
 }
 END_TEST
 
+// asin(X)* log(9.4 - 9) + (atan(X^2) - acos(0.9  )) ; var = 1
+START_TEST(s28) {
+    double result = 0;
+    int ex_code = calculate_var("asin(X)* log(9.4 - 9) + (atan(X^2) - acos(0.9  ))", &result, 1);
+    ck_assert_int_eq(ex_code, 0);
+    ck_assert_double_eq_tol(result, -0.290711, TOL);
+}
+END_TEST
 //    sin(2)*6
 //    cos(6*3)/5
 
@@ -292,6 +300,7 @@ Suite *simple_suite(void) {
     tcase_add_test(tc, s25);
     tcase_add_test(tc, s26);
     tcase_add_test(tc, s27);
+    tcase_add_test(tc, s28);
 
     suite_add_tcase(s, tc);
 

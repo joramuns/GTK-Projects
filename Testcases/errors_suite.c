@@ -207,10 +207,46 @@ START_TEST(s28) {
 END_TEST
 
 //    Xcos((
+START_TEST(s29) {
+    double result = 0;
+    int ex_code = calculate_var("Xcos((", &result, 0);
+    ck_assert_int_gt(ex_code, 0);
+    ck_assert_int_ne(ex_code, 109);
+}
+END_TEST
 //    X5
+START_TEST(s30) {
+    double result = 0;
+    int ex_code = calculate_var("X5", &result, 0);
+    ck_assert_int_gt(ex_code, 0);
+    ck_assert_int_ne(ex_code, 109);
+}
+END_TEST
 //    1sin(3)
+START_TEST(s31) {
+    double result = 0;
+    int ex_code = calculate("1sin(3)", &result);
+    ck_assert_int_gt(ex_code, 0);
+    ck_assert_int_ne(ex_code, 109);
+}
+END_TEST
 //    sin(3)6
+START_TEST(s32) {
+    double result = 0;
+    int ex_code = calculate("sin(3)6", &result);
+    ck_assert_int_gt(ex_code, 0);
+    ck_assert_int_ne(ex_code, 109);
+}
+END_TEST
 //    sin(3.3.3)
+START_TEST(s33) {
+    double result = 0;
+    int ex_code = calculate("sin(3.3.3)", &result);
+    ck_assert_int_gt(ex_code, 0);
+    ck_assert_int_ne(ex_code, 109);
+}
+END_TEST
+
 Suite *errors_suite(void) {
     Suite *s = suite_create("Simple math");
     TCase *tc = tcase_create("Simple math");
@@ -243,6 +279,11 @@ Suite *errors_suite(void) {
     tcase_add_test(tc, s26);
     tcase_add_test(tc, s27);
     tcase_add_test(tc, s28);
+    tcase_add_test(tc, s29);
+    tcase_add_test(tc, s30);
+    tcase_add_test(tc, s31);
+    tcase_add_test(tc, s32);
+    tcase_add_test(tc, s33);
 
     suite_add_tcase(s, tc);
 
