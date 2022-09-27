@@ -24,6 +24,8 @@ gcov_report:
 	./test
 	lcov -t "test" -o test.info -c -d . --rc lcov_branch_coverage=0
 	genhtml -o report test.info --rc lcov_branch_coverage=0
+	$(MAKE) clean
+	open report/index.html
 
 gtk:
 	gcc -fsanitize=address -DNDEBUG -g -c main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
@@ -42,7 +44,7 @@ gtk-noasan:
 	./test
 
 clean:
-	rm -rf *.o 
+	rm -rf *.o *.gcda *.gcno *.info
 
 fclean:
 	rm -rf *.o *.so *.gcda *.a *.gcno *.info test report
