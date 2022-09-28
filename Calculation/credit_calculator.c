@@ -19,11 +19,11 @@ void handle_credit_calculator(credit_input input, credit_output *output) {
 int eval_annuity_credit(credit_input input, credit_output *output) {
     int ex_code = 0;
     output->stack_of_payments = init_node();
-    double capitalize_rate = powf((1 + input.rate), input.term);
+    double capitalize_rate = pow((1 + input.rate), input.term);
 
     double payment = input.sum * ((input.rate * capitalize_rate) / (capitalize_rate - 1));
     payment = bank_rounding(payment);
-    output->total_sum = bank_rounding(payment * input.term);
+    output->total_sum = (payment * input.term);
     output->overpaid = output->total_sum - input.sum;
     while (input.term-- > 0) {
         push(output->stack_of_payments);
