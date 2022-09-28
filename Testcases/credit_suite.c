@@ -1,6 +1,5 @@
 #include "check_main.h"
 
-//    sinn(20) = ERROR (106)
 START_TEST(s1) {
     credit_input test_case = {0};
     credit_output test_result = {0};

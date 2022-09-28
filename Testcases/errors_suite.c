@@ -248,8 +248,8 @@ START_TEST(s33) {
 END_TEST
 
 Suite *errors_suite(void) {
-    Suite *s = suite_create("Simple math");
-    TCase *tc = tcase_create("Simple math");
+    Suite *s = suite_create("Error test");
+    TCase *tc = tcase_create("Error test");
 
     tcase_add_test(tc, s1);
     tcase_add_test(tc, s2);
