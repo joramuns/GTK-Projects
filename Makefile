@@ -1,16 +1,23 @@
 install:
+	@mkdir -p s21_smart_calc_1_0
+	@cp -R Style/ s21_smart_calc_1_0/Style/
+	gcc -c main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
+	gcc -o s21_smart_calc_1_0/s21_smart_calc *.o `pkg-config --libs gtk4`
+	@$(MAKE) clean
 
 uninstall:
 
 dvi:
+	@texi2dvi some.texi
 
-dist:
+dist: install
+	tar -cvzf s21_smart_calc_1_0/s21_smart_calc_1_0.tar.gz s21_smart_calc_1_0/Style/ s21_smart_calc_1_0/s21_smart_calc 
 
 tests:
 	gcc -g -c Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
 	gcc -g -o test *.o `pkg-config --cflags --libs check`
 	./test
-	$(MAKE) fclean
+	# $(MAKE) fclean
 
 test-asan:
 	gcc -fsanitize=address -g -c Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
@@ -28,23 +35,15 @@ gcov_report:
 	open report/index.html
 
 gtk:
-	gcc -fsanitize=address -DNDEBUG -g -c main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
-	gcc -fsanitize=address -DNDEBUG -g -o test *.o `pkg-config --libs gtk4`
-	$(MAKE) clean
-	./test
-
-gtk-lasan:
-	gcc -fsanitize=leak -g -c main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
-	gcc -fsanitize=leak -g -o test *.o `pkg-config --libs gtk4`
-	./test
-
-gtk-noasan:
-	gcc -g -c main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
-	gcc -g -o test *.o `pkg-config --libs gtk4`
-	./test
+	@mkdir -p build
+	@cp -R Style/ build/Style/
+	gcc -fsanitize=address -g -c main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
+	gcc -fsanitize=address -g -o build/test *.o `pkg-config --libs gtk4`
+	@$(MAKE) clean
+	@build/test
 
 clean:
-	rm -rf *.o *.gcda *.gcno *.info
+	@rm -rf *.o *.gcda *.gcno *.info
 
 fclean:
-	rm -rf *.o *.so *.gcda *.a *.gcno *.info test report
+	@rm -rf *.o *.so *.gcda *.a *.gcno *.info test report s21_smart_calc_1_0
