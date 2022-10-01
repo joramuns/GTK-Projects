@@ -17,7 +17,7 @@ int handle_deposit_calc(deposit_input cont, deposit_output *cont_output) {
                 cont.payout = 0;
             } else {
                 push(cont_output->stack_of_payouts);
-                find_last(cont_output->stack_of_payouts)->value = cont.payout; 
+                find_last(cont_output->stack_of_payouts)->value = cont.payout;
                 cont.payout = 0;
             }
         }
@@ -25,7 +25,7 @@ int handle_deposit_calc(deposit_input cont, deposit_output *cont_output) {
     if (cont.payout > 0) {
         if (cont.capitalization) {
             cont.deposit += cont.payout;
-            cont.total_profit = cont.deposit - temp_deposit; 
+            cont.total_profit = cont.deposit - temp_deposit;
         } else {
             cont.total_profit += cont.payout;
         }

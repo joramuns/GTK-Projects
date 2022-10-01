@@ -8,19 +8,19 @@
 #ifndef deposit_calculator_h
 #define deposit_calculator_h
 
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
 
-#include "bank_rounding.h"
 #include "../Validation/nodes.h"
 #include "../Validation/parser.h"
+#include "bank_rounding.h"
 
 #define YEARDAYS 365
 
 enum frequency_payment {
     DAILY = 1,
     WEEKLY = 7,
-    MONTHLY = 30, 
+    MONTHLY = 30,
     QUARTERLY = 90,
     YEARLY = 365,
 };

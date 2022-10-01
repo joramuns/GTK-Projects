@@ -8,12 +8,12 @@
 #ifndef credit_calculator_h
 #define credit_calculator_h
 
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
 
-#include "bank_rounding.h"
 #include "../Validation/nodes.h"
 #include "../Validation/parser.h"
+#include "bank_rounding.h"
 
 typedef struct credit_input {
     double sum;

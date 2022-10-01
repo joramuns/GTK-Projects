@@ -10,9 +10,9 @@
 
 #include <stdio.h>
 
-#include "eval_func.h"
 #include "../Validation/nodes.h"
 #include "../Validation/parser.h"
+#include "eval_func.h"
 
 int calculate(char *expression, double *result);
 void replace_variable(node *output_stack, double var);
