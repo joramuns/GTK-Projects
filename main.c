@@ -8,20 +8,19 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+
 #include "Calculation/calculator.h"
 #include "Calculation/deposit_calculator.h"
 
-double bank_rounding(double value) {
-    return roundf(value * 100) / 100;
-}
+double bank_rounding(double value) { return roundf(value * 100) / 100; }
 
 int main() {
     int ex_code = 0;
-//    char expression[EXPRESSION_SIZE + 1 + 1] = {0};
-//    fgets(expression, EXPRESSION_SIZE + 1 + 1, stdin);
-//    double result = 0;
-//
-//    ex_code = calculate(expression, &result);
+    //    char expression[EXPRESSION_SIZE + 1 + 1] = {0};
+    //    fgets(expression, EXPRESSION_SIZE + 1 + 1, stdin);
+    //    double result = 0;
+    //
+    //    ex_code = calculate(expression, &result);
     deposit_input cont = {0};
     cont.deposit = 300000;
     cont.rate = 0.24;
@@ -57,18 +56,15 @@ int main() {
         if (cont.capitalization) {
             cont.deposit += cont.payout;
             cont.payout = 0;
-            cont.total_profit = cont.deposit - temp_deposit; 
+            cont.total_profit = cont.deposit - temp_deposit;
         } else {
             printf("Profit = %.2lf\n", cont.payout);
             cont.total_profit += cont.payout;
             cont.payout = 0;
         }
     }
-    
-    printf("Total profit = %.2lf\n", cont.total_profit);
-    
-    
 
+    printf("Total profit = %.2lf\n", cont.total_profit);
 
     return ex_code;
 }

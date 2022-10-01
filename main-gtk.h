@@ -8,9 +8,10 @@
 #ifndef main_h
 #define main_h
 
-#include <stdio.h>
 #include <gtk/gtk.h>
+#include <stdio.h>
 #include <string.h>
+
 #include "Calculation/calculator.h"
 #include "Calculation/credit_calculator.h"
 #include "Calculation/deposit_calculator.h"
@@ -54,7 +55,7 @@ typedef struct wd_cont {
     GtkEntry *date_withdrawal;
 } wd_cont;
 
-void quit_window (GtkWindow *window);
+void quit_window(GtkWindow *window);
 
 /*                          drawing graph                                       */
 static void draw_plot(gdouble clipX1, gdouble clipX2, cairo_t *cr, char *output);
