@@ -13,7 +13,7 @@ START_TEST(s1) {
     clean(test_result.stack_of_payouts);
     free(test_case.account_movement);
     double result_deposit = test_result.total_profit;
-    ck_assert_double_eq_tol(result_deposit, 347.11, 1e-02); 
+    ck_assert_double_eq_tol(result_deposit, 347.11, 1e-02);
 }
 END_TEST
 
@@ -26,7 +26,7 @@ END_TEST
 /*     test_case.capitalization = 1; */
 /*     handle_deposit_calc(test_case, &test_result); */
 /*     double result_deposit = test_result.total_profit; */
-/*     ck_assert_double_eq_tol(result_deposit, 352.18, 1e-02); */ 
+/*     ck_assert_double_eq_tol(result_deposit, 352.18, 1e-02); */
 /*     /1* clean(test_result.stack_of_payouts); *1/ */
 /* } */
 /* END_TEST */
@@ -40,7 +40,7 @@ END_TEST
 /*     test_case.capitalization = 0; */
 /*     handle_deposit_calc(test_case, &test_result); */
 /*     double result_deposit = test_result.total_profit; */
-/*     ck_assert_double_eq_tol(result_deposit, 15446.51, 1e-02); */ 
+/*     ck_assert_double_eq_tol(result_deposit, 15446.51, 1e-02); */
 /*     /1* clean(test_result.stack_of_payouts); *1/ */
 /* } */
 /* END_TEST */
@@ -54,7 +54,7 @@ END_TEST
 /*     test_case.capitalization = 1; */
 /*     handle_deposit_calc(test_case, &test_result); */
 /*     double result_deposit = test_result.total_profit; */
-/*     ck_assert_double_eq_tol(result_deposit, 15565.10, 1e-02); */ 
+/*     ck_assert_double_eq_tol(result_deposit, 15565.10, 1e-02); */
 /*     /1* clean(test_result.stack_of_payouts); *1/ */
 /* } */
 /* END_TEST */

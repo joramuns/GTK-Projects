@@ -7,8 +7,8 @@
 
 #ifndef check_main_h
 #define check_main_h
-#include <stdio.h>
 #include <check.h>
+#include <stdio.h>
 
 #include "../Calculation/calculator.h"
 #include "../Calculation/credit_calculator.h"
