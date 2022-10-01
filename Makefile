@@ -1,8 +1,8 @@
 install:
 	@mkdir -p s21_smart_calc_1_0
 	glib-compile-resources Style/gresource.xml --generate-source --target=resources.c
-	gcc -c main-gtk.c resources.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
-	gcc -o s21_smart_calc_1_0/s21_smart_calc *.o `pkg-config --libs gtk4`
+	gcc -g -c main-gtk.c resources.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
+	gcc -g -o s21_smart_calc_1_0/s21_smart_calc *.o `pkg-config --libs gtk4`
 	@$(MAKE) clean
 
 uninstall:
