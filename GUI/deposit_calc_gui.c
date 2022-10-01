@@ -162,7 +162,7 @@ void del_withdrawal_func(GtkButton *button, gpointer data_struct) {
 
 void deposit_calc_window(GtkButton *widget, gpointer data) {
     GtkBuilder *builder = gtk_builder_new();
-    gtk_builder_add_from_file(builder, "./Style/deposit-calc-o.ui", NULL);
+    gtk_builder_add_from_resource(builder, "/org/gtk/Style/deposit-calc-o.ui", NULL);
     GObject *window = gtk_builder_get_object(builder, "window_credit_calc");
 
     /* Comboboxes */

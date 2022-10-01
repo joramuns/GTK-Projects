@@ -64,7 +64,7 @@ void execute_credit_func(GtkButton *widget, gpointer data) {
 
 void credit_calc_window(GtkButton *widget, gpointer data) {
     GtkBuilder *builder = gtk_builder_new();
-    gtk_builder_add_from_file(builder, "./Style/credit-calc-o.ui", NULL);
+    gtk_builder_add_from_resource(builder, "/org/gtk/Style/credit-calc-o.ui", NULL);
     GObject *window = gtk_builder_get_object(builder, "window_credit_calc");
 
     /* Comboboxes */

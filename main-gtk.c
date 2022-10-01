@@ -52,26 +52,26 @@ void toggle_graph_func(GtkToggleButton *togglebutton, gpointer user_data) {
 
 static void activate (GtkApplication *app, gpointer user_data) {
     GtkBuilder *builder = gtk_builder_new();
-    gtk_builder_add_from_file(builder, "./Style/builder-o.ui", NULL);
+    gtk_builder_add_from_resource(builder, "/org/gtk/Style/builder-o.ui", NULL);
     GObject *window = gtk_builder_get_object(builder, "window");
     gtk_window_set_application(GTK_WINDOW (window), app);
 
     /* style */
     GtkCssProvider *cssProvider = gtk_css_provider_new();
     GdkDisplay *display = gtk_widget_get_display(GTK_WIDGET(window));
-    gtk_css_provider_load_from_path(cssProvider, "./Style/theme.css");
+    gtk_css_provider_load_from_resource(cssProvider, "/org/gtk/Style/theme.css");
     gtk_style_context_add_provider_for_display(display, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     g_object_unref(cssProvider);
 
     /* input */
-    GtkEntry *entry_func;
-    entry_func = (GtkEntry *) gtk_builder_get_object(builder, "entry_func");
-    gtk_entry_set_max_length(GTK_ENTRY(entry_func), EXPRESSION_SIZE);
-    /* output*/
-    GtkEntry *entry_res;
-    entry_res = (GtkEntry *) gtk_builder_get_object(builder, "entry_res");
-    /* codominant and dominant */
-    GtkToggleButton *graph_check = (GtkToggleButton *) gtk_builder_get_object(builder, "check_box");
+    GtkEntry *entry_func; 
+    entry_func = (GtkEntry *) gtk_builder_get_object(builder, "entry_func"); 
+    gtk_entry_set_max_length(GTK_ENTRY(entry_func), EXPRESSION_SIZE); 
+    /* output */
+    GtkEntry *entry_res; 
+    entry_res = (GtkEntry *) gtk_builder_get_object(builder, "entry_res"); 
+    /* codominant and dominant */ 
+    GtkToggleButton *graph_check = (GtkToggleButton *) gtk_builder_get_object(builder, "check_box"); 
     gtk_toggle_button_set_active(graph_check, 1);
     GtkEntry *dom_min = (GtkEntry *) gtk_builder_get_object(builder, "entry_dom_min");
     gtk_entry_set_placeholder_text(dom_min, "Dominant min");
@@ -139,7 +139,7 @@ int main (int argc, char **argv) {
 
     buttonData *buttons[34*sizeof(buttonData)] = {0};
 
-    app = gtk_application_new ("org.gtk.example", G_APPLICATION_FLAGS_NONE);
+    app = gtk_application_new ("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
     g_signal_connect (app, "activate", G_CALLBACK (activate), &buttons);
 
     status = g_application_run (G_APPLICATION (app), argc, argv);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gtk">
+      <file preprocess="xml-stripblanks">Style/builder-o.ui</file>
+      <file preprocess="xml-stripblanks">Style/credit-calc-o.ui</file>
+      <file preprocess="xml-stripblanks">Style/deposit-calc-o.ui</file>
+      <file preprocess="xml-stripblanks">Style/plot-o.ui</file>
+      <file>Style/theme.css</file>
+  </gresource>
+</gresources>
+

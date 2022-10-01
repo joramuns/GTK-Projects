@@ -1,7 +1,7 @@
 install:
 	@mkdir -p s21_smart_calc_1_0
-	@cp -R Style/ s21_smart_calc_1_0/Style/
-	gcc -c main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
+	glib-compile-resources Style/gresource.xml --generate-source --target=resources.c
+	gcc -c main-gtk.c resources.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
 	gcc -o s21_smart_calc_1_0/s21_smart_calc *.o `pkg-config --libs gtk4`
 	@$(MAKE) clean
 
@@ -11,7 +11,8 @@ dvi:
 	@texi2dvi some.texi
 
 dist: install
-	tar -cvzf s21_smart_calc_1_0/s21_smart_calc_1_0.tar.gz s21_smart_calc_1_0/Style/ s21_smart_calc_1_0/s21_smart_calc 
+	tar -cvzf s21_smart_calc_1_0/s21_smart_calc_1_0.tar.gz s21_smart_calc_1_0/s21_smart_calc 
+	@rm s21_smart_calc_1_0/s21_smart_calc
 
 tests:
 	gcc -g -c Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
@@ -35,9 +36,9 @@ gcov_report:
 	open report/index.html
 
 gtk:
+	glib-compile-resources Style/gresource.xml --generate-source --target=resources.c
 	@mkdir -p build
-	@cp -R Style/ build/Style/
-	gcc -fsanitize=address -g -c main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
+	gcc -fsanitize=address -g -c main-gtk.c resources.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
 	gcc -fsanitize=address -g -o build/test *.o `pkg-config --libs gtk4`
 	@$(MAKE) clean
 	@build/test
@@ -46,4 +47,4 @@ clean:
 	@rm -rf *.o *.gcda *.gcno *.info
 
 fclean:
-	@rm -rf *.o *.so *.gcda *.a *.gcno *.info test report s21_smart_calc_1_0
+	@rm -rf *.o *.so *.gcda *.a *.gcno *.info test report build s21_smart_calc_1_0 resources.c
