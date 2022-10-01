@@ -56,7 +56,7 @@ int validate_extra_dot(char *expression) {
     char *test = strchr(expression, '.');
     if (test != NULL) {
         test++;
-        char *test_2 = strchr(test, '.'); 
+        char *test_2 = strchr(test, '.');
         if (test_2 != NULL || *test == '\0') {
             ex_code = WRONG_SYMBOLS;
         }
@@ -95,9 +95,9 @@ int parse_input(char *expression, node *output_stack) {
             if (check_result == TOK_OPERATOR_1) handle_unary(expression, array_pos, output_stack);
             if (array_pos > 0 && check_result == TOK_OPEN_BRACE) {
                 int before_brace = check_input_type(expression[array_pos - 1]);
-                    if (before_brace == TOK_NUM) {
-                        ex_code = WRONG_SYMBOLS;
-                    }
+                if (before_brace == TOK_NUM) {
+                    ex_code = WRONG_SYMBOLS;
+                }
             }
             handle_operator(expression[array_pos], output_stack, queue_stack, check_result);
             array_pos++;
@@ -106,7 +106,10 @@ int parse_input(char *expression, node *output_stack) {
             size_t temp_array_pos = array_pos + 1;
             if (array_pos > 0 && expression[array_pos - 1] == '(') {
                 ex_code = EMPTY_BRACES;
-            } else if (after_brace != TOK_OPERATOR_1 && after_brace != TOK_OPERATOR_2 && after_brace != TOK_POW && after_brace != TOK_CLOSE_BRACE && parse_long_operator(expression, &temp_array_pos) != CODE_MOD && expression[array_pos + 1] != '\0') {
+            } else if (after_brace != TOK_OPERATOR_1 && after_brace != TOK_OPERATOR_2 &&
+                       after_brace != TOK_POW && after_brace != TOK_CLOSE_BRACE &&
+                       parse_long_operator(expression, &temp_array_pos) != CODE_MOD &&
+                       expression[array_pos + 1] != '\0') {
                 ex_code = WRONG_SYMBOLS;
             } else {
                 array_pos++;
@@ -119,9 +122,9 @@ int parse_input(char *expression, node *output_stack) {
             } else if (type_unary >= CODE_ACOS && type_unary <= CODE_LN) {
                 if (array_pos > 3) {
                     int before_brace = check_input_type(expression[array_pos - 4]);
-                        if (before_brace == TOK_NUM) {
-                            ex_code = WRONG_SYMBOLS;
-                        }
+                    if (before_brace == TOK_NUM) {
+                        ex_code = WRONG_SYMBOLS;
+                    }
                 }
                 handle_operator(type_unary, output_stack, queue_stack, TOK_UNARY);
             } else {
@@ -156,7 +159,7 @@ int validate_stack(node *output_stack) {
         } else if (head->type == TOK_CLOSE_BRACE) {
             close_brace++;
         } else if (head->type == TOK_UNARY) {
-           unary++; 
+            unary++;
         }
         head = head->next;
     }

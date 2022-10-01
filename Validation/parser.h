@@ -72,6 +72,6 @@ void handle_unary(const char *expression, size_t array_pos, node *output_stack);
 int handle_close_brace(node *output_stack, node *queue_stack);
 void clean_queue_stack(node *output_stack, node *queue_stack);
 int check_variable(char *expression);
-char *remove_spaces(char *string); 
+char *remove_spaces(char *string);
 
 #endif /* parser_h */
