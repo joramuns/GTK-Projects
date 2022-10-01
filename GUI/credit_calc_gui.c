@@ -19,7 +19,7 @@ void execute_credit_func(GtkButton *widget, gpointer data) {
 
     GtkEntryBuffer *rate_entry_buf = gtk_entry_get_buffer(entry->rate_entry);
     char *output_rate = (char *)gtk_entry_buffer_get_text(rate_entry_buf);
-    
+
     ex_code = validate_input_numbers(output_sum);
     if (ex_code == 0) ex_code = validate_input_numbers(output_term);
     if (ex_code == 0) ex_code = validate_input_numbers(output_rate);
@@ -44,10 +44,11 @@ void execute_credit_func(GtkButton *widget, gpointer data) {
 
     if (ex_code == 0) {
         char *autobuffer = NULL;
-        asprintf(&autobuffer, "Total paid: %.2lf\nOverpaid: %.2lf\n", cont_output.total_sum, cont_output.overpaid);
+        asprintf(&autobuffer, "Total paid: %.2lf\nOverpaid: %.2lf\n", cont_output.total_sum,
+                 cont_output.overpaid);
         gtk_text_buffer_insert(entry->result_buffer, &iter, autobuffer, -1);
         free(autobuffer);
-    
+
         node *head = cont_output.stack_of_payments;
         while (find_last(head)->number != 0) {
             asprintf(&autobuffer, "Monthly payment: %.2lf\n", find_last(head)->value);
@@ -59,7 +60,6 @@ void execute_credit_func(GtkButton *widget, gpointer data) {
         gtk_text_buffer_insert(entry->result_buffer, &iter, "Invalid input!\n", -1);
     }
     clean(cont_output.stack_of_payments);
-
 }
 
 void credit_calc_window(GtkButton *widget, gpointer data) {
@@ -68,36 +68,34 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
     GObject *window = gtk_builder_get_object(builder, "window_credit_calc");
 
     /* Comboboxes */
-    GtkComboBoxText *percentage_cbt = (GtkComboBoxText *) gtk_builder_get_object(builder, "percents");
+    GtkComboBoxText *percentage_cbt = (GtkComboBoxText *)gtk_builder_get_object(builder, "percents");
     gtk_combo_box_set_active(GTK_COMBO_BOX(percentage_cbt), 0);
-    GtkComboBoxText *years_or_months = (GtkComboBoxText *) gtk_builder_get_object(builder, "years_or_months");
+    GtkComboBoxText *years_or_months = (GtkComboBoxText *)gtk_builder_get_object(builder, "years_or_months");
     gtk_combo_box_set_active(GTK_COMBO_BOX(years_or_months), 0);
-    GtkComboBoxText *currency_cbt = (GtkComboBoxText *) gtk_builder_get_object(builder, "currency");
+    GtkComboBoxText *currency_cbt = (GtkComboBoxText *)gtk_builder_get_object(builder, "currency");
     gtk_combo_box_set_active(GTK_COMBO_BOX(currency_cbt), 0);
-    GtkComboBoxText *type_choice = (GtkComboBoxText *) gtk_builder_get_object(builder, "type_choice");
+    GtkComboBoxText *type_choice = (GtkComboBoxText *)gtk_builder_get_object(builder, "type_choice");
     gtk_combo_box_set_active(GTK_COMBO_BOX(type_choice), 0);
 
     /* Result text */
-    GtkTextView *result_tw = (GtkTextView *) gtk_builder_get_object(builder, "result");
+    GtkTextView *result_tw = (GtkTextView *)gtk_builder_get_object(builder, "result");
     GtkTextBuffer *result_buffer = gtk_text_view_get_buffer(result_tw);
-    
+
     /* Buttons */
-    GtkButton *execute_button = (GtkButton *) gtk_builder_get_object(builder, "execute_credit_calc");
+    GtkButton *execute_button = (GtkButton *)gtk_builder_get_object(builder, "execute_credit_calc");
 
-    entry_input *one = malloc(1*sizeof(entry_input));
+    entry_input *one = malloc(1 * sizeof(entry_input));
 
-    one->sum_entry = (GtkEntry *) gtk_builder_get_object(builder, "sum_entry");
-    one->term_entry = (GtkEntry *) gtk_builder_get_object(builder, "term_entry");
-    one->rate_entry = (GtkEntry *) gtk_builder_get_object(builder, "rate_entry");
+    one->sum_entry = (GtkEntry *)gtk_builder_get_object(builder, "sum_entry");
+    one->term_entry = (GtkEntry *)gtk_builder_get_object(builder, "term_entry");
+    one->rate_entry = (GtkEntry *)gtk_builder_get_object(builder, "rate_entry");
     one->term_cbt = years_or_months;
-    one->type_credit_cbt = (GtkWidget *) type_choice;
+    one->type_credit_cbt = (GtkWidget *)type_choice;
     one->result_buffer = result_buffer;
     g_signal_connect(execute_button, "clicked", G_CALLBACK(execute_credit_func), one);
-    GtkButton *quit_button = (GtkButton *) gtk_builder_get_object(builder, "quit_credit_calc");
+    GtkButton *quit_button = (GtkButton *)gtk_builder_get_object(builder, "quit_credit_calc");
     g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(quit_window), window);
 
-    gtk_widget_show (GTK_WIDGET(window));
+    gtk_widget_show(GTK_WIDGET(window));
     g_object_unref(builder);
 }
-
-

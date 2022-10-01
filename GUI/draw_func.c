@@ -11,11 +11,11 @@
 static void draw_plot(gdouble clipX1, gdouble clipX2, cairo_t *cr, char *output) {
     int ex_code = 0;
     if (output != NULL) {
-        for (double x = x_min; x < x_max && ex_code == 0; x += (x_max - x_min)/1000) {
+        for (double x = x_min; x < x_max && ex_code == 0; x += (x_max - x_min) / 1000) {
             double y = 0;
             ex_code = calculate_var(output, &y, x);
             double resultAtan = fabs(fabs(atan(y)) - M_PI_2);
-            if (resultAtan <= (x_max - x_min)/1000 || isnan(y))
+            if (resultAtan <= (x_max - x_min) / 1000 || isnan(y))
                 cairo_new_sub_path(cr);
             else
                 cairo_line_to(cr, x, -y);
@@ -26,11 +26,11 @@ static void draw_plot(gdouble clipX1, gdouble clipX2, cairo_t *cr, char *output)
 static void draw_grid(double width, double height, cairo_t *cr, gdouble dx) {
     cairo_set_source_rgba(cr, 0.99, 0.98, 1, 0.2);
     cairo_set_line_width(cr, dx);
-    cairo_select_font_face (cr, "monospace", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+    cairo_select_font_face(cr, "monospace", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
     cairo_move_to(cr, 0, 0);
-    double iterator_x = (fabs(x_min) + fabs(x_max)) / 10; 
-    double iterator_y = (fabs(y_min) + fabs(y_max)) / 10; 
-    cairo_set_font_size (cr, iterator_x / 2.5); 
+    double iterator_x = (fabs(x_min) + fabs(x_max)) / 10;
+    double iterator_y = (fabs(y_min) + fabs(y_max)) / 10;
+    cairo_set_font_size(cr, iterator_x / 2.5);
     cairo_show_text(cr, "0");
     char *autobuffer = NULL;
     for (double i = 0; i < width; i += iterator_x) {
@@ -39,13 +39,13 @@ static void draw_grid(double width, double height, cairo_t *cr, gdouble dx) {
         cairo_move_to(cr, -i, -height / 2);
         cairo_line_to(cr, -i, height / 2);
         if (i != 0) {
-            cairo_move_to (cr, i, -y_min);
-            asprintf(&autobuffer, "%g", i); 
-            cairo_show_text (cr, autobuffer);
+            cairo_move_to(cr, i, -y_min);
+            asprintf(&autobuffer, "%g", i);
+            cairo_show_text(cr, autobuffer);
             free(autobuffer);
-            cairo_move_to (cr, -i, -y_min);
-            asprintf(&autobuffer, "%g", -i); 
-            cairo_show_text (cr, autobuffer);
+            cairo_move_to(cr, -i, -y_min);
+            asprintf(&autobuffer, "%g", -i);
+            cairo_show_text(cr, autobuffer);
             free(autobuffer);
         }
     }
@@ -55,13 +55,13 @@ static void draw_grid(double width, double height, cairo_t *cr, gdouble dx) {
         cairo_move_to(cr, -width / 2, -i);
         cairo_line_to(cr, width / 2, -i);
         if (i != 0) {
-            cairo_move_to (cr, x_min, i);
-            asprintf(&autobuffer, "%g", -i); 
-            cairo_show_text (cr, autobuffer);
+            cairo_move_to(cr, x_min, i);
+            asprintf(&autobuffer, "%g", -i);
+            cairo_show_text(cr, autobuffer);
             free(autobuffer);
-            cairo_move_to (cr, x_min, -i);
-            asprintf(&autobuffer, "%g", i); 
-            cairo_show_text (cr, autobuffer);
+            cairo_move_to(cr, x_min, -i);
+            asprintf(&autobuffer, "%g", i);
+            cairo_show_text(cr, autobuffer);
             free(autobuffer);
         }
     }
@@ -71,25 +71,27 @@ static void draw_grid(double width, double height, cairo_t *cr, gdouble dx) {
 void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer user_data) {
     gdouble dx = 2, dy = 2;
     gdouble i, clipX1 = 0.0, clipY1 = 0.0, clipX2 = 0.0, clipY2 = 0.0;
-    cairo_set_source_rgba(cr, 0.29, 0.58, 0.45, 1); // 0.1, 0.1, 0.8, 0.8);
+    cairo_set_source_rgba(cr, 0.29, 0.58, 0.45, 1);  // 0.1, 0.1, 0.8, 0.8);
     cairo_paint(cr);
     // TRY
-    double x_range = (x_max - x_min)/2;
-    double x_offset = (x_min + x_max)/2;
-    double y_range = (y_max - y_min)/2;
-    double y_offset = (y_min + y_max)/2;
-    // задана область значений -1 до 1 -> mod(-1) + mod(1) = 2 - ширина видимости, -1 + 1 = 0 - сдвиг видимости
-//    (50, 50) & (50, -50)
+    double x_range = (x_max - x_min) / 2;
+    double x_offset = (x_min + x_max) / 2;
+    double y_range = (y_max - y_min) / 2;
+    double y_offset = (y_min + y_max) / 2;
+    // задана область значений -1 до 1 -> mod(-1) + mod(1) = 2 - ширина видимости, -1 + 1 = 0 - сдвиг
+    // видимости
+    //    (50, 50) & (50, -50)
     // -2 - 2 -> mod(-2) + mod(2) = 4, -2 + 2 = 0
     // 150, 150 & 75, -75 -> 150, 150 - screen size / domain(4)/2 = 75
     // -3, 3 -> mod(-3) + mod(3) = 6, -3+3=0
     // 150 / (6/3), -150 / (6/3)
     // -6, 0 -> mod(-6) + mod(0) = 6 -6+0=-6
-//    cairo_translate(cr, 150 - ((-6/2)*(150/(6/2))), 150);
-    cairo_translate(cr, SCREENSIZE - (x_offset*(SCREENSIZE/x_range)), SCREENSIZE - (y_offset*(SCREENSIZE/-y_range)));
+    //    cairo_translate(cr, 150 - ((-6/2)*(150/(6/2))), 150);
+    cairo_translate(cr, SCREENSIZE - (x_offset * (SCREENSIZE / x_range)),
+                    SCREENSIZE - (y_offset * (SCREENSIZE / -y_range)));
     /* измениять scale для разных маштабов */
-//    cairo_scale(cr, scaleX, -scaleY);
-//    cairo_scale(cr, 150 / (6/2), - 150 / (6/2));
+    //    cairo_scale(cr, scaleX, -scaleY);
+    //    cairo_scale(cr, 150 / (6/2), - 150 / (6/2));
     cairo_scale(cr, SCREENSIZE / x_range, SCREENSIZE / y_range);
     /* определить границы графика */
     cairo_device_to_user_distance(cr, &dx, &dy);

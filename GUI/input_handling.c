@@ -12,7 +12,7 @@ void add_text(GtkButton *widget, gpointer data) {
     GtkEntry *entry = current->entry;
     GtkEntryBuffer *entryBuffer = gtk_entry_get_buffer(entry);
     size_t length_buf = strlen(gtk_entry_buffer_get_text(entryBuffer));
-    char *output = (char *) malloc(1 + length_buf + strlen(current->value));
+    char *output = (char *)malloc(1 + length_buf + strlen(current->value));
     strcpy(output, gtk_entry_buffer_get_text(entryBuffer));
     strcat(output, current->value);
     gtk_entry_buffer_set_text(entryBuffer, output, strlen(output));
@@ -24,7 +24,7 @@ void del_text(GtkButton *widget, gpointer data) {
     GtkEntry *entry = current->entry;
     GtkEntryBuffer *entryBuffer = gtk_entry_get_buffer(entry);
     size_t length_buf = strlen(gtk_entry_buffer_get_text(entryBuffer));
-    char *output = (char *) malloc(1 + length_buf);
+    char *output = (char *)malloc(1 + length_buf);
     if (length_buf > 0) {
         strcpy(output, gtk_entry_buffer_get_text(entryBuffer));
         output[length_buf - 1] = '\0';
@@ -68,7 +68,8 @@ void get_result(GtkButton *widget, gpointer data) {
     char buffer[100] = {0};
     if (ex_code == 0) {
         sprintf(buffer, "%g", result);
-    } else if (ex_code == VARIABLE_INSIDE && (graph_status == 1) && (ex_code = calculate_var(output, &result, 1)) == 0) {
+    } else if (ex_code == VARIABLE_INSIDE && (graph_status == 1) &&
+               (ex_code = calculate_var(output, &result, 1)) == 0) {
         gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(current->area), graph_draw, output, NULL);
         sprintf(buffer, "Graph");
     } else if (ex_code == VARIABLE_INSIDE && (graph_status == 0)) {
