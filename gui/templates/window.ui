@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <template class="VviewerAppWindow" parent="GtkApplicationWindow">
+        <property name="title">3DViewer</property>
+        <child type="titlebar">
+            <object id="header" class="GtkHeaderBar">
+                <child type="start">
+                    <!-- <object class="GtkImage"> -->
+                    <!--     <property name="resource">/com/github/Gwarek2/smartcalc/icons/smartcalc-icon.png</property> -->
+                    <!-- </object> -->
+                </child>
+                <child type="end">
+                    <object id="gears" class="GtkMenuButton">
+                        <property name="direction">none</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+        <child type="menu">
+            <menu id="menu">
+                <section>
+                    <item>
+                        <attribute name="label">_Quit</attribute>
+                        <attribute name="action">app.quit</attribute>
+                    </item>
+                </section>
+            </menu>
+        </child>
+
+        <child>
+            <object id="view" class="GtkBox">
+                <property name="orientation">vertical</property>
+            </object>
+        </child>
+
+    </template>
+</interface>

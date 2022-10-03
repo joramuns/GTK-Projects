@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/com/github/Gwarek2/Viewer">
+        <file preprocess="xml-stripblanks">gui/templates/window.ui</file>
+        <file preprocess="xml-stripblanks">gui/templates/render_area.ui</file>
+        <!-- <file>gui/styles/styles.css</file> -->
+    </gresource>
+</gresources>
