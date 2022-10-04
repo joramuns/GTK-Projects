@@ -8,7 +8,7 @@
 #include "../main-gtk.h"
 #define SCREENSIZE 185
 
-static void draw_plot(gdouble clipX1, gdouble clipX2, cairo_t *cr, char *output) {
+static void draw_plot(cairo_t *cr, char *output) {
     int ex_code = 0;
     if (output != NULL) {
         for (double x = x_min; x < x_max && ex_code == 0; x += (x_max - x_min) / 1000) {
@@ -94,7 +94,7 @@ void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpoint
     cairo_set_line_width(cr, dx);
     cairo_set_source_rgba(cr, 1, 0, 0, 1);
     if (user_data != NULL) {
-        draw_plot(clipX1, clipX2, cr, user_data);
+        draw_plot(cr, user_data);
     }
     cairo_stroke(cr);
 }
