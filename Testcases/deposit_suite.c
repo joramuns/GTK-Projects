@@ -17,19 +17,23 @@ START_TEST(s1) {
 }
 END_TEST
 
-/* START_TEST(s2) { */
-/*     deposit_input test_case = {0}; */
-/*     deposit_output test_result = {0}; */
-/*     test_case.deposit = 10000; */
-/*     test_case.term = 6; */
-/*     test_case.rate = 7; */
-/*     test_case.capitalization = 1; */
-/*     handle_deposit_calc(test_case, &test_result); */
-/*     double result_deposit = test_result.total_profit; */
-/*     ck_assert_double_eq_tol(result_deposit, 352.18, 1e-02); */
-/*     /1* clean(test_result.stack_of_payouts); *1/ */
-/* } */
-/* END_TEST */
+START_TEST(s2) {
+  deposit_input test_case = {0};
+  deposit_output test_result = {0};
+  test_case.deposit = 10000;
+  test_case.term = 181.0;
+  test_case.rate = 7.0;
+  test_case.freq_payment = 1;
+  test_case.capitalization = 1;
+  test_case.account_movement = malloc(sizeof(double) * test_case.term);
+  for (int i = 0; i < test_case.term; i++) test_case.account_movement[i] = 0;
+  handle_deposit_calc(test_case, &test_result);
+  clean(test_result.stack_of_payouts);
+  free(test_case.account_movement);
+  double result_deposit = test_result.total_profit;
+  ck_assert_double_eq_tol(result_deposit, 353.16, 1e-02);
+}
+END_TEST
 
 /* START_TEST(s3) { */
 /*     deposit_input test_case = {0}; */
@@ -64,7 +68,7 @@ Suite *deposit_suite(void) {
   TCase *tc = tcase_create("Deposit calc test");
 
   tcase_add_test(tc, s1);
-  /* tcase_add_test(tc, s2); */
+  tcase_add_test(tc, s2);
   /* tcase_add_test(tc, s3); */
   /* tcase_add_test(tc, s4); */
   /* tcase_add_test(tc, s5); */

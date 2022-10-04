@@ -261,15 +261,45 @@ START_TEST(s28) {
 }
 END_TEST
 //    sin(2)*6
+START_TEST(s29) {
+  double result = 0;
+  int ex_code = calculate("sin(2)* 6", &result);
+  ck_assert_int_eq(ex_code, 0);
+  ck_assert_double_eq_tol(result, 5.455785, TOL);
+}
+END_TEST
 //    cos(6*3)/5
-
-//    (2)3
-//    2(3)
+START_TEST(s30) {
+  double result = 0;
+  int ex_code = calculate("cos(6*3)/5", &result);
+  ck_assert_int_eq(ex_code, 0);
+  ck_assert_double_eq_tol(result, 0.132063, TOL);
+}
+END_TEST
 //    sin(X)
-//    sin(X)mod1
-//    sin(X*6)u
-//    mod*cos(8)
-//    3modmod2
+START_TEST(s31) {
+  double result = 0;
+  int ex_code = calculate_var("sin(X)", &result, 1);
+  ck_assert_int_eq(ex_code, 0);
+  ck_assert_double_eq_tol(result, 0.841471, TOL);
+}
+END_TEST
+//    ln(X)mod1
+START_TEST(s32) {
+  double result = 0;
+  int ex_code = calculate_var("ln(X)mod1", &result, 3);
+  ck_assert_int_eq(ex_code, 0);
+  ck_assert_double_eq_tol(result, 0.098612, TOL);
+}
+END_TEST
+//    sin(X*6)
+START_TEST(s33) {
+  double result = 0;
+  int ex_code = calculate_var("sin(X*6)", &result, 9);
+  ck_assert_int_eq(ex_code, 0);
+  ck_assert_double_eq_tol(result, -0.558789, TOL);
+}
+END_TEST
 
 Suite *simple_suite(void) {
   Suite *s = suite_create("Simple math");
@@ -303,6 +333,11 @@ Suite *simple_suite(void) {
   tcase_add_test(tc, s26);
   tcase_add_test(tc, s27);
   tcase_add_test(tc, s28);
+  tcase_add_test(tc, s29);
+  tcase_add_test(tc, s30);
+  tcase_add_test(tc, s31);
+  tcase_add_test(tc, s32);
+  tcase_add_test(tc, s33);
 
   suite_add_tcase(s, tc);
 

@@ -253,6 +253,32 @@ START_TEST(s33) {
 }
 END_TEST
 
+START_TEST(s34) {
+  char test[] = "";
+  int ex_code = validate_input_numbers(test);
+  ck_assert_int_eq(ex_code, EXPRESSION_TOO_SHORT);
+}
+END_TEST
+
+START_TEST(s35) {
+  char test[] = "-123";
+  int ex_code = validate_input_numbers(test);
+  ck_assert_int_eq(ex_code, WRONG_SYMBOLS);
+}
+END_TEST
+
+START_TEST(s36) {
+  char test[] = "1.12.3";
+  int ex_code = validate_extra_dot(test);
+  ck_assert_int_eq(ex_code, WRONG_SYMBOLS);
+}
+END_TEST
+
+//    (2)3
+//    2(3)
+//    mod*cos(8)
+//    3modmod2
+
 Suite *errors_suite(void) {
   Suite *s = suite_create("Error test");
   TCase *tc = tcase_create("Error test");
@@ -290,6 +316,9 @@ Suite *errors_suite(void) {
   tcase_add_test(tc, s31);
   tcase_add_test(tc, s32);
   tcase_add_test(tc, s33);
+  tcase_add_test(tc, s34);
+  tcase_add_test(tc, s35);
+  tcase_add_test(tc, s36);
 
   suite_add_tcase(s, tc);
 
