@@ -47,4 +47,4 @@ clean:
 	@rm -rf *.o *.gcda *.gcno *.info
 
 fclean:
-	@rm -rf *.o *.so *.gcda *.a *.gcno *.info test report build s21_smart_calc_1_0 resources.c
+	@rm -rf *.o *.so *.gcda *.a *.gcno *.info test report build s21_smart_calc_1_0 resources.c html
