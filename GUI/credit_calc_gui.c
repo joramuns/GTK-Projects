@@ -97,8 +97,11 @@ void credit_calc_window(GtkButton *widget, gpointer data) {
   entry_input *one = malloc(1 * sizeof(entry_input));
 
   one->sum_entry = (GtkEntry *)gtk_builder_get_object(builder, "sum_entry");
+  gtk_entry_set_max_length(GTK_ENTRY(one->sum_entry), EXPRESSION_SIZE);
   one->term_entry = (GtkEntry *)gtk_builder_get_object(builder, "term_entry");
+  gtk_entry_set_max_length(GTK_ENTRY(one->term_entry), EXPRESSION_SIZE);
   one->rate_entry = (GtkEntry *)gtk_builder_get_object(builder, "rate_entry");
+  gtk_entry_set_max_length(GTK_ENTRY(one->rate_entry), EXPRESSION_SIZE);
   one->term_cbt = years_or_months;
   one->type_credit_cbt = (GtkWidget *)type_choice;
   one->result_buffer = result_buffer;

@@ -72,16 +72,20 @@ static void activate(GtkApplication *app, gpointer user_data) {
   gtk_toggle_button_set_active(graph_check, 1);
   GtkEntry *dom_min =
       (GtkEntry *)gtk_builder_get_object(builder, "entry_dom_min");
+  gtk_entry_set_max_length(GTK_ENTRY(dom_min), EXPRESSION_SIZE);
   gtk_entry_set_placeholder_text(dom_min, "Dominant min");
   GtkEntry *dom_max =
       (GtkEntry *)gtk_builder_get_object(builder, "entry_dom_max");
+  gtk_entry_set_max_length(GTK_ENTRY(dom_max), EXPRESSION_SIZE);
   gtk_entry_set_placeholder_text(dom_max, "Dominant max");
   GtkEntry *codom_min =
       (GtkEntry *)gtk_builder_get_object(builder, "entry_codom_min");
   gtk_entry_set_placeholder_text(codom_min, "Codominant min");
+  gtk_entry_set_max_length(GTK_ENTRY(codom_min), EXPRESSION_SIZE);
   GtkEntry *codom_max =
       (GtkEntry *)gtk_builder_get_object(builder, "entry_codom_max");
   gtk_entry_set_placeholder_text(codom_max, "Codominant max");
+  gtk_entry_set_max_length(GTK_ENTRY(codom_max), EXPRESSION_SIZE);
 
   /* buttons */
   buttonData *buttons = user_data;

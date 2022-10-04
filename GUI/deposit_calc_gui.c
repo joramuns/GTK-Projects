@@ -205,10 +205,12 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
       (GtkButton *)gtk_builder_get_object(builder, "withdrawal_minus");
   GtkEntry *entry_withdrawal =
       (GtkEntry *)gtk_builder_get_object(builder, "sum_withdrawal_entry");
+  gtk_entry_set_max_length(GTK_ENTRY(entry_withdrawal), EXPRESSION_SIZE);
   gtk_entry_set_placeholder_text(entry_withdrawal, "Replenish or withdraw");
   GtkEntry *date_withdrawal =
       (GtkEntry *)gtk_builder_get_object(builder, "sum_withdrawal_date");
   gtk_entry_set_placeholder_text(date_withdrawal, "Day:");
+  gtk_entry_set_max_length(GTK_ENTRY(date_withdrawal), EXPRESSION_SIZE);
   GtkScrolledWindow *withdrawal_window =
       (GtkScrolledWindow *)gtk_builder_get_object(builder, "withdrawal_list");
   GtkCellRenderer *renderer;
@@ -250,10 +252,14 @@ void deposit_calc_window(GtkButton *widget, gpointer data) {
 
   entry_input *one = malloc(1 * sizeof(entry_input));
   one->sum_entry = (GtkEntry *)gtk_builder_get_object(builder, "sum_entry");
+  gtk_entry_set_max_length(GTK_ENTRY(one->sum_entry), EXPRESSION_SIZE);
   one->term_entry = (GtkEntry *)gtk_builder_get_object(builder, "term_entry");
+  gtk_entry_set_max_length(GTK_ENTRY(one->term_entry), EXPRESSION_SIZE);
   one->rate_entry = (GtkEntry *)gtk_builder_get_object(builder, "rate_entry");
+  gtk_entry_set_max_length(GTK_ENTRY(one->rate_entry), EXPRESSION_SIZE);
   one->tax_rate_entry =
       (GtkEntry *)gtk_builder_get_object(builder, "tax_rate_entry");
+  gtk_entry_set_max_length(GTK_ENTRY(one->tax_rate_entry), EXPRESSION_SIZE);
   gtk_editable_set_text(GTK_EDITABLE(one->tax_rate_entry), "0");
   one->term_cbt = years_or_months;
   one->type_credit_cbt = (GtkWidget *)type_choice;
