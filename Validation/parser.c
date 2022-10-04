@@ -11,13 +11,6 @@ int validate_input(char *expression) {
   int ex_code = 0;
   size_t input_len = strlen(expression);
 
-  if (input_len > 0 && expression[input_len - 1] == '\n') {
-    expression[input_len - 1] = '\0';
-    input_len--;
-  }
-  if (input_len > EXPRESSION_SIZE) {
-    ex_code = TOO_LONG_EXPRESSION;
-  }
   if (strspn(expression, EXPRESSION_SYMBOLS) != input_len) {
     ex_code = WRONG_SYMBOLS;
   }
@@ -33,10 +26,6 @@ int validate_input_numbers(char *expression) {
   int ex_code = 0;
   size_t input_len = strlen(expression);
 
-  if (input_len > 0 && expression[input_len - 1] == '\n') {
-    expression[input_len - 1] = '\0';
-    input_len--;
-  }
   if (input_len == 0) {
     ex_code = EXPRESSION_TOO_SHORT;
   }
@@ -134,8 +123,6 @@ int parse_input(char *expression, node *output_stack) {
       } else {
         ex_code = type_unary;
       }
-    } else if (check_result == 0) {
-      array_pos++;
     } else {
       ex_code = check_result;
     }

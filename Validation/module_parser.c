@@ -27,8 +27,6 @@ int check_input_type(char input) {
   } else if (input == 's' || input == 'c' || input == 't' || input == 'a' ||
              input == 'm' || input == 'l') {
     ex_code = TOK_UNARY;
-  } else if (input == ' ') {
-    ex_code = 0;
   } else {
     ex_code = WRONG_SYMBOLS;
   }
