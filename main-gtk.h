@@ -37,7 +37,7 @@ extern double y_max; /*!< Global variable for graph: Y maximum */
  * Type mathematical expression by keyboard or with the help of GUI buttons.
  * Click "=" and get the result!
  *
- * \subsubsection BB Draw graphs 
+ * \subsubsection BB Draw graphs
  *
  * Type the same expression with a variable "X" inside.
  * Click "=" and get the graph!
@@ -45,7 +45,7 @@ extern double y_max; /*!< Global variable for graph: Y maximum */
  * Enter codominance and dominance to see specific part of graph.
  * Be careful to respect the ratio!
  *
- * \subsubsection CC Evaluate functions 
+ * \subsubsection CC Evaluate functions
  *
  * Type again expression with a variable "X" inside and untoggle "Graph" button.
  * Click "=" and get the result with entered value!
@@ -65,43 +65,58 @@ extern double y_max; /*!< Global variable for graph: Y maximum */
  * @brief Main GUI structure to store pointers to widgets
  */
 typedef struct {
-    GtkButton *button; /**< Array of pointers for buttons in main window */
-    GtkEntry *entry; /**< Pointer to entry text field */
-    GtkEntry *entry_res; /**< Pointer to resut text field */
-    char *value; /**< String description and title for button */
-    char *name; /**< Name id for button to call it from GTK Builder */
-    GtkEntry *x_min; /**< Input of main graph variables: X minimum */
-    GtkEntry *x_max; /**< Input of main graph variables: X maximum */
-    GtkEntry *y_min; /**< Input of main graph variables: Y minimum */
-    GtkEntry *y_max; /**< Input of main graph variables: Y maximum */
-    GtkWidget *area; /**< Pointer to GTK drawing area */
-    GtkToggleButton *toggle_button; /**< Pointer to toggle button Graph */
+  GtkButton *button;   /**< Array of pointers for buttons in main window */
+  GtkEntry *entry;     /**< Pointer to entry text field */
+  GtkEntry *entry_res; /**< Pointer to resut text field */
+  char *value;         /**< String description and title for button */
+  char *name;          /**< Name id for button to call it from GTK Builder */
+  GtkEntry *x_min;     /**< Input of main graph variables: X minimum */
+  GtkEntry *x_max;     /**< Input of main graph variables: X maximum */
+  GtkEntry *y_min;     /**< Input of main graph variables: Y minimum */
+  GtkEntry *y_max;     /**< Input of main graph variables: Y maximum */
+  GtkWidget *area;     /**< Pointer to GTK drawing area */
+  GtkToggleButton *toggle_button; /**< Pointer to toggle button Graph */
 } buttonData;
 
 /**
- * @brief Common structure for credit and deposit calculator 
+ * @brief Common structure for credit and deposit calculator
  */
 typedef struct entry_input {
-    GtkEntry *sum_entry; /**< Sum of credit or deposit input */
-    GtkEntry *term_entry; /**< Input for deposit or credit term */
-    GtkEntry *rate_entry; /**< Input of interest rate in deposit or credit calculator */
-    GtkEntry *tax_rate_entry; /**< Input of tax rate in deposit calculator*/
-    GtkComboBoxText *term_cbt; /**< Combo text button to choose days or monthes or years, etc.  */
-    GtkWidget *type_credit_cbt; /**< Input of choice between differentiated or annuity credit */
-    GtkTextBuffer *result_buffer; /**< Pointer to text buffer with results of evaluating */
-    GtkComboBoxText *type_payouts; /**< Combo text button to choose frequency of payouts in deposit calculator*/
-    GtkWidget *wd_tree_view; /**< Pointer to Gtk Widget tree view for deposit calculator to show withdrawals or replenishments */
-    GtkTreeStore *withdrawal_window; /**< Contains structure with replenishments and withdrawals in deposit calculator */
+  GtkEntry *sum_entry;  /**< Sum of credit or deposit input */
+  GtkEntry *term_entry; /**< Input for deposit or credit term */
+  GtkEntry *
+      rate_entry; /**< Input of interest rate in deposit or credit calculator */
+  GtkEntry *tax_rate_entry;  /**< Input of tax rate in deposit calculator*/
+  GtkComboBoxText *term_cbt; /**< Combo text button to choose days or monthes or
+                                years, etc.  */
+  GtkWidget *type_credit_cbt; /**< Input of choice between differentiated or
+                                 annuity credit */
+  GtkTextBuffer
+      *result_buffer; /**< Pointer to text buffer with results of evaluating */
+  GtkComboBoxText *type_payouts; /**< Combo text button to choose frequency of
+                                    payouts in deposit calculator*/
+  GtkWidget
+      *wd_tree_view; /**< Pointer to Gtk Widget tree view for deposit calculator
+                        to show withdrawals or replenishments */
+  GtkTreeStore *withdrawal_window; /**< Contains structure with replenishments
+                                      and withdrawals in deposit calculator */
 } entry_input;
 
 /**
- * @brief Withdrawals structure in deposit calculator, adds or removes list items
+ * @brief Withdrawals structure in deposit calculator, adds or removes list
+ * items
  */
 typedef struct wd_cont {
-    GtkWidget *wd_tree_view; /**< Pointer to Gtk Widget tree view for deposit calculator to show withdrawals or replenishments */
-    GtkTreeStore *withdrawal_window; /**< Contains structure with replenishments and withdrawals in deposit calculator */
-    GtkEntry *entry_withdrawal; /**< Input text box for amount of money to withdraw or replenish from deposit, use positive or negative numbers */
-    GtkEntry *date_withdrawal; /**< Input text box for number of a day during deposit to withdraw*/
+  GtkWidget
+      *wd_tree_view; /**< Pointer to Gtk Widget tree view for deposit calculator
+                        to show withdrawals or replenishments */
+  GtkTreeStore *withdrawal_window; /**< Contains structure with replenishments
+                                      and withdrawals in deposit calculator */
+  GtkEntry *entry_withdrawal;      /**< Input text box for amount of money to
+                                      withdraw or replenish from deposit,      use
+                                      positive or negative numbers */
+  GtkEntry *date_withdrawal; /**< Input text box for number of a day during
+                                deposit to withdraw*/
 } wd_cont;
 
 /**
@@ -111,9 +126,10 @@ typedef struct wd_cont {
  */
 void quit_window(GtkWindow *window);
 
-/*                          drawing graph                                       */
+/*                          drawing graph */
 /**
- * @brief A function draws graph in gtkarea by changing variable and evaluating expression
+ * @brief A function draws graph in gtkarea by changing variable and evaluating
+ * expression
  *
  * @param cr Cairo drawing pointer
  * @param output Array of chars with mathematical expression
@@ -125,11 +141,11 @@ static void draw_plot(cairo_t *cr, char *output);
  * @param width Width of area
  * @param height Height of area
  * @param cr Cairo drawing pointer
- * @param dx System cairo value 
+ * @param dx System cairo value
  */
 static void draw_grid(double width, double height, cairo_t *cr, gdouble dx);
 /**
- * @brief A function renders drawing area in window 
+ * @brief A function renders drawing area in window
  *
  * @param area Pointer to GtkDrawingArea
  * @param cr Cairo drawing pointer
@@ -137,51 +153,57 @@ static void draw_grid(double width, double height, cairo_t *cr, gdouble dx);
  * @param height Height of area adjusted
  * @param user_data Pointer with mathematical expression from GUI
  */
-void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer user_data);
+void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height,
+                gpointer user_data);
 
-/*                          input handling                                      */
+/*                          input handling */
 /**
  * @brief A function to add clicked buttons values to input text area
  *
  * @param widget Pointer to clicked button
- * @param data Container with all pointers from main window render function (entry_input)
+ * @param data Container with all pointers from main window render function
+ * (entry_input)
  */
 void add_text(GtkButton *widget, gpointer data);
 /**
  * @brief A function to delete symbols in input text area
  *
  * @param widget Pointer to clicked button
- * @param data Container with all pointers from main window render function (entry_input)
+ * @param data Container with all pointers from main window render function
+ * (entry_input)
  */
 void del_text(GtkButton *widget, gpointer data);
 /**
  * @brief A function to get results from input data
  *
  * @param widget Pointer to clicked button
- * @param data Container with all pointers from main window render function (entry_input)
+ * @param data Container with all pointers from main window render function
+ * (entry_input)
  */
 void get_result(GtkButton *widget, gpointer data);
 /**
  * @brief  A function to clear everything from input data
  *
  * @param widget Pointer to clicked button
- * @param data Container with all pointers from main window render function (entry_input)
+ * @param data Container with all pointers from main window render function
+ * (entry_input)
  */
 void set_zero(GtkButton *widget, gpointer data);
 
-/*                         credit calculator                                    */
+/*                         credit calculator */
 /**
  * @brief A function to render deposit calculator window
  *
  * @param widget Pointer to clicked button
- * @param data Container with all pointers from main window render function (entry_input)
+ * @param data Container with all pointers from main window render function
+ * (entry_input)
  */
 void credit_calc_window(GtkButton *widget, gpointer data);
 /**
  * @brief A function to render deposit calculator window
  *
- * @param widget
- * @param data
+ * @param widget Pointer to clicked button
+ * @param data Container with all pointers from main window render function
  */
 void deposit_calc_window(GtkButton *widget, gpointer data);
 

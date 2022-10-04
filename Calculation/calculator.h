@@ -20,7 +20,7 @@
  * @param expression Char array with mathematical expression
  * @param result Result of calculation
  *
- * @return 
+ * @return Error code from parser_errors enum
  */
 int calculate(char *expression, double *result);
 /**
@@ -36,7 +36,7 @@ void replace_variable(node *output_stack, double var);
  * @param result Result of calculation
  * @param var Value to replace in place of X variable
  *
- * @return 
+ * @return Error code from parser_errors enum
  */
 int calculate_var(char *expression, double *result, double var);
 

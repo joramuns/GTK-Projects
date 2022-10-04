@@ -15,17 +15,20 @@
  * @brief A structure to implement linked list
  */
 typedef struct node {
-    int number; /**< Stores a serial number in list */
-    int type; /**< A type of data in the list member, types defined in input_type enum */
-    char sign; /**< In case of storing operator type, a char defines which exactly */
-    double value; /**< In case of storing operand type, double defines the value of operand*/
-    struct node *next; /**< Node pointer to the next list member */
+  int number; /**< Stores a serial number in list */
+  int type;  /**< A type of data in the list member, types defined in input_type
+                enum */
+  char sign; /**< In case of storing operator type, a char defines which exactly
+              */
+  double value; /**< In case of storing operand type, double defines the value
+                   of operand*/
+  struct node *next; /**< Node pointer to the next list member */
 } node;
 
 /**
- * @brief Initializes linked list 
+ * @brief Initializes linked list
  *
- * @return A pointer to linked list head 
+ * @return A pointer to linked list head
  */
 node *init_node(void);
 /**
@@ -33,7 +36,7 @@ node *init_node(void);
  *
  * @param head A pointer to linked list head
  *
- * @return A pointer to the newly added linked list member 
+ * @return A pointer to the newly added linked list member
  */
 node *push(node *head);
 /**
@@ -41,7 +44,7 @@ node *push(node *head);
  *
  * @param head A pointer to linked list head
  *
- * @return A pointer to the last linked list member 
+ * @return A pointer to the last linked list member
  */
 node *pop(node *head);
 /**
@@ -56,7 +59,7 @@ void *clean(node *head);
  *
  * @param head A pointer to linked list head
  *
- * @return A pointer to the last linked list member 
+ * @return A pointer to the last linked list member
  */
 node *find_last(node *head);
 /**
@@ -67,4 +70,4 @@ node *find_last(node *head);
  */
 void push_n_pop(node *dest, node *src);
 
-#endif  /* nodes_h */
+#endif /* nodes_h */

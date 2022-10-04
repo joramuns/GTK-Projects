@@ -14,9 +14,11 @@
 #include "../Validation/parser.h"
 
 /**
- * @brief A function that makes all evaluations after parsing and searching for errors 
+ * @brief A function that makes all evaluations after parsing and searching for
+ * errors
  *
- * @param output_stack Ready for evaluation stack of operators and operands after all checks
+ * @param output_stack Ready for evaluation stack of operators and operands
+ * after all checks
  *
  * @return Final value
  */
@@ -27,7 +29,7 @@ double evaluate(node *output_stack);
  * @param head A node list stack with operators
  * @param stack_number A node list stack with operands
  *
- * @return 
+ * @return Result value of operation
  */
 double handle_binary_operator(node *head, node *stack_number);
 /**
@@ -36,7 +38,7 @@ double handle_binary_operator(node *head, node *stack_number);
  * @param head A node list stack with operators
  * @param stack_number A node list stack with operands
  *
- * @return 
+ * @return Result value of operation
  */
 double handle_unary_operator(node *head, node *stack_number);
 

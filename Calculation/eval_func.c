@@ -8,86 +8,87 @@
 #include "eval_func.h"
 
 double evaluate(node *output_stack) {
-    node *head = output_stack;
-    node *stack_number = init_node();
-    double result = 0;
-    while (head) {
-        if (head->type == TOK_NUM) {
-            result = head->value;
-            push(stack_number);
-            find_last(stack_number)->value = result;
-            find_last(stack_number)->type = TOK_NUM;
-        } else if (head->type == TOK_OPERATOR_1 || head->type == TOK_OPERATOR_2 || head->type == TOK_POW) {
-            result = handle_binary_operator(head, stack_number);
-            push(stack_number);
-            find_last(stack_number)->value = result;
-            find_last(stack_number)->type = TOK_NUM;
-        } else if (head->type == TOK_UNARY) {
-            result = handle_unary_operator(head, stack_number);
-            push(stack_number);
-            find_last(stack_number)->value = result;
-            find_last(stack_number)->type = TOK_NUM;
-        }
-
-        head = head->next;
+  node *head = output_stack;
+  node *stack_number = init_node();
+  double result = 0;
+  while (head) {
+    if (head->type == TOK_NUM) {
+      result = head->value;
+      push(stack_number);
+      find_last(stack_number)->value = result;
+      find_last(stack_number)->type = TOK_NUM;
+    } else if (head->type == TOK_OPERATOR_1 || head->type == TOK_OPERATOR_2 ||
+               head->type == TOK_POW) {
+      result = handle_binary_operator(head, stack_number);
+      push(stack_number);
+      find_last(stack_number)->value = result;
+      find_last(stack_number)->type = TOK_NUM;
+    } else if (head->type == TOK_UNARY) {
+      result = handle_unary_operator(head, stack_number);
+      push(stack_number);
+      find_last(stack_number)->value = result;
+      find_last(stack_number)->type = TOK_NUM;
     }
-    clean(stack_number);
 
-    return result;
+    head = head->next;
+  }
+  clean(stack_number);
+
+  return result;
 }
 
 double handle_binary_operator(node *head, node *stack_number) {
-    double result = 0;
+  double result = 0;
 
-    double operand_2 = find_last(stack_number)->value;
+  double operand_2 = find_last(stack_number)->value;
+  pop(stack_number);
+  if (find_last(stack_number)->number != 0) {
+    double operand_1 = find_last(stack_number)->value;
     pop(stack_number);
-    if (find_last(stack_number)->number != 0) {
-        double operand_1 = find_last(stack_number)->value;
-        pop(stack_number);
-        if (head->sign == '+') {
-            result = operand_1 + operand_2;
-        } else if (head->sign == '-') {
-            result = operand_1 - operand_2;
-        } else if (head->sign == '*') {
-            result = operand_1 * operand_2;
-        } else if (head->sign == '/') {
-            result = operand_1 / operand_2;
-        } else if (head->sign == '%') {
-            result = fmod(operand_1, operand_2);
-        } else if (head->sign == '^') {
-            result = pow(operand_1, operand_2);
-        }
-    } else {
-        printf("OPERATOR ERROR!\n");
+    if (head->sign == '+') {
+      result = operand_1 + operand_2;
+    } else if (head->sign == '-') {
+      result = operand_1 - operand_2;
+    } else if (head->sign == '*') {
+      result = operand_1 * operand_2;
+    } else if (head->sign == '/') {
+      result = operand_1 / operand_2;
+    } else if (head->sign == '%') {
+      result = fmod(operand_1, operand_2);
+    } else if (head->sign == '^') {
+      result = pow(operand_1, operand_2);
     }
+  } else {
+    printf("OPERATOR ERROR!\n");
+  }
 
-    return result;
+  return result;
 }
 
 double handle_unary_operator(node *head, node *stack_number) {
-    double result = 0;
+  double result = 0;
 
-    double operand_1 = find_last(stack_number)->value;
-    pop(stack_number);
-    if (head->sign == CODE_ACOS) {
-        result = acos(operand_1);
-    } else if (head->sign == CODE_ASIN) {
-        result = asin(operand_1);
-    } else if (head->sign == CODE_ATAN) {
-        result = atan(operand_1);
-    } else if (head->sign == CODE_SQRT) {
-        result = sqrt(operand_1);
-    } else if (head->sign == CODE_SIN) {
-        result = sin(operand_1);
-    } else if (head->sign == CODE_COS) {
-        result = cos(operand_1);
-    } else if (head->sign == CODE_TAN) {
-        result = tan(operand_1);
-    } else if (head->sign == CODE_LOG) {
-        result = log10(operand_1);
-    } else if (head->sign == CODE_LN) {
-        result = log(operand_1);
-    }
+  double operand_1 = find_last(stack_number)->value;
+  pop(stack_number);
+  if (head->sign == CODE_ACOS) {
+    result = acos(operand_1);
+  } else if (head->sign == CODE_ASIN) {
+    result = asin(operand_1);
+  } else if (head->sign == CODE_ATAN) {
+    result = atan(operand_1);
+  } else if (head->sign == CODE_SQRT) {
+    result = sqrt(operand_1);
+  } else if (head->sign == CODE_SIN) {
+    result = sin(operand_1);
+  } else if (head->sign == CODE_COS) {
+    result = cos(operand_1);
+  } else if (head->sign == CODE_TAN) {
+    result = tan(operand_1);
+  } else if (head->sign == CODE_LOG) {
+    result = log10(operand_1);
+  } else if (head->sign == CODE_LN) {
+    result = log(operand_1);
+  }
 
-    return result;
+  return result;
 }
