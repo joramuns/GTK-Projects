@@ -1,6 +1,6 @@
 #include "deposit_calculator.h"
 
-int handle_deposit_calc(deposit_input cont, deposit_output *cont_output) {
+void handle_deposit_calc(deposit_input cont, deposit_output *cont_output) {
     cont.rate /= 100.0;
     cont_output->stack_of_payouts = init_node();
     double temp_deposit = cont.deposit;
@@ -32,6 +32,4 @@ int handle_deposit_calc(deposit_input cont, deposit_output *cont_output) {
     }
     cont_output->total_profit = bank_rounding(cont.total_profit);
     cont_output->deposit = cont.deposit;
-
-    return 0;
 }
