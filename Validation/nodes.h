@@ -67,4 +67,4 @@ node *find_last(node *head);
  */
 void push_n_pop(node *dest, node *src);
 
-#endif  // SRC_COMMON_NODES_H_
+#endif  /* nodes_h */

@@ -186,4 +186,4 @@ int check_variable(char *expression);
  */
 char *remove_spaces(char *string);
 
-
+#endif  /* parser_h */
