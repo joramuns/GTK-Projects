@@ -73,30 +73,15 @@ void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpoint
     gdouble i, clipX1 = 0.0, clipY1 = 0.0, clipX2 = 0.0, clipY2 = 0.0;
     cairo_set_source_rgba(cr, 0.29, 0.58, 0.45, 1);  // 0.1, 0.1, 0.8, 0.8);
     cairo_paint(cr);
-    // TRY
     double x_range = (x_max - x_min) / 2;
     double x_offset = (x_min + x_max) / 2;
     double y_range = (y_max - y_min) / 2;
     double y_offset = (y_min + y_max) / 2;
-    // задана область значений -1 до 1 -> mod(-1) + mod(1) = 2 - ширина видимости, -1 + 1 = 0 - сдвиг
-    // видимости
-    //    (50, 50) & (50, -50)
-    // -2 - 2 -> mod(-2) + mod(2) = 4, -2 + 2 = 0
-    // 150, 150 & 75, -75 -> 150, 150 - screen size / domain(4)/2 = 75
-    // -3, 3 -> mod(-3) + mod(3) = 6, -3+3=0
-    // 150 / (6/3), -150 / (6/3)
-    // -6, 0 -> mod(-6) + mod(0) = 6 -6+0=-6
-    //    cairo_translate(cr, 150 - ((-6/2)*(150/(6/2))), 150);
     cairo_translate(cr, SCREENSIZE - (x_offset * (SCREENSIZE / x_range)),
                     SCREENSIZE - (y_offset * (SCREENSIZE / -y_range)));
-    /* измениять scale для разных маштабов */
-    //    cairo_scale(cr, scaleX, -scaleY);
-    //    cairo_scale(cr, 150 / (6/2), - 150 / (6/2));
     cairo_scale(cr, SCREENSIZE / x_range, SCREENSIZE / y_range);
-    /* определить границы графика */
     cairo_device_to_user_distance(cr, &dx, &dy);
     cairo_clip_extents(cr, &clipX1, &clipY1, &clipX2, &clipY2);
-    /* рисую оси X и Y */
     cairo_set_line_width(cr, dx);
     cairo_set_source_rgba(cr, 0.99, 0.98, 1, 0.5);
     cairo_move_to(cr, clipX1, 0.0);
