@@ -30,7 +30,11 @@ tests:
 	$(CC) $(CFLAGS) Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
 	$(CC) $(OFLAGS) test *.o `pkg-config --cflags --libs check`
 	./test
-	# @$(MAKE) fclean
+
+test:
+	$(CC) $(CFLAGS) Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
+	$(CC) $(OFLAGS) test *.o `pkg-config --cflags --libs check`
+	./test
 
 gcov_report:
 	$(GCOV) $(CFLAGS) Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
