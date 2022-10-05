@@ -20,7 +20,7 @@ tests:
 	gcc -g -c Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
 	gcc -g -o test *.o `pkg-config --cflags --libs check`
 	./test
-	@$(MAKE) fclean
+	# @$(MAKE) fclean
 
 test-asan:
 	gcc -fsanitize=address -g -c Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
