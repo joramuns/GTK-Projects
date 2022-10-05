@@ -21,12 +21,11 @@ extern double x_max; /*!< Global variable for graph: X maximum */
 extern double y_min; /*!< Global variable for graph: Y minimum */
 extern double y_max; /*!< Global variable for graph: Y maximum */
 
-/*! \mainpage My Personal Index Page
- *
+/*! \mainpage S21 smart calculator v1.0 
  * \section intro_sec Introduction
  *
  * S21 smart calculator v1.0
- * A command-line program with GUI.
+ * <br>A command-line program with GUI.
  *
  * \section Functionality
  *
@@ -34,30 +33,67 @@ extern double y_max; /*!< Global variable for graph: Y maximum */
  *
  * \subsubsection AA Evaluating simple mathematics
  *
- * Type mathematical expression by keyboard or with the help of GUI buttons.
- * Click "=" and get the result!
+ * Enter mathematical expression with keyboard or with the help of GUI buttons.
+ * <br>Click "=" and get the result!
  *
- * \subsubsection BB Draw graphs
+ * \subsubsection AB Draw graphs
  *
- * Type the same expression with a variable "X" inside.
- * Click "=" and get the graph!
+ * Enter the same expression with a variable "X" in it.
+ * <br>Click "=" and get the graph!
  *
  * Enter codominance and dominance to see specific part of graph.
- * Be careful to respect the ratio!
+ * <br>Be careful to respect the ratio!
  *
- * \subsubsection CC Evaluate functions
+ * \subsubsection AC Evaluate functions
  *
- * Type again expression with a variable "X" inside and untoggle "Graph" button.
- * Click "=" and get the result with entered value!
+ * Enter again expression with a variable "X" in it,  untoggle "Graph" button and enter value to replace.
+ * <br>Click "=" and get the result with entered value!
  *
  * \subsection B Credit calculator
  *
+ * \subsubsection BA 2 types of credit
+ *
+ * Annuity - with equal payments during the term of credit. Percents first, main debt last.
+ * <br>Differentiated - different amount of payment from time to time due to decreasing main debt and percents on it.
+ *
+ * \subsubsection BB Show costs
+ *
+ * Enter sum, term and rate of credit and get full information about payments and costs of credit.
+ *
  * \subsection C Deposit calculator
+ *
+ * \subsubsection CA Capitalization of revenue
+ *
+ * Toggle button Capitalization to see the benefit.
+ *
+ * \subsubsection CB Show costs
+ *
+ * Enter tax rate to see the cost that you have to pay as resident.
+ *
+ * \subsubsection CC Replenish or withdraw
+ *
+ * Add account movement operations by the day of deposit to see the change of income.
+ * <br>Enter positive number to replenish or negative number to withdraw.
+ *
+ * \subsubsection CD Variety of payout options
+ *
+ * Choose whether to receive payouts daily or monthly or quarterly or yearly.
  *
  * \section install_sec Installation
  *
- * \subsection step1 Step 1: Opening the box
+ * \subsection step1 Step 1: Install GTK4 with all dependencies
  *
+ * Install GTK4 by "brew install gtk4" on macos or "apt-get install libgtk4-dev" on other unix systems.
+ *
+ * \subsubsection step11 System requirements:
+ *
+ * Fedora 36
+ * <br>Ubuntu 22.04+
+ * <br>Debian bookworm+
+ *
+ * \subsection step2 Step 2: Enter "make install" in command line
+ * 
+ * \subsection step3 Step 3: Run /s21_smart_calc_1_0/s21_smart_calc
  * etc...
  */
 
