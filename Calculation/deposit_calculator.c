@@ -1,12 +1,14 @@
 #include "deposit_calculator.h"
 
-void handle_deposit_calc(deposit_input cont, deposit_output *cont_output) {
+int handle_deposit_calc(deposit_input cont, deposit_output *cont_output) {
+  int ex_code = 0;
   cont.rate /= 100.0;
   cont_output->stack_of_payouts = init_node();
   double temp_deposit = cont.deposit;
   for (unsigned term_count = 1; term_count <= cont.term; term_count++) {
     cont.deposit += cont.account_movement[term_count - 1];
     temp_deposit += cont.account_movement[term_count - 1];
+    if (cont.deposit < 0 || temp_deposit < 0) ex_code = WRONG_SYMBOLS;
     cont.daily_income = (cont.deposit * cont.rate) / YEARDAYS;
     cont.payout += cont.daily_income;
     if ((term_count % cont.freq_payment) == 0) {
@@ -32,4 +34,6 @@ void handle_deposit_calc(deposit_input cont, deposit_output *cont_output) {
   }
   cont_output->total_profit = bank_rounding(cont.total_profit);
   cont_output->deposit = cont.deposit;
+
+  return ex_code;
 }

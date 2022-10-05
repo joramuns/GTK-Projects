@@ -98,7 +98,7 @@ void execute_deposit_func(const GtkButton *widget, gpointer data) {
     deposit_output cont_output = {0};
 
     if (ex_code == 0) {
-      handle_deposit_calc(cont, &cont_output);
+      ex_code = handle_deposit_calc(cont, &cont_output);
     }
 
     free(cont.account_movement);

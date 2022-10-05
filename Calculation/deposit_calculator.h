@@ -68,7 +68,8 @@ typedef struct deposit_output {
  * @param cont Input data from GUI
  * @param cont_output Final values after all payouts and withdrawals
  *
+ * @return Error code
  */
-void handle_deposit_calc(deposit_input cont, deposit_output *cont_output);
+int handle_deposit_calc(deposit_input cont, deposit_output *cont_output);
 
 #endif /* deposit_calculator_h */
