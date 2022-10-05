@@ -21,7 +21,7 @@ extern double x_max; /*!< Global variable for graph: X maximum */
 extern double y_min; /*!< Global variable for graph: Y minimum */
 extern double y_max; /*!< Global variable for graph: Y maximum */
 
-/*! \mainpage S21 smart calculator v1.0 
+/*! \mainpage S21 smart calculator v1.0
  * \section intro_sec Introduction
  *
  * S21 smart calculator v1.0
@@ -46,19 +46,22 @@ extern double y_max; /*!< Global variable for graph: Y maximum */
  *
  * \subsubsection AC Evaluate functions
  *
- * Enter again expression with a variable "X" in it,  untoggle "Graph" button and enter value to replace.
- * <br>Click "=" and get the result with entered value!
+ * Enter again expression with a variable "X" in it,  untoggle "Graph" button
+ * and enter value to replace. <br>Click "=" and get the result with entered
+ * value!
  *
  * \subsection B Credit calculator
  *
  * \subsubsection BA 2 types of credit
  *
- * Annuity - with equal payments during the term of credit. Percents first, main debt last.
- * <br>Differentiated - different amount of payment from time to time due to decreasing main debt and percents on it.
+ * Annuity - with equal payments during the term of credit. Percents first, main
+ * debt last. <br>Differentiated - different amount of payment from time to time
+ * due to decreasing main debt and percents on it.
  *
  * \subsubsection BB Show costs
  *
- * Enter sum, term and rate of credit and get full information about payments and costs of credit.
+ * Enter sum, term and rate of credit and get full information about payments
+ * and costs of credit.
  *
  * \subsection C Deposit calculator
  *
@@ -72,8 +75,9 @@ extern double y_max; /*!< Global variable for graph: Y maximum */
  *
  * \subsubsection CC Replenish or withdraw
  *
- * Add account movement operations by the day of deposit to see the change of income.
- * <br>Enter positive number to replenish or negative number to withdraw.
+ * Add account movement operations by the day of deposit to see the change of
+ * income. <br>Enter positive number to replenish or negative number to
+ * withdraw.
  *
  * \subsubsection CD Variety of payout options
  *
@@ -83,7 +87,8 @@ extern double y_max; /*!< Global variable for graph: Y maximum */
  *
  * \subsection step1 Step 1: Install GTK4 with all dependencies
  *
- * Install GTK4 by "brew install gtk4" on macos or "apt-get install libgtk4-dev" on other unix systems.
+ * Install GTK4 by "brew install gtk4" on macos or "apt-get install libgtk4-dev"
+ * on other unix systems.
  *
  * \subsubsection step11 System requirements:
  *
@@ -92,7 +97,7 @@ extern double y_max; /*!< Global variable for graph: Y maximum */
  * <br>Debian bookworm+
  *
  * \subsection step2 Step 2: Enter "make install" in command line
- * 
+ *
  * \subsection step3 Step 3: Run /s21_smart_calc_1_0/s21_smart_calc
  * etc...
  */
