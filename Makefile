@@ -1,11 +1,21 @@
+CC=gcc -g
+GCOV=gcc --coverage
+CFLAGS=-std=c11 -pedantic -Wall -Werror -Wextra -c
+OFLAGS=-std=c11 -pedantic -Wall -Werror -Wextra -o
+
+all: install
+
 install:
 	@mkdir -p s21_smart_calc_1_0
 	glib-compile-resources Style/gresource.xml --generate-source --target=resources.c
-	gcc -g -c main-gtk.c resources.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
-	gcc -g -o s21_smart_calc_1_0/s21_smart_calc *.o `pkg-config --libs gtk4`
+	$(CC) $(CFLAGS) main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
+	$(CC) -c resources.c `pkg-config --cflags --libs gtk4`
+	$(CC) $(OFLAGS) s21_smart_calc_1_0/s21_smart_calc *.o `pkg-config --libs gtk4`
 	@$(MAKE) clean
 
 uninstall:
+	@rm -rf s21_smart_calc_1_0
+	@echo "S21 Smart Calc uninstalled!"
 
 dvi:
 	# goxygen dox_config
@@ -17,20 +27,14 @@ dist: install
 	@rm s21_smart_calc_1_0/s21_smart_calc
 
 tests:
-	gcc -g -c Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
-	gcc -g -o test *.o `pkg-config --cflags --libs check`
+	$(CC) $(CFLAGS) Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
+	$(CC) $(OFLAGS) test *.o `pkg-config --cflags --libs check`
 	./test
 	# @$(MAKE) fclean
 
-test-asan:
-	gcc -fsanitize=address -g -c Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
-	gcc -fsanitize=address -g -o test *.o `pkg-config --cflags --libs check`
-	./test
-	$(MAKE) fclean
-
 gcov_report:
-	gcc --coverage -c Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
-	gcc --coverage -o test *.o `pkg-config --cflags --libs check`
+	$(GCOV) $(CFLAGS) Testcases/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs check`
+	$(GCOV) $(OFLAGS) test *.o `pkg-config --cflags --libs check`
 	./test
 	lcov -t "test" -o test.info -c -d . --rc lcov_branch_coverage=0
 	genhtml -o report test.info --rc lcov_branch_coverage=0
@@ -40,8 +44,9 @@ gcov_report:
 gtk:
 	glib-compile-resources Style/gresource.xml --generate-source --target=resources.c
 	@mkdir -p build
-	gcc -fsanitize=address -g -c main-gtk.c resources.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
-	gcc -fsanitize=address -g -o build/test *.o `pkg-config --libs gtk4`
+	$(CC) $(CFLAGS) -fsanitize=address main-gtk.c GUI/*.c Validation/*.c Calculation/*.c `pkg-config --cflags --libs gtk4`
+	$(CC) -c resources.c `pkg-config --cflags --libs gtk4`
+	$(CC) -fsanitize=address $(OFLAGS) build/test *.o `pkg-config --libs gtk4 glib-2.0`
 	@$(MAKE) clean
 	@build/test
 
@@ -49,4 +54,4 @@ clean:
 	@rm -rf *.o *.gcda *.gcno *.info resources.c 
 
 fclean:
-	@rm -rf *.o *.so *.gcda *.a *.gcno *.info test report build s21_smart_calc_1_0 html
+	@rm -rf *.o *.so *.gcda *.a *.gcno *.info test report build s21_smart_calc_1_0 resources.c
