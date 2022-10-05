@@ -259,14 +259,14 @@ START_TEST(s34) {
   ck_assert_int_eq(ex_code, EXPRESSION_TOO_SHORT);
 }
 END_TEST
-
+// -123
 START_TEST(s35) {
   char test[] = "-123";
   int ex_code = validate_input_numbers(test);
   ck_assert_int_eq(ex_code, WRONG_SYMBOLS);
 }
 END_TEST
-
+// 1.12.3
 START_TEST(s36) {
   char test[] = "1.12.3";
   int ex_code = validate_extra_dot(test);
@@ -275,9 +275,33 @@ START_TEST(s36) {
 END_TEST
 
 //    (2)3
+START_TEST(s37) {
+  double result = 0;
+  int ex_code = calculate("(2)3", &result);
+  ck_assert_int_gt(ex_code, 0);
+}
+END_TEST
 //    2(3)
+START_TEST(s38) {
+  double result = 0;
+  int ex_code = calculate("2(3)", &result);
+  ck_assert_int_gt(ex_code, 0);
+}
+END_TEST
 //    mod*cos(8)
+START_TEST(s39) {
+  double result = 0;
+  int ex_code = calculate("mod*cos(8)", &result);
+  ck_assert_int_gt(ex_code, 0);
+}
+END_TEST
 //    3modmod2
+START_TEST(s40) {
+  double result = 0;
+  int ex_code = calculate("3modmod2", &result);
+  ck_assert_int_gt(ex_code, 0);
+}
+END_TEST
 
 Suite *errors_suite(void) {
   Suite *s = suite_create("Error test");
@@ -319,6 +343,10 @@ Suite *errors_suite(void) {
   tcase_add_test(tc, s34);
   tcase_add_test(tc, s35);
   tcase_add_test(tc, s36);
+  tcase_add_test(tc, s37);
+  tcase_add_test(tc, s38);
+  tcase_add_test(tc, s39);
+  tcase_add_test(tc, s40);
 
   suite_add_tcase(s, tc);
 
