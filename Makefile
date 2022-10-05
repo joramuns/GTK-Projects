@@ -8,7 +8,9 @@ install:
 uninstall:
 
 dvi:
-	@texi2dvi some.texi
+	# goxygen dox_config
+	# @texi2dvi latex/index.texi
+	open html/index.html
 
 dist: install
 	tar -cvzf s21_smart_calc_1_0/s21_smart_calc_1_0.tar.gz s21_smart_calc_1_0/s21_smart_calc 
