@@ -35,8 +35,8 @@ int check_input_type(char input) {
 }
 
 int check_variable(char *expression) {
-  int ex_code = 0, array_pos = 0, check_backward;
-  size_t len = strlen(expression);
+  int ex_code = 0, check_backward;
+  size_t array_pos = 0, len = strlen(expression);
   while (array_pos++ < len) {
     if (expression[array_pos] == 'X') {
       if (array_pos > 0) {
