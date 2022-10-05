@@ -44,7 +44,7 @@ void toggle_graph_func(GtkToggleButton *togglebutton, gpointer user_data) {
   }
 }
 
-static void activate(GtkApplication *app, gpointer user_data) {
+void activate(GtkApplication *app, gpointer user_data) {
   GtkBuilder *builder = gtk_builder_new();
   gtk_builder_add_from_resource(builder, "/org/gtk/Style/builder-o.ui", NULL);
   GObject *window = gtk_builder_get_object(builder, "window");

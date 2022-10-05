@@ -175,7 +175,7 @@ void quit_window(GtkWindow *window);
  * @param cr Cairo drawing pointer
  * @param output Array of chars with mathematical expression
  */
-static void draw_plot(cairo_t *cr, char *output);
+void draw_plot(cairo_t *cr, char *output);
 /**
  * @brief A function draws grid in drawing area
  *
@@ -184,7 +184,7 @@ static void draw_plot(cairo_t *cr, char *output);
  * @param cr Cairo drawing pointer
  * @param dx System cairo value
  */
-static void draw_grid(double width, double height, cairo_t *cr, gdouble dx);
+void draw_grid(double width, double height, cairo_t *cr, gdouble dx);
 /**
  * @brief A function renders drawing area in window
  *
@@ -205,7 +205,7 @@ void graph_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height,
  * @param data Container with all pointers from main window render function
  * (entry_input)
  */
-void add_text(GtkButton *widget, gpointer data);
+void add_text(const GtkButton *widget, gpointer data);
 /**
  * @brief A function to delete symbols in input text area
  *
@@ -213,7 +213,7 @@ void add_text(GtkButton *widget, gpointer data);
  * @param data Container with all pointers from main window render function
  * (entry_input)
  */
-void del_text(GtkButton *widget, gpointer data);
+void del_text(const GtkButton *widget, gpointer data);
 /**
  * @brief A function to get results from input data
  *
@@ -221,7 +221,7 @@ void del_text(GtkButton *widget, gpointer data);
  * @param data Container with all pointers from main window render function
  * (entry_input)
  */
-void get_result(GtkButton *widget, gpointer data);
+void get_result(const GtkButton *widget, gpointer data);
 /**
  * @brief  A function to clear everything from input data
  *
@@ -229,23 +229,19 @@ void get_result(GtkButton *widget, gpointer data);
  * @param data Container with all pointers from main window render function
  * (entry_input)
  */
-void set_zero(GtkButton *widget, gpointer data);
+void set_zero(const GtkButton *widget, gpointer data);
 
 /*                         credit calculator */
 /**
- * @brief A function to render deposit calculator window
+ * @brief A function to render credit calculator window
  *
- * @param widget Pointer to clicked button
- * @param data Container with all pointers from main window render function
  * (entry_input)
  */
-void credit_calc_window(GtkButton *widget, gpointer data);
+void credit_calc_window();
 /**
  * @brief A function to render deposit calculator window
  *
- * @param widget Pointer to clicked button
- * @param data Container with all pointers from main window render function
  */
-void deposit_calc_window(GtkButton *widget, gpointer data);
+void deposit_calc_window();
 
 #endif /* main-gtk_h */
