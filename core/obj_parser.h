@@ -9,8 +9,8 @@
 #include <epoxy/gl.h>
 #include <errno.h>
 
-#define VERTEX_PAT "^v -?\\d+(\\.\\d+)? -?\\d+(\\.\\d+)? -?\\d+(\\.\\d+)? ?(-?\\d+(\\.\\d+)?)?$"
-#define FACE_PAT   "^f (\\d+/\\d+/\\d+ )+(\\d+/\\d+/\\d+)$"
+#define VERTEX_PAT "^v -?[[:digit:]].[[:digit:]]+ -?[[:digit:]].[[:digit:]]+ -?[[:digit:]].[[:digit:]]+\n?$"
+#define FACE_PAT   "^f ([[:digit:]]+/[[:digit:]]+/[[:digit:]]+ )+([[:digit:]]+/[[:digit:]]+/[[:digit:]]+)\n?$"
 
 int parse_obj_file(const char * filename, array_t vertices[], array_t faces[]);
 

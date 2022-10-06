@@ -15,14 +15,14 @@ static void add_vertex(char * line_buffer, array_t vertices[]) {
 
 static void add_faces(char * line_buffer, array_t faces[]) {
   char * cursor = line_buffer;
-  GLfloat vertex = strtod(cursor, &cursor);
-  GLfloat normal = strtod(cursor + 1, &cursor);
-  GLfloat texture = strtod(cursor + 1, &cursor);
+  GLuint vertex = strtod(cursor, &cursor);
+  GLuint normal = strtod(cursor + 1, &cursor);
+  GLuint texture = strtod(cursor + 1, &cursor);
 
-  array_t * face_row = array_create(sizeof(GLfloat), 0);
-  array_append_elem(face_row, &vertex, sizeof(GLfloat));
-  array_append_elem(face_row, &normal, sizeof(GLfloat));
-  array_append_elem(face_row, &texture, sizeof(GLfloat));
+  array_t * face_row = array_create(sizeof(GLuint), 0);
+  array_append_elem(face_row, &vertex, sizeof(GLuint));
+  array_append_elem(face_row, &normal, sizeof(GLuint));
+  array_append_elem(face_row, &texture, sizeof(GLuint));
 
   array_append_elem(faces, face_row, sizeof(array_t*));
 }
@@ -46,13 +46,14 @@ int parse_obj_file(const char * filename, array_t vertices[], array_t faces[]) {
   char *line_buffer = NULL;
   size_t sz = 0;
   ssize_t line_len = 0;
-  while ((line_len = getline(&line_buffer, &sz, obj_file))) {
+  while ((line_len = getline(&line_buffer, &sz, obj_file)) != EOF) {
     if (!regexec(&vertex_regex, line_buffer, 0, NULL, 0)) {
       add_vertex(line_buffer + 2, vertices);
     } else if (!regexec(&face_regex, line_buffer, 0, NULL, 0)) {
-      add_faces(line_buffer + 2, vertices);
+      add_faces(line_buffer + 2, faces);
     }
     free(line_buffer);
+    line_buffer = NULL;
   }
   regfree(&vertex_regex);
   regfree(&face_regex);

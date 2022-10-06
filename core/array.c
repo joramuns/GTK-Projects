@@ -24,7 +24,7 @@ int array_append_elem(array_t *arr, void *data, size_t size) {
     if (new_data == NULL) exit(errno);
     arr->data = new_data;
   }
-  memcpy(data, (char*) arr->data + arr->len * arr->elem_size, size);
+  memcpy((char*) arr->data + arr->len * arr->elem_size, data, size);
   arr->len++;
 
   return 0;
