@@ -1,19 +1,7 @@
-cmake_minimum_required(VERSION 3.10)
-
-project(3DViewer VERSION 0.1)
-
-set(CMAKE_C_COMPILER "gcc")
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED True)
-set(CMAKE_C_OUTPUT_EXTENSION_REPLACE ON)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g --coverage")
-
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
 # Sources
 file(GLOB CORE_SRCS "core/*.c")
 file(GLOB GUI_SRCS "gui/*.c")
-set(TEST_FILE tests.c)
+file(GLOB TESTS_SRCS "tests/*.c")
 set(TEST_SCRIPT "build_tests.sh")
 set(MAIN_SRC main.c)
 file(GLOB TEST_SRCS "tests/*.c")
@@ -26,6 +14,7 @@ find_package(PkgConfig REQUIRED)
 find_package(Check REQUIRED)
 find_package(OpenGL REQUIRED)
 pkg_check_modules(GTK4 REQUIRED gtk4)
+pkg_check_modules(GLIB REQUIRED glib-2.0)
 find_program(
   GLIB_COMPILE_RESOURCES
   NAMES glib-compile-resources
@@ -40,16 +29,12 @@ add_definitions(${GTK4_CFLAGS_OTHER})
 link_directories(${CHECK_LIBRARY_DIRS} ${GTK4_LIBRARY_DIRS})
 
 
-# Targets for testing and coverage report
-execute_process(
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/tests
-  COMMAND sh ${TEST_SCRIPT}
-  COMMAND mv ${TEST_FILE} ${CMAKE_CURRENT_BINARY_DIR}
-  )
-add_executable(test_run ${CORE_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/${TEST_FILE})
+
+add_executable(test_run ${CORE_SRCS} ${TESTS_SRCS})
 target_link_libraries(
   test_run
   gcov
+  glib-2.0
   ${CHECK_LIBRARIES}
   )
 target_include_directories(test_run PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
