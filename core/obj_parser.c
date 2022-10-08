@@ -51,6 +51,7 @@ int parse_obj_file(const char * filename, GArray * vertices, GList ** faces) {
     free(line_buffer);
     line_buffer = NULL;
   }
+  free(line_buffer);
   g_regex_unref(vertex_regex);
   g_regex_unref(face_regex);
   fclose(obj_file);
