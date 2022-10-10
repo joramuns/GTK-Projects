@@ -10,6 +10,6 @@
 #define VERTEX_PAT "^v -?\\d+\\.\\d+ -?\\d+\\.\\d+ -?\\d+\\.\\d+\n?"
 #define FACE_PAT  "^f (\\d+/\\d+/\\d+ )+(\\d+/\\d+/\\d+)\n?" 
 
-int parse_obj_file(const char * filename, GArray * vertices, GList ** faces);
+int parse_obj_file(const char * filename, GArray * vertices, GArray * faces);
 
 #endif /** _CORE_OBJ_PARSER_H **/ 

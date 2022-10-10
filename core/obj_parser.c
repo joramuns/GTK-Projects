@@ -12,22 +12,31 @@ static void add_vertex(char * line_buffer, GArray * vertices) {
   g_array_append_vals(vertices, vertex, 4);
 }
 
-static void add_face(char * line_buffer, GList ** faces) {
+static void add_face(char * line_buffer, GArray * faces) {
   char * cursor = line_buffer;
-  GArray * face_instance = g_array_new(FALSE, TRUE, sizeof(GLuint));
+  GArray * raw_faces = g_array_sized_new(FALSE, TRUE, sizeof(GLuint), 100);
   while (*cursor && *cursor != '\n') {
-    GLuint face_chunk[3] = {
-      strtod(cursor, &cursor),
-      strtod(cursor + 1, &cursor),
-      strtod(cursor + 1, &cursor),
-    };
-    face_instance = g_array_append_vals(face_instance, face_chunk, 3);
+    GLuint v_index = g_ascii_strtod(cursor, &cursor);
+    GLuint t_index = g_ascii_strtod(cursor + 1, &cursor);
+    GLuint n_index = g_ascii_strtod(cursor + 1, &cursor);
+    g_array_append_vals(raw_faces, &v_index, 1);
     cursor++;
   }
-  *faces = g_list_append(*faces, face_instance);
+
+  GLuint * raw_faces_data = (GLuint*) raw_faces->data;
+  GLuint start_index = raw_faces_data[0];
+  for (size_t i = 2; i < raw_faces->len; i++) {
+    GLuint polygon_indices[] = {
+      start_index,
+      raw_faces_data[i - 1],
+      raw_faces_data[i],
+    };
+    g_array_append_vals(faces, polygon_indices, 3);
+  }
+  g_array_unref(raw_faces);
 }
 
-int parse_obj_file(const char * filename, GArray * vertices, GList ** faces) {
+int parse_obj_file(const char * filename, GArray * vertices, GArray * faces) {
   FILE * obj_file = fopen(filename, "r");
   if (obj_file == NULL) {
     return errno;
