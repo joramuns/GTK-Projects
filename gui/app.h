@@ -4,8 +4,7 @@
 #include <gtk/gtk.h>
 
 #define VVIEWER_APP_TYPE (vviewer_app_get_type ())
-G_DECLARE_FINAL_TYPE (VviewerApp, vviewer_app, VVIEWER, APP,
-                      GtkApplication)
+G_DECLARE_FINAL_TYPE (VviewerApp, vviewer_app, VVIEWER, APP, GtkApplication)
 
 VviewerApp *vviewer_app_new (void);
 
