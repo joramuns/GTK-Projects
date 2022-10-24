@@ -2,7 +2,9 @@
 <gresources>
     <gresource prefix="/com/github/Gwarek2/Viewer">
         <file preprocess="xml-stripblanks">gui/templates/window.ui</file>
-        <file preprocess="xml-stripblanks">gui/templates/render_area.ui</file>
+        <file preprocess="xml-stripblanks">gui/templates/model.ui</file>
         <!-- <file>gui/styles/styles.css</file> -->
+        <file>gui/shaders/vertex_shader.glsl</file>
+        <file>gui/shaders/fragment_shader.glsl</file>
     </gresource>
 </gresources>

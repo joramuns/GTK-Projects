@@ -11,17 +11,21 @@ ifdef ASAN
 	CFLAGS += -fsanitize=address
 endif
 
-# GTK dependecies
+# GTK dependencies
 GTK_CFLAGS := $(shell pkg-config --cflags gtk4)
 GTK_LIBS := $(shell pkg-config --libs gtk4)
 
-#GLib dependecies
+#GLib dependencies
 GLIB_CFLAGS := $(shell pkg-config --cflags glib-2.0)
 GLIB_LIBS := $(shell pkg-config --libs glib-2.0)
 
-# Check dependecies
+# Check dependencies
 CHECK_CFLAGS := $(shell pkg-config --cflags check)
 CHECK_LIBS := $(shell pkg-config --libs check)
+
+# Opengl dependencies
+GL_CFLAGS := $(shell pkg-config --cflags epoxy)
+GL_LIBS := $(shell pkg-config --libs epoxy)
 
 # Static check flags
 CPPC       := cppcheck --enable=all --suppress=missingIncludeSystem

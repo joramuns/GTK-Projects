@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <template class="ModelGLArea" parent="GtkGLArea">
+        <!-- <property name="orientation">vertical</property> -->
+        <property name="hexpand">TRUE</property>
+        <property name="vexpand">TRUE</property>
+    </template>
+</interface>

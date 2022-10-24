@@ -29,8 +29,17 @@
         </child>
 
         <child>
-            <object id="view" class="GtkBox">
+            <object class="GtkBox">
                 <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkButton" id="open_file_button">
+                      <property name="label">Open model file</property>
+                      <signal name="clicked" handler="read_obj_file_cb" object="VviewerAppWindow" swapped="yes"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox" id="model_view"> </object>
+                </child>
             </object>
         </child>
 

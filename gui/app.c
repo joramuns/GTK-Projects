@@ -2,6 +2,7 @@
  *  \brief 3DViewer application class implementation.
  */
 #include "app.h"
+
 #include "window.h"
 
 static void
@@ -58,7 +59,7 @@ vviewer_app_class_init (VviewerAppClass *class)
 VviewerApp *
 vviewer_app_new (void)
 {
-  return g_object_new (VVIEWER_APP_TYPE,"application-id",
+  return g_object_new (VVIEWER_APP_TYPE, "application-id",
                        "com.github.Gwarek2.Viewer", "flags",
                        G_APPLICATION_HANDLES_OPEN, NULL);
 }
