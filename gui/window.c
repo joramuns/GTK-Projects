@@ -17,7 +17,7 @@ struct _VviewerAppWindow
   GtkBox *model_view;
   GtkButton *reset_axis;
   GtkBox *axis_box;
-  GLfloat *rotation_angles;
+  GLfloat rotation_angles[N_AXIS];
   GtkAdjustment *axises[N_AXIS];
 };
 
@@ -100,7 +100,7 @@ open_dialog_response_cb (GtkNativeDialog *dialog, int response,
       char *filename = g_file_get_path (file);
 
       parse_obj_file (filename, vertices, indices);
-      ModelGLArea *model = model_gl_area_new (vertices, indices, color);
+      ModelGLArea *model = model_gl_area_new (vertices, indices, color, win->rotation_angles);
       gtk_box_append (win->model_view, GTK_WIDGET (model));
 
       g_free (filename);
@@ -124,7 +124,6 @@ vviewer_app_window_init (VviewerAppWindow *win)
 {
   gtk_widget_init_template (GTK_WIDGET (win));
   gtk_window_set_default_size (GTK_WINDOW (win), WIDTH, HEIGHT);
-  win->rotation_angles = g_malloc(N_AXIS * sizeof(GLfloat));
 
   gtk_menu_button_set_menu_model (win->gears, G_MENU_MODEL (win->menu));
 
