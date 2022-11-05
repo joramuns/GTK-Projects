@@ -38,7 +38,15 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkBox" id="model_view"> </object>
+                  <object class="GtkBox" id="model_view">
+                    <property name="width-request">500</property>
+                    <property name="height-request">500</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox" id="axis_box">
+                    <property name="orientation">vertical</property>
+                  </object>
                 </child>
             </object>
         </child>
