@@ -5,7 +5,7 @@ VERSION := 0.1
 KERN := $(shell uname -s)
 
 CC         := gcc
-CFLAGS     := -Wall -Wextra -g3 --coverage
+CFLAGS     := #-Wall -Wextra -g3 --coverage
 GTK_FLAGS  := -g3
 ifdef ASAN
 	CFLAGS += -fsanitize=address
@@ -59,6 +59,7 @@ TEST_SRCS :=$(shell find tests -name "*.c")
 TEST_H :=$(shell find tests -name "*.h") 
 GRESOURCES := 3dviewer.gresource.xml
 GRESOURCES_SRC := resources.c
+LIB_SRCS := $(shell find core -name "*.a")
 
 # Executables and objects
 APP := 3DViewer

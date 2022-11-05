@@ -7,7 +7,7 @@ all: test gcov_report build
 build: $(G_RESOURCES) $(CORE_SRCS) $(GUI_SRCS) $(CORE_H) $(GUI_H)
 	glib-compile-resources $(GRESOURCES) --target=$(GRESOURCES_SRC) --generate-source
 	$(CC) $(CFLAGS) $(GTK_CFLAGS) $(GL_CFLAGS) -I. \
-		$(CORE_SRCS) $(GRESOURCES_SRC) $(GUI_SRCS) \
+		$(CORE_SRCS) $(LIB_SRCS) $(GRESOURCES_SRC) $(GUI_SRCS) \
 		$(MAIN) $(GTK_LIBS) $(GL_LIBS) -o $(APP)
 
 test: $(CORE_SRCS) $(TEST_SRCS) $(CORE_H) $(TEST_H)
