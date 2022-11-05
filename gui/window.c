@@ -28,9 +28,11 @@ static void axis_change_cb (GtkAdjustment *adjustment, gpointer data) {
   VviewerAppWindow *win = (VviewerAppWindow *) data;
   for (int i = 0; i < N_AXIS; i++) {
     win->rotation_angles[i] = gtk_adjustment_get_value(win->axises[i]);
-    g_print("%f\n", win->rotation_angles[i]);
-    g_print("%p\n", win);
   }   
+  GtkWidget *glarea = gtk_widget_get_first_child (GTK_WIDGET(win->model_view));
+  if (glarea) {
+    gtk_widget_queue_draw(glarea);
+  }
 }
 
 static void reset_axis_cb (VviewerAppWindow *win, GtkButton *button) {
