@@ -4,6 +4,7 @@
 #include <epoxy/gl_generated.h>
 
 #include "core/obj_parser.h"
+#include "window.h"
 
 const char *vertex_shader_path
     = "/com/github/Gwarek2/Viewer/gui/shaders/vertex_shader.glsl";
@@ -19,6 +20,7 @@ struct _ModelGLArea
   GLuint *VAO, *VBO, *EBO;
   GLuint *shader_program;
   GLfloat *color;
+  GLfloat *rotation_angles;
 };
 
 G_DEFINE_TYPE (ModelGLArea, model_gl_area, GTK_TYPE_GL_AREA);
@@ -116,6 +118,7 @@ unrealize (ModelGLArea *area)
 static gboolean
 render (ModelGLArea *area, GdkGLContext *context)
 {
+  g_print("Render num %f", area->rotation_angles[SCALE]);
   glClearColor (0.0, 0.0, 0.0, 0.5);
   glClear (GL_COLOR_BUFFER_BIT);
 
@@ -164,11 +167,12 @@ model_gl_area_class_init (ModelGLAreaClass *class)
 }
 
 ModelGLArea *
-model_gl_area_new (GArray *vertices, GArray *indices, gfloat color[4])
+model_gl_area_new (GArray *vertices, GArray *indices, gfloat color[4], GLfloat *rotation_angles)
 {
   ModelGLArea *self = g_object_new (MODEL_GL_AREA_TYPE, NULL);
   self->vertices = vertices;
   self->indices = indices;
   self->color = (GLfloat *)color;
+  self->rotation_angles = rotation_angles;
   return self;
 }

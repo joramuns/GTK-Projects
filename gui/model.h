@@ -5,4 +5,4 @@
 G_DECLARE_FINAL_TYPE (ModelGLArea, model_gl_area, MODELGLAREA, GLAREA, GtkGLArea)
 
 
-ModelGLArea * model_gl_area_new (GArray *vertices, GArray *indices, gfloat color[4]);
+ModelGLArea * model_gl_area_new (GArray *vertices, GArray *indices, gfloat color[4], GLfloat *rotation_angles);
