@@ -15,31 +15,32 @@ struct _VviewerAppWindow
   GtkMenuButton *gears;
   GtkButton *open_file_button;
   GtkBox *model_view;
+  GtkButton *reset_axis;
   GtkBox *axis_box;
-  GLfloat *rotation_angles[N_AXIS];
+  GLfloat *rotation_angles;
+  GtkAdjustment *axises[N_AXIS];
 };
 
 G_DEFINE_TYPE (VviewerAppWindow, vviewer_app_window,
                GTK_TYPE_APPLICATION_WINDOW);
 
 static void axis_change_cb (GtkAdjustment *adjustment, gpointer data) {
-  int axis = GPOINTER_TO_INT(data);
-
-  g_assert(axis >= 0 && axis < N_AXIS);
-
-  /* Update the rotation angle */
-  /* rotation_angles[axis] = gtk_adjustment_get_value(adjustment); */
-
-  /* for (int i = 0; i < N_AXIS; i++) { */
-  /* g_print("%i = %f\n", i, rotation_angles[i]); */
-  /* } */
-
-  /* g_print("Color: %f %f %f %f\n", background_color.red, background_color.green, background_color.blue, background_color.alpha); */
-  /* g_print("Color: %f %f %f %f\n", fragment_color.red, fragment_color.green, fragment_color.blue, fragment_color.alpha); */
-  /* /1* Update the contents of the GL drawing area *1/ */
-  /* gtk_widget_queue_draw(gl_area); */
+  VviewerAppWindow *win = (VviewerAppWindow *) data;
+  for (int i = 0; i < N_AXIS; i++) {
+    win->rotation_angles[i] = gtk_adjustment_get_value(win->axises[i]);
+    g_print("%f\n", win->rotation_angles[i]);
+    g_print("%p\n", win);
+  }   
 }
-GtkWidget *create_axis_slider(int axis) {
+
+static void reset_axis_cb (VviewerAppWindow *win, GtkButton *button) {
+  for (int i = 0; i < N_AXIS; i++) {
+   win->rotation_angles[i] = 0;
+   gtk_adjustment_set_value(win->axises[i], 0);
+  }
+}
+
+GtkWidget *create_axis_slider(int axis, VviewerAppWindow *win) {
   GtkWidget *box, *label, *slider, *spinbutton;
   GtkAdjustment *adj;
   const char *text;
@@ -48,19 +49,12 @@ GtkWidget *create_axis_slider(int axis) {
 
   switch (axis) {
     case X_AXIS: text = "X axis"; break;
-
     case Y_AXIS: text = "Y axis"; break;
-
     case Z_AXIS: text = "Z axis"; break;
-
     case X_MOVE: text = "X move"; break;
-
     case Y_MOVE: text = "Y move"; break;
-
     case Z_MOVE: text = "Z move"; break;
-
     case SCALE: text = "Scale"; break;
-
     default: g_assert_not_reached();
   }
 
@@ -71,12 +65,12 @@ GtkWidget *create_axis_slider(int axis) {
   if (axis < X_MOVE) {
     adj = gtk_adjustment_new(0.0, 0.0, 360.0, 1.0, 12.0, 0.0);
   } else if (axis == SCALE) {
-    adj = gtk_adjustment_new(0, -1.0, 5.0, 0.1, 12.0, 0.0);
+    adj = gtk_adjustment_new(0, -0.9, 5.0, 0.1, 12.0, 0.0);
   } else {
     adj = gtk_adjustment_new(0.0, -1.0, 1.0, 0.1, 12.0, 0.0);
   }
-  g_signal_connect(adj, "value-changed", G_CALLBACK(axis_change_cb),
-                   GINT_TO_POINTER(axis));
+  win->axises[axis] = adj;
+  g_signal_connect(adj, "value-changed", G_CALLBACK(axis_change_cb), win);
   slider = gtk_scale_new(GTK_ORIENTATION_HORIZONTAL, adj);
   spinbutton = gtk_spin_button_new(adj, 1, 1);
   gtk_box_append(GTK_BOX(box), slider);
@@ -130,11 +124,12 @@ vviewer_app_window_init (VviewerAppWindow *win)
 {
   gtk_widget_init_template (GTK_WIDGET (win));
   gtk_window_set_default_size (GTK_WINDOW (win), WIDTH, HEIGHT);
+  win->rotation_angles = g_malloc(N_AXIS * sizeof(GLfloat));
 
   gtk_menu_button_set_menu_model (win->gears, G_MENU_MODEL (win->menu));
 
   for (int i = 0; i < N_AXIS; i++)
-    gtk_box_append (GTK_BOX (win->axis_box), create_axis_slider (i));
+    gtk_box_append (GTK_BOX (win->axis_box), create_axis_slider (i, win));
 }
 
 static void
@@ -156,6 +151,10 @@ vviewer_app_window_class_init (VviewerAppWindowClass *class)
                                         VviewerAppWindow, open_file_button);
   gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (class),
                                            read_obj_file_cb);
+  gtk_widget_class_bind_template_child (GTK_WIDGET_CLASS (class),
+                                        VviewerAppWindow, reset_axis);
+  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (class),
+                                           reset_axis_cb);
 }
 
 VviewerAppWindow *
