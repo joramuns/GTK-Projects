@@ -118,7 +118,9 @@ unrealize (ModelGLArea *area)
 static gboolean
 render (ModelGLArea *area, GdkGLContext *context)
 {
-  g_print("Render num %f", area->rotation_angles[SCALE]);
+  float mvp[16];
+  GLuint mvp_location = glGetUniformLocation(*area->shader_program, "mvp");
+  compute_move(mvp, area->rotation_angles);
   glClearColor (0.0, 0.0, 0.0, 0.5);
   glClear (GL_COLOR_BUFFER_BIT);
 
@@ -141,6 +143,8 @@ render (ModelGLArea *area, GdkGLContext *context)
   glEnableVertexAttribArray (0);
 
   glUseProgram (*area->shader_program);
+  glUniformMatrix4fv(mvp_location, 1, GL_FALSE, &mvp[0]);
+
   glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
   glDrawElements (GL_TRIANGLES, area->indices->len, GL_UNSIGNED_INT, 0);
 
