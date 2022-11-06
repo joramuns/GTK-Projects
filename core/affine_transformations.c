@@ -1,5 +1,23 @@
 #include "affine_transformations.h"
 
+void perspective_projection(float *dest) {
+  matrix_t projection_matrix;
+  s21_create_matrix(4, 4, &projection_matrix);
+  float near = 10;
+  float far = 90;
+  float right = 0.5;
+  float top = 0.5;
+  
+  projection_matrix.matrix[0][0] = 1 / right;
+  projection_matrix.matrix[1][1] = 1 / top;
+  projection_matrix.matrix[2][2] = -2 / (far - near);
+  projection_matrix.matrix[3][2] = - (far + near) / (far - near);
+  projection_matrix.matrix[3][3] = 1;
+  convert_matrix(projection_matrix, dest);
+  
+  s21_remove_matrix(&projection_matrix);
+}
+
 void compute_move(float *res, float *rotation_angles) {
   matrix_t affine_matrix[3], s21_res;
 
@@ -103,18 +121,4 @@ void mult_triple(matrix_t *matrices, matrix_t *result) {
   s21_mult_matrix(&matrices[0], &matrices[1], &temp_result);
   s21_mult_matrix(&temp_result, &matrices[2], result);
   s21_remove_matrix(&temp_result);
-}
-
-void perspective_projection(matrix_t *frustum) {
-  s21_create_matrix(4, 4, frustum);
-  float near = 10;
-  float far = 90;
-  float right = 0.5;
-  float top = 0.5;
-  
-  frustum->matrix[0][0] = 1 / right;
-  frustum->matrix[1][1] = 1 / top;
-  frustum->matrix[2][2] = -2 / (far - near);
-  frustum->matrix[3][2] = - (far + near) / (far - near);
-  frustum->matrix[3][3] = 1;
 }
