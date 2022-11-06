@@ -38,7 +38,10 @@ static void axis_change_cb (GtkAdjustment *adjustment, gpointer data) {
 static void reset_axis_cb (VviewerAppWindow *win, GtkButton *button) {
   for (int i = 0; i < N_AXIS; i++) {
    win->rotation_angles[i] = 0;
-   gtk_adjustment_set_value(win->axises[i], 0);
+   if (i != SCALE)
+     gtk_adjustment_set_value(win->axises[i], 0);
+   else
+     gtk_adjustment_set_value(win->axises[i], 1);
   }
 }
 

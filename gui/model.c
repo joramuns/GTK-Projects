@@ -177,6 +177,7 @@ model_gl_area_new (GArray *vertices, GArray *indices, gfloat color[4], GLfloat *
   self->vertices = vertices;
   self->indices = indices;
   self->color = (GLfloat *)color;
+  if (!rotation_angles[SCALE]) rotation_angles[SCALE] = 1;
   self->rotation_angles = rotation_angles;
   return self;
 }
