@@ -27,9 +27,9 @@ static void add_face(char *line_buffer, GArray *faces) {
   GLuint start_index = raw_faces_data[0];
   for (size_t i = 2; i < raw_faces->len; i++) {
     GLuint polygon_indices[] = {
-        start_index,
-        raw_faces_data[i - 1],
-        raw_faces_data[i],
+        start_index - 1,
+        raw_faces_data[i - 1] - 1,
+        raw_faces_data[i] - 1,
     };
     g_array_append_vals(faces, polygon_indices, 3);
   }
