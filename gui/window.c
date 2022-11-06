@@ -67,7 +67,7 @@ GtkWidget *create_axis_slider(int axis, VviewerAppWindow *win) {
   if (axis < X_MOVE) {
     adj = gtk_adjustment_new(0.0, 0.0, 360.0, 1.0, 12.0, 0.0);
   } else if (axis == SCALE) {
-    adj = gtk_adjustment_new(0, -0.9, 5.0, 0.1, 12.0, 0.0);
+    adj = gtk_adjustment_new(1, 0.01, 2.0, 0.1, 1, 0.0);
   } else {
     adj = gtk_adjustment_new(0.0, -1.0, 1.0, 0.1, 12.0, 0.0);
   }

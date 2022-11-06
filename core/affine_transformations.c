@@ -55,7 +55,7 @@ void fill_rotation_matrices(matrix_t *matrices, const float *radians) {
 }
 
 void fill_scale_matrices(matrix_t *matrices, const float *radians) {
-  for (int i = 0; i < 3; i++) matrices[i].matrix[i][i] = radians[SCALE] + 1;
+  for (int i = 0; i < 3; i++) matrices[i].matrix[i][i] = radians[SCALE];
 }
 
 void fill_identity_matrix(matrix_t *matrix) {
