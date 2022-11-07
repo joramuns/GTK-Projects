@@ -40,12 +40,14 @@ static void axis_change_cb (GtkAdjustment *adjustment, gpointer data) {
 
 static void reset_axis_cb (VviewerAppWindow *win, GtkButton *button) {
   for (int i = 0; i < N_AXIS; i++) {
-   win->rotation_angles[i] = 0;
-   if (i != SCALE)
-     gtk_adjustment_set_value(win->axises[i], 0);
-   else
-     gtk_adjustment_set_value(win->axises[i], 1);
-  }
+    if (i != SCALE) {
+      gtk_adjustment_set_value(win->axises[i], 0.0);
+      win->rotation_angles[i] = 0.0;
+    } else {
+      gtk_adjustment_set_value(win->axises[i], 1.0);
+      win->rotation_angles[i] = 1.0;
+    }
+  }    
 }
 
 GtkWidget *create_axis_slider(int axis, VviewerAppWindow *win) {
@@ -68,14 +70,14 @@ GtkWidget *create_axis_slider(int axis, VviewerAppWindow *win) {
 
   label = gtk_label_new(text);
   gtk_box_append(GTK_BOX(box), label);
-  gtk_widget_show(label);
+  gtk_widget_set_size_request(label, 45, 10);
 
   if (axis < X_MOVE) {
-    adj = gtk_adjustment_new(0.0, 0.0, 360.0, 1.0, 12.0, 0.0);
+    adj = gtk_adjustment_new(0.0, -360.0, 360.0, 1.0, 12.0, 0.0);
   } else if (axis == SCALE) {
     adj = gtk_adjustment_new(1, 0.01, 2.0, 0.1, 1, 0.0);
   } else {
-    adj = gtk_adjustment_new(0.0, -1.0, 1.0, 0.1, 12.0, 0.0);
+    adj = gtk_adjustment_new(0.0, -10.0, 10.0, 0.1, 12.0, 0.0);
   }
   win->axises[axis] = adj;
   g_signal_connect(adj, "value-changed", G_CALLBACK(axis_change_cb), win);
@@ -83,7 +85,7 @@ GtkWidget *create_axis_slider(int axis, VviewerAppWindow *win) {
   spinbutton = gtk_spin_button_new(adj, 1, 1);
   gtk_box_append(GTK_BOX(box), slider);
   gtk_box_append(GTK_BOX(box), spinbutton);
-  gtk_widget_set_size_request(spinbutton, 120, 10);
+  gtk_widget_set_size_request(spinbutton, 125, 10);
   gtk_widget_set_hexpand(slider, TRUE);
   gtk_widget_show(slider);
 
