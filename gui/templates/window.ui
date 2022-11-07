@@ -61,12 +61,30 @@
                 <child>
                   <object class="GtkBox">
                     <child>
+                      <object class="GtkSeparator">
+                        <property name="hexpand">YES</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <child>
                       <object class="GtkEntry" id="filenameTextEntry">
                         <property name="height-request">20</property>
                         <property name="editable">NO</property>
                         <property name="has-frame">NO</property>
                         <property name="placeholder-text">Choose obj file</property>
                         <property name="can-focus">NO</property>
+                        <property name="hexpand">YES</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <child>
+                      <object class="GtkSeparator">
                         <property name="hexpand">YES</property>
                       </object>
                     </child>
@@ -83,6 +101,11 @@
                         <property name="placeholder-text">Vertices: 0</property>
                         <property name="can-focus">NO</property>
                         <property name="hexpand">YES</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="vexpand">YES</property>
                       </object>
                     </child>
                     <child>
