@@ -114,11 +114,11 @@ open_dialog_response_cb (GtkNativeDialog *dialog, int response,
       gtk_box_append (win->model_view, GTK_WIDGET (model));
 
       char *countBuffer = NULL;
-      asprintf(&countBuffer, "Vertices: %u", indices->len);
+      asprintf(&countBuffer, "Vertices: %u", vertices->len / 4);
       gtk_entry_buffer_set_text(gtk_entry_get_buffer(win->verticesTextEntry), countBuffer, -1);
       free(countBuffer);
       
-      asprintf(&countBuffer, "Edges: %u", vertices->len / 4);
+      asprintf(&countBuffer, "Edges: %u", indices->len);
       gtk_entry_buffer_set_text(gtk_entry_get_buffer(win->edgesTextEntry), countBuffer, -1);
       free(countBuffer);
 
