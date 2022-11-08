@@ -43,9 +43,9 @@ void fill_translation_matrices(matrix_t *matrices, const float *radians) {
 }
 
 void fill_rotation_matrices(matrix_t *matrices, const float *radians) {
-  float x = radians[X_AXIS] * (G_PI / 180.f);
-  float y = radians[Y_AXIS] * (G_PI / 180.f);
-  float z = radians[Z_AXIS] * (G_PI / 180.f);
+  float x = radians[X_AXIS] * (M_PI / 180.f);
+  float y = radians[Y_AXIS] * (M_PI / 180.f);
+  float z = radians[Z_AXIS] * (M_PI / 180.f);
   float c1 = cosf(x), s1 = sinf(x);
   float c2 = cosf(y), s2 = sinf(y);
   float c3 = cosf(z), s3 = sinf(z);
@@ -102,7 +102,7 @@ void affine(const float *radians, matrix_t *result, const unsigned affine_type) 
       break;
 
     default:
-      g_assert_not_reached();
+      break;
   }
 
   mult_triple(matrices, result);

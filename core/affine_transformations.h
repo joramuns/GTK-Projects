@@ -1,4 +1,4 @@
-#include <gtk/gtk.h>
+/* #include <gtk/gtk.h> */
 #include "s21_matrix.h"
 
 enum {
