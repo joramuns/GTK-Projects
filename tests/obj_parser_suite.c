@@ -15,8 +15,8 @@ static const GLfloat sc_vertices_expected[] = {
 
 static const size_t sc_faces_n = 12;
 static const GLuint sc_faces_expected[] = {
-    1, 5, 7, 1, 7, 3, 4, 3, 7, 4, 7, 8, 8, 7, 5, 8, 5, 6,
-    6, 2, 4, 6, 4, 8, 2, 1, 3, 2, 3, 4, 6, 5, 1, 6, 1, 2,
+    0, 4, 6, 0, 6, 2, 3, 2, 6, 3, 6, 7, 7, 6, 4, 7, 4, 5,
+    5, 1, 3, 5, 3, 7, 1, 0, 2, 1, 2, 3, 5, 4, 0, 5, 0, 1,
 };
 
 static GArray *sc_vertices = NULL;

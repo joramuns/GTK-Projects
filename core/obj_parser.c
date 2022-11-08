@@ -16,9 +16,12 @@ static void add_face(char *line_buffer, GArray *faces) {
   char *cursor = line_buffer;
   GArray *raw_faces = g_array_sized_new(FALSE, TRUE, sizeof(GLuint), 100);
   while (*cursor && *cursor != '\n') {
-    GLuint v_index = g_ascii_strtod(cursor, &cursor);
-    GLuint t_index = g_ascii_strtod(cursor + 1, &cursor);
-    GLuint n_index = g_ascii_strtod(cursor + 1, &cursor);
+    GLuint v_index = 0, t_index = 0, n_index = 0;
+    v_index = g_ascii_strtod(cursor, &cursor);
+    if (*cursor == '/')
+      t_index = g_ascii_strtod(cursor + 1, &cursor);
+    if (*cursor == '/')
+      n_index = g_ascii_strtod(cursor + 1, &cursor);
     g_array_append_vals(raw_faces, &v_index, 1);
     cursor++;
   }

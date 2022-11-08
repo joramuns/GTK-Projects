@@ -7,8 +7,8 @@
 #include <glib.h>
 #include <stdio.h>
 
-#define VERTEX_PAT "^v -?\\d+\\.\\d+ -?\\d+\\.\\d+ -?\\d+\\.\\d+\n?"
-#define FACE_PAT "^f (\\d+/\\d+/\\d+ )+(\\d+/\\d+/\\d+)\n?"
+#define VERTEX_PAT "^v (-?\\d+\\.\\d+[\n ]){3,4}"
+#define FACE_PAT "^f (\\d+/?(\\d+)?(/\\d+)?[ \n])+"
 
 int parse_obj_file(const char* filename, GArray* vertices, GArray* faces);
 
