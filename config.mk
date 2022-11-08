@@ -5,7 +5,7 @@ VERSION := 0.1
 KERN := $(shell uname -s)
 
 CC         := gcc
-CFLAGS     := #-Wall -Wextra -g3 --coverage
+CFLAGS     := -Wall -Wextra -g3 --coverage
 GTK_FLAGS  := -g3
 ifdef ASAN
 	CFLAGS += -fsanitize=address
