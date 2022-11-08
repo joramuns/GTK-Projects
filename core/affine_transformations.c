@@ -5,7 +5,7 @@ void affineTransform(GLuint shaderProgram, float *rotationAngles) {
 
   uniform_location = glGetUniformLocation(shaderProgram, "projection");
   float projection[16] = {0};
-  perspectiveProjection(projection, 10, 90, 0.5, 0.5);
+  perspectiveProjection(projection, NEAR, FAR, RIGHT, TOP);
   glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &projection[0]);
 
   uniform_location = glGetUniformLocation(shaderProgram, "rotX");
