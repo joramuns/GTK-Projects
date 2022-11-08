@@ -118,11 +118,6 @@ unrealize (ModelGLArea *area)
 static gboolean
 render (ModelGLArea *area, GdkGLContext *context)
 {
-  float model[16], projection[16];
-  GLuint model_location = glGetUniformLocation(*area->shader_program, "model");
-  GLuint projection_location = glGetUniformLocation(*area->shader_program, "projection");
-  compute_move(model, area->rotation_angles);
-  perspective_projection(projection); 
   glClearColor (0.0, 0.0, 0.0, 0.5);
   glClear (GL_COLOR_BUFFER_BIT);
 
@@ -145,8 +140,8 @@ render (ModelGLArea *area, GdkGLContext *context)
   glEnableVertexAttribArray (0);
 
   glUseProgram (*area->shader_program);
-  glUniformMatrix4fv(model_location, 1, GL_FALSE, &model[0]);
-  glUniformMatrix4fv(projection_location, 1, GL_FALSE, &projection[0]);
+
+  affineTransform(*area->shader_program, area->rotation_angles);
 
   glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
   glDrawElements (GL_TRIANGLES, area->indices->len, GL_UNSIGNED_INT, 0);

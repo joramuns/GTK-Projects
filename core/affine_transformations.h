@@ -1,5 +1,10 @@
-/* #include <gtk/gtk.h> */
-#include "s21_matrix.h"
+#include <epoxy/gl.h>
+#include <math.h>
+
+#define NEAR 10
+#define FAR 90
+#define RIGHT 0.5
+#define TOP 0.5
 
 enum {
   AFF_TRANSLATION,
@@ -19,9 +24,11 @@ enum {
   N_AXIS
 };
 
-void perspective_projection(float *dest);
-void compute_move(float *res, float *rotation_angles);
-void fill_identity_matrix(matrix_t *matrix);
-void affine(const float *radians, matrix_t *result, const unsigned affine_type);
-void convert_matrix(matrix_t src, float *dest);
-void mult_triple(matrix_t *matrices, matrix_t *result);
+void affineTransform(GLuint shaderProgram, float *rotationAngles);
+void perspectiveProjection(float *dest, float near, float far, float right, float top);
+void fillXaxis(float *res, float *rotation_angles);
+void fillYaxis(float *res, float *rotation_angles);
+void fillZaxis(float *res, float *rotation_angles);
+void fillMove(float *res, float *rotation_angles);
+void fillScale(float *res, float *rotation_angles);
+void fillIdentityMatrix(float *res);
