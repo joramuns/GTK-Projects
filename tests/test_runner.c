@@ -3,6 +3,7 @@
 int main(void) {
   Suite *test_suites[] = {
       obj_parser_suite(),
+      affine_suite(),
   };
 
   SRunner *sr = srunner_create(test_suites[0]);
