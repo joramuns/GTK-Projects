@@ -146,6 +146,21 @@ render (ModelGLArea *area, GdkGLContext *context)
   glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
   glDrawElements (GL_TRIANGLES, area->indices->len, GL_UNSIGNED_INT, 0);
 
+  int width = 1000, height = 1000;
+  guchar *image = malloc (width * height * sizeof(guchar) * 4);
+  const char* filenameImage = "imagetest.png";
+  GError* error = NULL;
+  /* glPixelStorei(GL_PACK_ALIGNMENT, 1); */
+  glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
+  GdkPixbuf* image_pixbuf = gdk_pixbuf_new_from_data(image, GDK_COLORSPACE_RGB, TRUE, 8, width, height, height * 4, NULL, NULL);
+  GdkPixbuf* image_pixbuf_swap = gdk_pixbuf_flip(image_pixbuf, FALSE);
+  gdk_pixbuf_save(image_pixbuf_swap, filenameImage, "png", &error, NULL);
+  if (error != NULL)
+    g_print ("%s\n", error->message);
+  free(image);
+  g_object_unref(image_pixbuf);
+  g_object_unref(image_pixbuf_swap);
+
   glFlush ();
   gtk_gl_area_queue_render (GTK_GL_AREA (area));
   return TRUE;
