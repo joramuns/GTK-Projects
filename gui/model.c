@@ -3,6 +3,7 @@
 #include <epoxy/gl.h>
 #include "core/obj_parser.h"
 #include "utils.h"
+#include "window.h"
 
 const char *vertex_shader_path
     = "/com/github/Gwarek2/Viewer/gui/shaders/vertex_shader.glsl";
@@ -17,20 +18,19 @@ struct _ModelGLArea
 
   GArray *vertices;
   GArray *indices;
+
   GLuint VAO, VBO, EBO;
   GLuint shader_program;
 
   guint vertices_type;
   GLdouble vertices_size;
   GdkRGBA *vertices_color;
-
   guint projection;
-
   guint edge_type;
   GdkRGBA *edge_color;
   GLdouble edge_width;
-
   GdkRGBA *bg_color;
+  GLfloat *rotation_angles;
 };
 
 G_DEFINE_TYPE (ModelGLArea, model_gl_area, GTK_TYPE_GL_AREA);
@@ -146,6 +146,7 @@ render (ModelGLArea *area, GdkGLContext *context)
   glLineWidth (area->edge_width);
 
   glUseProgram (area->shader_program);
+  affineTransform(area->shader_program, area->rotation_angles);
 
   int color = glGetUniformLocation (area->shader_program, "color");
   glUniform4f (color, area->edge_color->red,
@@ -216,11 +217,13 @@ model_gl_area_class_init (ModelGLAreaClass *class)
       "/com/github/Gwarek2/Viewer/gui/ui/model.ui");
 }
 
-ModelGLArea*
-model_gl_area_new (GArray *vertices, GArray *indices)
+ModelGLArea *
+model_gl_area_new (GArray *vertices, GArray *indices, GLfloat *rotation_angles)
 {
   ModelGLArea *self = g_object_new (MODEL_GL_AREA_TYPE, NULL);
   self->vertices = vertices;
   self->indices = indices;
+  if (!rotation_angles[SCALE]) rotation_angles[SCALE] = 1;
+  self->rotation_angles = rotation_angles;
   return self;
 }

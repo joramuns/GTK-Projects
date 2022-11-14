@@ -5,6 +5,7 @@
 #define HEIGHT 500
 
 #include "app.h"
+#include "../core/affine_transformations.h"
 #include <gtk/gtk.h>
 
 #define VVIEWER_APP_WINDOW_TYPE (vviewer_app_window_get_type ())
