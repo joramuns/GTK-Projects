@@ -2,13 +2,21 @@
  *  \brief 3DViewer application class implementation.
  */
 #include "app.h"
-
+#include "prefs.h"
 #include "window.h"
 
 static void
 quit_app (GSimpleAction *action, GVariant *param, gpointer app)
 {
   g_application_quit (G_APPLICATION (app));
+}
+
+static void
+open_preferences (GSimpleAction *action, GVariant *param, gpointer app)
+{
+  GtkWindow *win = gtk_application_get_active_window (GTK_APPLICATION (app));
+  VviewerAppPrefs *prefs = vviewer_app_prefs_new(VVIEWER_APP_WINDOW (win));
+  gtk_window_present (GTK_WINDOW (prefs));
 }
 
 struct _VviewerApp
@@ -21,6 +29,7 @@ struct _VviewerApp
 G_DEFINE_TYPE (VviewerApp, vviewer_app, GTK_TYPE_APPLICATION);
 
 static GActionEntry app_entries[] = {
+  { "preferences", open_preferences, NULL, NULL, NULL },
   { "quit", quit_app, NULL, NULL, NULL },
 };
 

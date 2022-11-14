@@ -31,14 +31,13 @@ open_dialog_response_cb (GtkNativeDialog *dialog, int response,
       if (old_model != NULL)
         gtk_box_remove (win->model_view, GTK_WIDGET(old_model));
 
-      gfloat color[4] = { 1, 1, 1, 0.5 };
       GFile *file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
       GArray *vertices = g_array_sized_new (FALSE, TRUE, sizeof (GLuint), 100);
       GArray *indices = g_array_sized_new (FALSE, TRUE, sizeof (GLuint), 100);
       char *filename = g_file_get_path (file);
 
       parse_obj_file (filename, vertices, indices);
-      ModelGLArea *model = model_gl_area_new (vertices, indices, color);
+      ModelGLArea *model = model_gl_area_new (vertices, indices);
       gtk_box_append (win->model_view, GTK_WIDGET (model));
 
       g_free (filename);
@@ -50,10 +49,12 @@ open_dialog_response_cb (GtkNativeDialog *dialog, int response,
 static void
 read_obj_file_cb (VviewerAppWindow *win, GtkButton *button)
 {
-  GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
-      "Select a file", win, GTK_FILE_CHOOSER_ACTION_OPEN, "_Open", "_Cancel");
-  g_signal_connect (dialog, "response", G_CALLBACK (open_dialog_response_cb),
-                    win);
+  GtkFileChooserNative *dialog =
+    gtk_file_chooser_native_new ("Select a file", win,
+                                 GTK_FILE_CHOOSER_ACTION_OPEN,
+                                 "_Open", "_Cancel");
+  g_signal_connect (dialog, "response",
+                    G_CALLBACK (open_dialog_response_cb), win);
   gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
 }
 
@@ -64,9 +65,6 @@ vviewer_app_window_init (VviewerAppWindow *win)
   gtk_window_set_default_size (GTK_WINDOW (win), WIDTH, HEIGHT);
 
   gtk_menu_button_set_menu_model (win->gears, G_MENU_MODEL (win->menu));
-
-  // g_signal_connect(win->open_file_button, "clicked",
-  // G_CALLBACK(read_obj_file_cb), NULL);
 }
 
 static void
@@ -74,7 +72,7 @@ vviewer_app_window_class_init (VviewerAppWindowClass *class)
 {
   gtk_widget_class_set_template_from_resource (
       GTK_WIDGET_CLASS (class),
-      "/com/github/Gwarek2/Viewer/gui/templates/window.ui");
+      "/com/github/Gwarek2/Viewer/gui/ui/window.ui");
 
   gtk_widget_class_bind_template_child (GTK_WIDGET_CLASS (class),
                                         VviewerAppWindow, menu);

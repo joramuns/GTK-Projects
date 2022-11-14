@@ -6,7 +6,6 @@ KERN := $(shell uname -s)
 
 CC         := gcc
 CFLAGS     := -Wall -Wextra -g3 --coverage
-GTK_FLAGS  := -g3
 ifdef ASAN
 	CFLAGS += -fsanitize=address
 endif
@@ -57,8 +56,10 @@ GUI_H := $(shell find gui -name "*.h")
 MAIN := main.c
 TEST_SRCS :=$(shell find tests -name "*.c") 
 TEST_H :=$(shell find tests -name "*.h") 
-GRESOURCES := 3dviewer.gresource.xml
-GRESOURCES_SRC := resources.c
+GRESOURCES := viewer.gresource.xml
+GSCHEMA := com.github.Gwarek2.Viewer.gschema.xml
+GRESOURCES_CMP := resources.c
+GSCHEMA_CMP := gschemas.compiled
 
 # Executables and objects
 APP := 3DViewer

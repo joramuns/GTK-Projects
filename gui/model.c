@@ -1,9 +1,8 @@
 #include "model.h"
-
+#include "enums.h"
 #include <epoxy/gl.h>
-#include <epoxy/gl_generated.h>
-
 #include "core/obj_parser.h"
+#include "utils.h"
 
 const char *vertex_shader_path
     = "/com/github/Gwarek2/Viewer/gui/shaders/vertex_shader.glsl";
@@ -14,11 +13,24 @@ struct _ModelGLArea
 {
   GtkGLArea parent;
 
+  GSettings *prefs;
+
   GArray *vertices;
   GArray *indices;
-  GLuint *VAO, *VBO, *EBO;
-  GLuint *shader_program;
-  GLfloat *color;
+  GLuint VAO, VBO, EBO;
+  GLuint shader_program;
+
+  guint vertices_type;
+  GLdouble vertices_size;
+  GdkRGBA *vertices_color;
+
+  guint projection;
+
+  guint edge_type;
+  GdkRGBA *edge_color;
+  GLdouble edge_width;
+
+  GdkRGBA *bg_color;
 };
 
 G_DEFINE_TYPE (ModelGLArea, model_gl_area, GTK_TYPE_GL_AREA);
@@ -84,11 +96,7 @@ realize (ModelGLArea *area)
       return;
     }
 
-  area->shader_program = g_malloc (sizeof (GLuint));
-  area->VAO = g_malloc (sizeof (GLuint));
-  area->VBO = g_malloc (sizeof (GLuint));
-  area->EBO = g_malloc (sizeof (GLuint));
-  init_shaders (area->shader_program);
+  init_shaders (&area->shader_program);
 }
 
 static void
@@ -101,35 +109,32 @@ unrealize (ModelGLArea *area)
       g_print ("%s\n", err->message);
       return;
     }
-  glDeleteVertexArrays (1, area->VAO);
-  glDeleteBuffers (1, area->VBO);
-  glDeleteBuffers (1, area->EBO);
-  glDeleteProgram (*area->shader_program);
-  g_array_free (area->vertices, TRUE);
-  g_array_free (area->indices, TRUE);
-  g_free (area->shader_program);
-  g_free (area->VAO);
-  g_free (area->VBO);
-  g_free (area->EBO);
+  glDeleteVertexArrays (1, &area->VAO);
+  glDeleteBuffers (1, &area->VBO);
+  glDeleteBuffers (1, &area->EBO);
+  glDeleteProgram (area->shader_program);
 }
 
 static gboolean
 render (ModelGLArea *area, GdkGLContext *context)
 {
-  glClearColor (0.0, 0.0, 0.0, 0.5);
+  glClearColor (area->bg_color->red,
+                area->bg_color->green,
+                area->bg_color->blue,
+                area->bg_color->alpha);
   glClear (GL_COLOR_BUFFER_BIT);
 
-  glGenVertexArrays (1, area->VAO);
-  glGenBuffers (1, area->VBO);
-  glGenBuffers (1, area->EBO);
+  glGenVertexArrays (1, &area->VAO);
+  glGenBuffers (1, &area->VBO);
+  glGenBuffers (1, &area->EBO);
 
-  glBindVertexArray (*area->VAO);
+  glBindVertexArray (area->VAO);
 
-  glBindBuffer (GL_ARRAY_BUFFER, *area->VBO);
+  glBindBuffer (GL_ARRAY_BUFFER, area->VBO);
   glBufferData (GL_ARRAY_BUFFER, area->vertices->len * sizeof (GLfloat),
                 (GLfloat *)area->vertices->data, GL_STATIC_DRAW);
 
-  glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, *area->EBO);
+  glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, area->EBO);
   glBufferData (GL_ELEMENT_ARRAY_BUFFER, area->indices->len * sizeof (GLuint),
                 (GLuint *)area->indices->data, GL_STATIC_DRAW);
 
@@ -137,9 +142,31 @@ render (ModelGLArea *area, GdkGLContext *context)
                          (void *)0);
   glEnableVertexAttribArray (0);
 
-  glUseProgram (*area->shader_program);
+  glEnable (GL_LINE_SMOOTH);
+  glLineWidth (area->edge_width);
+
+  glUseProgram (area->shader_program);
+
+  int color = glGetUniformLocation (area->shader_program, "color");
+  glUniform4f (color, area->edge_color->red,
+                      area->edge_color->green,
+                      area->edge_color->blue,
+                      area->edge_color->alpha);
+
   glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
   glDrawElements (GL_TRIANGLES, area->indices->len, GL_UNSIGNED_INT, 0);
+
+  if (area->vertices_type != VERTICES_NONE) {
+    glPointSize (area->vertices_size);
+    glUniform4f (color, area->vertices_color->red,
+                        area->vertices_color->green,
+                        area->vertices_color->blue,
+                        area->vertices_color->alpha);
+    int rounded = glGetUniformLocation (area->shader_program, "round_vertices");
+    glUniform1ui (rounded, area->vertices_type == VERTICES_ROUNDED);
+    glDrawElements (GL_POINTS, area->indices->len, GL_UNSIGNED_INT, 0);
+    glUniform1ui (rounded, GL_FALSE);
+  }
 
   glFlush ();
   gtk_gl_area_queue_render (GTK_GL_AREA (area));
@@ -147,12 +174,38 @@ render (ModelGLArea *area, GdkGLContext *context)
 }
 
 static void
+apply_settings (GSettings *settings,
+                gchar *key,
+                gpointer user_data)
+{
+  ModelGLArea *area = MODELGLAREA_GLAREA(user_data);
+  area->vertices_size = g_settings_get_double(settings, "vertices-size");
+  area->edge_width = g_settings_get_double(settings, "edge-width");
+  area->vertices_type = g_settings_get_enum (settings, "vertices-type");
+  area->projection = g_settings_get_enum (settings, "projection");
+  area->edge_type = g_settings_get_enum (settings, "edge-type");
+
+  area->vertices_color = get_rgba_settings_prop (settings, "vertices-color");
+  area->edge_color = get_rgba_settings_prop(settings, "edge-color");
+  area->bg_color = get_rgba_settings_prop(settings, "background-color");
+
+  gtk_gl_area_queue_render(GTK_GL_AREA (area));
+}
+
+static void
 model_gl_area_init (ModelGLArea *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
+
   g_signal_connect (self, "realize", G_CALLBACK (realize), NULL);
   g_signal_connect (self, "unrealize", G_CALLBACK (unrealize), NULL);
   g_signal_connect (self, "render", G_CALLBACK (render), NULL);
+
+  self->prefs = g_settings_new ("com.github.Gwarek2.Viewer");
+  g_signal_connect (self->prefs, "changed",
+                   G_CALLBACK(apply_settings), self);
+
+  apply_settings(self->prefs, NULL, self);
 }
 
 static void
@@ -160,15 +213,14 @@ model_gl_area_class_init (ModelGLAreaClass *class)
 {
   gtk_widget_class_set_template_from_resource (
       GTK_WIDGET_CLASS (class),
-      "/com/github/Gwarek2/Viewer/gui/templates/model.ui");
+      "/com/github/Gwarek2/Viewer/gui/ui/model.ui");
 }
 
-ModelGLArea *
-model_gl_area_new (GArray *vertices, GArray *indices, gfloat color[4])
+ModelGLArea*
+model_gl_area_new (GArray *vertices, GArray *indices)
 {
   ModelGLArea *self = g_object_new (MODEL_GL_AREA_TYPE, NULL);
   self->vertices = vertices;
   self->indices = indices;
-  self->color = (GLfloat *)color;
   return self;
 }
