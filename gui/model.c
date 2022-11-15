@@ -5,10 +5,15 @@
 #include "utils.h"
 #include "window.h"
 
-const char *vertex_shader_path
-    = "/com/github/Gwarek2/Viewer/gui/shaders/vertex_shader.glsl";
-const char *fragment_shader_path
-    = "/com/github/Gwarek2/Viewer/gui/shaders/fragment_shader.glsl";
+#define DASH_SIZE 10
+#define GAP_SIZE 10
+
+const char *v_shader_path
+    = "/com/github/Gwarek2/Viewer/gui/shaders/v_shader.glsl";
+const char *f_shader_polygon_path
+    = "/com/github/Gwarek2/Viewer/gui/shaders/f_shader_polygon.glsl";
+const char *f_shader_point_path
+    = "/com/github/Gwarek2/Viewer/gui/shaders/f_shader_point.glsl";
 
 struct _ModelGLArea
 {
@@ -20,7 +25,8 @@ struct _ModelGLArea
   GArray *indices;
 
   GLuint VAO, VBO, EBO;
-  GLuint shader_program;
+  GLuint polygon_shader_prog;
+  GLuint point_shader_prog;
 
   guint vertices_type;
   GLdouble vertices_size;
@@ -35,7 +41,7 @@ struct _ModelGLArea
 
 G_DEFINE_TYPE (ModelGLArea, model_gl_area, GTK_TYPE_GL_AREA);
 
-inline static GLuint
+static GLuint
 create_shader (GLint type, const char *src)
 {
   GLuint shader = glCreateShader (type);
@@ -55,13 +61,13 @@ create_shader (GLint type, const char *src)
   return shader;
 }
 
-inline static void
-init_shaders (GLuint *shader_program)
+static void
+init_shaders (GLuint *shader_program, const char *v_shader_path, const char *f_shader_path)
 {
   GBytes *vertex_source
-      = g_resources_lookup_data (vertex_shader_path, 0, NULL);
+      = g_resources_lookup_data (v_shader_path, 0, NULL);
   GBytes *fragment_source
-      = g_resources_lookup_data (fragment_shader_path, 0, NULL);
+      = g_resources_lookup_data (f_shader_path, 0, NULL);
 
   GLuint vertex_shader = create_shader (
       GL_VERTEX_SHADER, g_bytes_get_data (vertex_source, NULL));
@@ -96,7 +102,8 @@ realize (ModelGLArea *area)
       return;
     }
 
-  init_shaders (&area->shader_program);
+  init_shaders (&area->polygon_shader_prog, v_shader_path, f_shader_polygon_path);
+  init_shaders (&area->point_shader_prog, v_shader_path, f_shader_point_path);
 }
 
 static void
@@ -112,7 +119,51 @@ unrealize (ModelGLArea *area)
   glDeleteVertexArrays (1, &area->VAO);
   glDeleteBuffers (1, &area->VBO);
   glDeleteBuffers (1, &area->EBO);
-  glDeleteProgram (area->shader_program);
+  glDeleteProgram (area->polygon_shader_prog);
+  glDeleteProgram (area->point_shader_prog);
+}
+
+static void
+draw_polygons (ModelGLArea *area)
+{
+  int width = gtk_widget_get_width (GTK_WIDGET (area));
+  int height = gtk_widget_get_height (GTK_WIDGET (area));
+
+  glEnable (GL_LINE_SMOOTH);
+  glLineWidth (area->edge_width);
+  glUseProgram (area->polygon_shader_prog);
+  int polygon_color = glGetUniformLocation (area->polygon_shader_prog, "color");
+  int dashed_line = glGetUniformLocation (area->polygon_shader_prog, "dashedLine");
+  int dash_size = glGetUniformLocation (area->polygon_shader_prog, "dashSize");
+  int gap_size = glGetUniformLocation (area->polygon_shader_prog, "gapSize");
+  int resolution = glGetUniformLocation (area->polygon_shader_prog, "resolution");
+  affineTransform(area->polygon_shader_prog, area->rotation_angles, area->projection == PROJECTION_CENTRAL);
+  glUniform4f (polygon_color, area->edge_color->red,
+                              area->edge_color->green,
+                              area->edge_color->blue,
+                              area->edge_color->alpha);
+  glUniform1ui (dashed_line, area->edge_type == EDGE_DASHED);
+  glUniform1f (dash_size, DASH_SIZE);
+  glUniform1f (gap_size, GAP_SIZE);
+  glUniform2f (resolution,  width, height);
+  glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
+  glDrawElements (GL_TRIANGLES, area->indices->len, GL_UNSIGNED_INT, 0);
+}
+
+static void
+draw_points (ModelGLArea *area)
+{
+  glUseProgram (area->point_shader_prog);
+  int point_color = glGetUniformLocation (area->point_shader_prog, "color");
+  int rounded = glGetUniformLocation (area->point_shader_prog, "roundVertices");
+  affineTransform(area->point_shader_prog, area->rotation_angles, area->projection == PROJECTION_CENTRAL);
+  glPointSize (area->vertices_size);
+  glUniform4f (point_color, area->vertices_color->red,
+                            area->vertices_color->green,
+                            area->vertices_color->blue,
+                            area->vertices_color->alpha);
+  glUniform1ui (rounded, area->vertices_type == VERTICES_ROUNDED);
+  glDrawElements (GL_POINTS, area->indices->len, GL_UNSIGNED_INT, 0);
 }
 
 static gboolean
@@ -142,31 +193,9 @@ render (ModelGLArea *area, GdkGLContext *context)
                          (void *)0);
   glEnableVertexAttribArray (0);
 
-  glEnable (GL_LINE_SMOOTH);
-  glLineWidth (area->edge_width);
-
-  glUseProgram (area->shader_program);
-  affineTransform(area->shader_program, area->rotation_angles);
-
-  int color = glGetUniformLocation (area->shader_program, "color");
-  glUniform4f (color, area->edge_color->red,
-                      area->edge_color->green,
-                      area->edge_color->blue,
-                      area->edge_color->alpha);
-
-  glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
-  glDrawElements (GL_TRIANGLES, area->indices->len, GL_UNSIGNED_INT, 0);
-
+  draw_polygons (area);
   if (area->vertices_type != VERTICES_NONE) {
-    glPointSize (area->vertices_size);
-    glUniform4f (color, area->vertices_color->red,
-                        area->vertices_color->green,
-                        area->vertices_color->blue,
-                        area->vertices_color->alpha);
-    int rounded = glGetUniformLocation (area->shader_program, "round_vertices");
-    glUniform1ui (rounded, area->vertices_type == VERTICES_ROUNDED);
-    glDrawElements (GL_POINTS, area->indices->len, GL_UNSIGNED_INT, 0);
-    glUniform1ui (rounded, GL_FALSE);
+    draw_points(area);
   }
 
   glFlush ();

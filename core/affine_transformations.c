@@ -1,11 +1,14 @@
 #include "affine_transformations.h"
 
-void affineTransform(GLuint shaderProgram, float *rotationAngles) {
+void affineTransform(GLuint shaderProgram, float *rotationAngles, bool is_orthogonal) {
   GLuint uniform_location; 
 
   uniform_location = glGetUniformLocation(shaderProgram, "projection");
   float projection[16] = {0};
-  perspectiveProjection(projection, NEAR, FAR, RIGHT, TOP);
+  fillIdentityMatrix(projection);
+  if (is_orthogonal) {
+    perspectiveProjection(projection, NEAR, FAR, RIGHT, TOP);
+  }
   glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &projection[0]);
 
   uniform_location = glGetUniformLocation(shaderProgram, "rotX");

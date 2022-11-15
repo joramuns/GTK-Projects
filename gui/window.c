@@ -19,9 +19,9 @@ struct _VviewerAppWindow
   GtkBox *axis_box;
   GLfloat rotation_angles[N_AXIS];
   GtkAdjustment *axises[N_AXIS];
-  GtkLabel *filenameText;
-  GtkLabel *verticesText;
-  GtkLabel *edgesText;
+  GtkLabel *filename_text;
+  GtkLabel *vertices_text;
+  GtkLabel *edges_text;
 };
 
 G_DEFINE_TYPE (VviewerAppWindow, vviewer_app_window,
@@ -108,20 +108,20 @@ open_dialog_response_cb (GtkNativeDialog *dialog, int response,
       GArray *indices = g_array_sized_new (FALSE, TRUE, sizeof (GLuint), 100);
 
       char *filename = g_file_get_path (file);
-      gtk_label_set_text(win->filenameText, filename);
+      gtk_label_set_text(win->filename_text, filename);
 
       parse_obj_file (filename, vertices, indices);
       ModelGLArea *model = model_gl_area_new (vertices, indices, win->rotation_angles);
       gtk_box_append (win->model_view, GTK_WIDGET (model));
 
-      gchar *countBuffer = NULL;
-      countBuffer = g_strdup_printf("Vertices: %u", vertices->len / 4);
-      gtk_label_set_text(win->verticesText, countBuffer);
-      g_free(countBuffer);
+      gchar *count_buffer = NULL;
+      count_buffer = g_strdup_printf("Vertices: %u", vertices->len / 4);
+      gtk_label_set_text(win->vertices_text, count_buffer);
+      g_free(count_buffer);
       
-      countBuffer = g_strdup_printf("Edges: %u", indices->len);
-      gtk_label_set_text(win->edgesText, countBuffer);
-      g_free(countBuffer);
+      count_buffer = g_strdup_printf("Edges: %u", indices->len);
+      gtk_label_set_text(win->edges_text, count_buffer);
+      g_free(count_buffer);
 
       g_free (filename);
       g_object_unref (G_OBJECT (file));
@@ -175,11 +175,11 @@ vviewer_app_window_class_init (VviewerAppWindowClass *class)
   gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (class),
                                            reset_axis_cb);
   gtk_widget_class_bind_template_child (GTK_WIDGET_CLASS (class),
-                                        VviewerAppWindow, filenameText);
+                                        VviewerAppWindow, filename_text);
   gtk_widget_class_bind_template_child (GTK_WIDGET_CLASS (class),
-                                        VviewerAppWindow, verticesText);
+                                        VviewerAppWindow, vertices_text);
   gtk_widget_class_bind_template_child (GTK_WIDGET_CLASS (class),
-                                        VviewerAppWindow, edgesText);
+                                        VviewerAppWindow, edges_text);
 }
 
 VviewerAppWindow *

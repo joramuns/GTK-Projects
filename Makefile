@@ -38,4 +38,4 @@ lint:
 
 clean:
 	@rm -rf $(ALL_GCDA) $(ALL_GCNO) $(APP) $(TEST_RUNNER) \
-		docs coverage $(GRESOURCES_CMP) $(GSCHEMA_CMP)
+		docs coverage $(GRESOURCES_CMP) $(GSCHEMA_CMP) $(ALL_GSYM)

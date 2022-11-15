@@ -5,7 +5,8 @@
         <file preprocess="xml-stripblanks">gui/ui/model.ui</file>
         <file preprocess="xml-stripblanks">gui/ui/prefs.ui</file>
         <!-- <file>gui/styles/styles.css</file> -->
-        <file>gui/shaders/vertex_shader.glsl</file>
-        <file>gui/shaders/fragment_shader.glsl</file>
+        <file>gui/shaders/v_shader.glsl</file>
+        <file>gui/shaders/f_shader_polygon.glsl</file>
+        <file>gui/shaders/f_shader_point.glsl</file>
     </gresource>
 </gresources>

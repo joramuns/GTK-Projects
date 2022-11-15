@@ -5,7 +5,7 @@ VERSION := 0.1
 KERN := $(shell uname -s)
 
 CC         := gcc
-CFLAGS     := -Wall -Wextra -g3 --coverage
+CFLAGS     := -g3 --coverage #-Wall -Wextra
 ifdef ASAN
 	CFLAGS += -fsanitize=address
 endif
@@ -69,5 +69,6 @@ COV_DIR := coverage
 COV_REPORT := $(COV_DIR)/index.html
 ALL_GCDA := $(shell find . -name "*.gcda")
 ALL_GCNO := $(shell find . -name "*.gcno")
+ALL_GSYM := $(shell find . -name "*.dSYM")
 
 DOXYFILE := Doxyfile
