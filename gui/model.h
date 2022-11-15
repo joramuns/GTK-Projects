@@ -9,6 +9,7 @@
 G_DECLARE_FINAL_TYPE (ModelGLArea, model_gl_area, MODELGLAREA, GLAREA, GtkGLArea)
 
 
+GdkPixbuf* get_pixbuf(GtkWidget *model);
 ModelGLArea * model_gl_area_new (GArray *vertices, GArray *indices, GLfloat *rotation_angles);
 
 #endif  /** _GUI_MODEL_H **/
