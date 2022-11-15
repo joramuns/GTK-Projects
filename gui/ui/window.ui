@@ -10,6 +10,12 @@
                       <signal name="clicked" handler="read_obj_file_cb" object="VviewerAppWindow" swapped="yes"/>
                   </object>
                 </child>
+                <child>
+                  <object class="GtkButton" id="screenshot_button">
+                      <property name="label">Screenshot</property>
+                      <signal name="clicked" handler="open_prefs_screenshot_cb" object="VviewerAppWindow" swapped="yes"/>
+                  </object>
+                </child>
                 <child type="end">
                     <object id="gears" class="GtkMenuButton">
                         <property name="direction">none</property>

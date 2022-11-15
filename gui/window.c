@@ -14,6 +14,7 @@ struct _VviewerAppWindow
   GMenuModel *menu;
   GtkMenuButton *gears;
   GtkButton *open_file_button;
+  GtkButton *screenshot_button;
   GtkBox *model_view;
   GtkButton *reset_axis;
   GtkBox *axis_box;
@@ -130,6 +131,16 @@ open_dialog_response_cb (GtkNativeDialog *dialog, int response,
 }
 
 static void
+open_prefs_screenshot_cb (VviewerAppWindow *win, GtkButton *button)
+{
+  GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
+      "Select a file", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_OPEN, "_Open", "_Cancel");
+  g_signal_connect (dialog, "response", G_CALLBACK (open_dialog_response_cb),
+                    win);
+  gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
+}
+
+static void
 read_obj_file_cb (VviewerAppWindow *win, GtkButton *button)
 {
   GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
@@ -170,6 +181,10 @@ vviewer_app_window_class_init (VviewerAppWindowClass *class)
                                         VviewerAppWindow, open_file_button);
   gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (class),
                                            read_obj_file_cb);
+  gtk_widget_class_bind_template_child (GTK_WIDGET_CLASS (class),
+                                        VviewerAppWindow, screenshot_button);
+  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (class),
+                                           open_prefs_screenshot_cb);
   gtk_widget_class_bind_template_child (GTK_WIDGET_CLASS (class),
                                         VviewerAppWindow, reset_axis);
   gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (class),
