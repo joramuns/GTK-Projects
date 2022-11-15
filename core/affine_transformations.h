@@ -24,7 +24,6 @@ enum {
   N_AXIS
 };
 
-void affineTransform(GLuint shaderProgram, float *rotationAngles);
 void perspectiveProjection(float *dest, float near, float far, float right, float top);
 void fillXaxis(float *res, float *rotation_angles);
 void fillYaxis(float *res, float *rotation_angles);
