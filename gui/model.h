@@ -5,4 +5,5 @@
 G_DECLARE_FINAL_TYPE (ModelGLArea, model_gl_area, MODELGLAREA, GLAREA, GtkGLArea)
 
 
+void screenshot();
 ModelGLArea * model_gl_area_new (GArray *vertices, GArray *indices, gfloat color[4], GLfloat *rotation_angles);

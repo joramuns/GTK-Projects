@@ -25,6 +25,65 @@ struct _ModelGLArea
 
 G_DEFINE_TYPE (ModelGLArea, model_gl_area, GTK_TYPE_GL_AREA);
 
+GdkPixbuf* get_pixbuf(ModelGLArea *model) {
+  int width = gtk_widget_get_width(GTK_WIDGET(model));
+  int height = gtk_widget_get_height(GTK_WIDGET(model));
+  guchar *image = g_malloc (width * height * sizeof(guchar) * 4);
+  glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
+  GdkPixbuf* image_pixbuf = gdk_pixbuf_new_from_data(image, GDK_COLORSPACE_RGB, TRUE, 8, width, height, height * 4, NULL, NULL);
+  GdkPixbuf* image_pixbuf_swap = gdk_pixbuf_flip(image_pixbuf, FALSE);
+  /* const char* filenameImage = "/Users/joramuns/imagetest.png"; */
+  /* GError* error = NULL; */
+  /* glPixelStorei(GL_PACK_ALIGNMENT, 1); */
+  /* gdk_pixbuf_save(image_pixbuf_swap, filenameImage, "png", &error, NULL); */
+  /* if (error != NULL) */
+  /*   g_print ("%s\n", error->message); */
+  /* g_object_unref(image_pixbuf_swap); */
+  g_free(image);
+  g_object_unref(image_pixbuf);
+
+  return image_pixbuf_swap;
+}
+
+void affineTransform(GLuint shaderProgram, float *rotationAngles) {
+  GLuint uniform_location; 
+
+  uniform_location = glGetUniformLocation(shaderProgram, "projection");
+  float projection[16] = {0};
+  perspectiveProjection(projection, NEAR, FAR, RIGHT, TOP);
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &projection[0]);
+
+  uniform_location = glGetUniformLocation(shaderProgram, "rotX");
+  float rotX[16] = {0};
+  fillIdentityMatrix(rotX);
+  fillXaxis(rotX, rotationAngles);
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &rotX[0]);
+
+  uniform_location = glGetUniformLocation(shaderProgram, "rotY");
+  float rotY[16] = {0};
+  fillIdentityMatrix(rotY);
+  fillYaxis(rotY, rotationAngles);
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &rotY[0]);
+
+  uniform_location = glGetUniformLocation(shaderProgram, "rotZ");
+  float rotZ[16] = {0};
+  fillIdentityMatrix(rotZ);
+  fillZaxis(rotZ, rotationAngles);
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &rotZ[0]);
+
+  uniform_location = glGetUniformLocation(shaderProgram, "scale");
+  float scale[16] = {0};
+  fillIdentityMatrix(scale);
+  fillScale(scale, rotationAngles);
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &scale[0]);
+
+  uniform_location = glGetUniformLocation(shaderProgram, "moveXYZ");
+  float moveXYZ[16] = {0};
+  fillIdentityMatrix(moveXYZ);
+  fillMove(moveXYZ, rotationAngles);
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &moveXYZ[0]);
+}
+
 inline static GLuint
 create_shader (GLint type, const char *src)
 {
@@ -146,20 +205,7 @@ render (ModelGLArea *area, GdkGLContext *context)
   glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
   glDrawElements (GL_TRIANGLES, area->indices->len, GL_UNSIGNED_INT, 0);
 
-  int width = 1000, height = 1000;
-  guchar *image = malloc (width * height * sizeof(guchar) * 4);
-  const char* filenameImage = "imagetest.png";
-  GError* error = NULL;
-  /* glPixelStorei(GL_PACK_ALIGNMENT, 1); */
-  glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
-  GdkPixbuf* image_pixbuf = gdk_pixbuf_new_from_data(image, GDK_COLORSPACE_RGB, TRUE, 8, width, height, height * 4, NULL, NULL);
-  GdkPixbuf* image_pixbuf_swap = gdk_pixbuf_flip(image_pixbuf, FALSE);
-  gdk_pixbuf_save(image_pixbuf_swap, filenameImage, "png", &error, NULL);
-  if (error != NULL)
-    g_print ("%s\n", error->message);
-  free(image);
-  g_object_unref(image_pixbuf);
-  g_object_unref(image_pixbuf_swap);
+  screenshot();
 
   glFlush ();
   gtk_gl_area_queue_render (GTK_GL_AREA (area));
