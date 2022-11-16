@@ -42,14 +42,18 @@ struct _ModelGLArea
 G_DEFINE_TYPE (ModelGLArea, model_gl_area, GTK_TYPE_GL_AREA);
 
 GdkPixbuf* get_pixbuf(GtkWidget *model) {
-  int width = gtk_widget_get_width(model);
-  int height = gtk_widget_get_height(model);
+  GdkGLContext *context = gtk_gl_area_get_context(GTK_GL_AREA(model));
+  gdk_gl_context_make_current(context);
+  int width = gtk_widget_get_width(model) * 2;
+  int height = gtk_widget_get_height(model) * 2;
   guchar *image = g_malloc (width * height * sizeof(guchar) * 4);
   glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
   GdkPixbuf* image_pixbuf = gdk_pixbuf_new_from_data(image, GDK_COLORSPACE_RGB, TRUE, 8, width, height, height * 4, NULL, NULL);
   GdkPixbuf* image_pixbuf_swap = gdk_pixbuf_flip(image_pixbuf, FALSE);
   g_free(image);
   g_object_unref(image_pixbuf);
+
+  return image_pixbuf_swap;
 }
 
 static GLuint

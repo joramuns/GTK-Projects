@@ -135,12 +135,12 @@ save_image(VviewerAppWindow *win) {
   GtkWidget *glarea = gtk_widget_get_first_child (GTK_WIDGET(win->model_view));
   if (glarea) {
     GdkPixbuf *pixbuf = get_pixbuf(glarea);
-    /* const char* filename_image = "imagetest.jpeg"; */
-  /*   GError* error = NULL; */
-  /*   gdk_pixbuf_save(pixbuf, filename_image, "jpeg", &error, NULL); */
-  /*   if (error != NULL) */
-  /*     g_print ("%s\n", error->message); */
-  /*   g_object_unref(pixbuf); */
+    const char* filename_image = "imagetest.jpeg";
+    GError* error = NULL;
+    gdk_pixbuf_save(pixbuf, filename_image, "jpeg", &error, NULL);
+    if (error != NULL)
+      g_print ("%s\n", error->message);
+    g_object_unref(pixbuf);
   }
 }
 
