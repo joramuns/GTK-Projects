@@ -131,26 +131,36 @@ open_dialog_response_cb (GtkNativeDialog *dialog, int response,
 }
 
 static void
-save_image(VviewerAppWindow *win) {
-  GtkWidget *glarea = gtk_widget_get_first_child (GTK_WIDGET(win->model_view));
-  if (glarea) {
-    GdkPixbuf *pixbuf = get_pixbuf(glarea);
-    const char* filename_image = "imagetest.jpeg";
-    GError* error = NULL;
-    gdk_pixbuf_save(pixbuf, filename_image, "jpeg", &error, NULL);
-    if (error != NULL)
-      g_print ("%s\n", error->message);
-    g_object_unref(pixbuf);
-  }
+save_dialog_response_cb (GtkNativeDialog *dialog, int response,
+                         VviewerAppWindow *win)
+{
+  gtk_native_dialog_hide (dialog);
+  if (response == GTK_RESPONSE_ACCEPT)
+    {
+      GFile *file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
+      char *filename = g_file_get_path (file);
+      GtkWidget *glarea = gtk_widget_get_first_child (GTK_WIDGET(win->model_view));
+      if (glarea) {
+        GdkPixbuf *pixbuf = get_pixbuf(glarea);
+        GError* error = NULL;
+        gdk_pixbuf_save(pixbuf, filename, "jpeg", &error, NULL);
+        if (error != NULL)
+          g_print ("%s\n", error->message);
+        g_object_unref(pixbuf);
+      }
+
+      g_free (filename);
+      g_object_unref (G_OBJECT (file));
+    }
+  gtk_native_dialog_destroy (dialog);
 }
 
 static void
 open_prefs_screenshot_cb (VviewerAppWindow *win, GtkButton *button)
 {
-  save_image(win);
   GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
-      "Select a file", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_OPEN, "_Open", "_Cancel");
-  g_signal_connect (dialog, "response", G_CALLBACK (open_dialog_response_cb),
+      "Select a path", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_SAVE, "_Save", "_Cancel");
+  g_signal_connect (dialog, "response", G_CALLBACK (save_dialog_response_cb),
                     win);
   gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
 }
