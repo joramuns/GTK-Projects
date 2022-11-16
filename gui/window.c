@@ -162,6 +162,13 @@ open_prefs_screenshot_cb (VviewerAppWindow *win, GtkButton *button)
       "Select a path", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_SAVE, "_Save", "_Cancel");
   g_signal_connect (dialog, "response", G_CALLBACK (save_dialog_response_cb),
                     win);
+  char *options[2];
+  options[0] = "privet";
+  options[1] = "poka";
+  char *option_labels[2];
+  option_labels[0] = "kaka";
+  option_labels[1] = "bika";
+  gtk_file_chooser_add_choice(GTK_FILE_CHOOSER(dialog), "1", "hello", (const char **)options, (const char **)option_labels);
   gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
 }
 
