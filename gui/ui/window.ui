@@ -16,6 +16,12 @@
                       <signal name="clicked" handler="open_prefs_screenshot_cb" object="VviewerAppWindow" swapped="yes"/>
                   </object>
                 </child>
+                <child>
+                  <object class="GtkButton" id="gif_button">
+                      <property name="label">GIF</property>
+                      <signal name="clicked" handler="gif_cb" object="VviewerAppWindow" swapped="yes"/>
+                  </object>
+                </child>
                 <child type="end">
                     <object id="gears" class="GtkMenuButton">
                         <property name="direction">none</property>

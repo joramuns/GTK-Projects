@@ -1,4 +1,5 @@
 #include "model.h"
+#include "include/gifenc.h"
 #include "enums.h"
 #include <epoxy/gl.h>
 #include "core/obj_parser.h"
@@ -37,6 +38,8 @@ struct _ModelGLArea
   GLdouble edge_width;
   GdkRGBA *bg_color;
   GLfloat *rotation_angles;
+
+  ge_GIF *gif_pointer;
 };
 
 G_DEFINE_TYPE (ModelGLArea, model_gl_area, GTK_TYPE_GL_AREA);
@@ -48,6 +51,7 @@ GdkPixbuf* get_pixbuf(GtkWidget *model) {
   int height = gtk_widget_get_height(model) * 2;
   guchar *image = g_malloc (width * height * sizeof(guchar) * 4);
   glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, image);
+
   GdkPixbuf* image_pixbuf = gdk_pixbuf_new_from_data(image, GDK_COLORSPACE_RGB, TRUE, 8, width, height, height * 4, NULL, NULL);
   GdkPixbuf* image_pixbuf_swap = gdk_pixbuf_flip(image_pixbuf, FALSE);
   g_free(image);
@@ -211,6 +215,49 @@ render (ModelGLArea *area, GdkGLContext *context)
   draw_polygons (area);
   if (area->vertices_type != VERTICES_NONE) {
     draw_points(area);
+  }
+  int width = 1000; //gtk_widget_get_width(area) * 2;
+  int height = 1000; //gtk_widget_get_height(area) * 2;
+    g_print("%lf\n", area->rotation_angles[GIFCOUNT]);
+  if (area->rotation_angles[GIFCOUNT] == 50) {
+    area->rotation_angles[GIFCOUNT]--;
+    area->gif_pointer = ge_new_gif(
+        "kek.gif",  /* file name */
+        width, height,           /* canvas size */
+        (uint8_t []) {  /* palette */
+        0x00, 0x00, 0x00, /* 0 -> black */ 
+        0xFF, 0x00, 0x00, /* 1 -> red */ 
+        0x00, 0xFF, 0x00, /* 2 -> green */ 
+        0x00, 0x00, 0xFF, /* 3 -> blue */
+        },
+        2,              /* palette depth == log2(# of colors) */
+        -1,             /* no transparency */
+        0               /* infinite loop */
+    );
+  } else if (area->rotation_angles[GIFCOUNT] > 1) {
+    if (area->gif_pointer) {
+      area->rotation_angles[GIFCOUNT]--;
+      GdkPixbuf *pixbuf = get_pixbuf(GTK_WIDGET(area));
+      guchar *image = gdk_pixbuf_get_pixels(pixbuf);
+
+      uint8_t image_gif[width*height];
+      for (int i = 0; i < width*height; i++) {
+        guchar red = (image[i * 4] * 8) / 256;
+        guchar green = (image[i * 4 + 1] * 8) / 256;
+        guchar blue = (image[i * 4 + 2] * 4) / 256;
+        image_gif[i] = (red << 5) | (green << 2) | blue;
+      }
+      memcpy(area->gif_pointer->frame, image_gif, sizeof(image_gif));
+      ge_add_frame(area->gif_pointer, 6);
+
+      g_object_unref(pixbuf);
+    } else {
+      area->rotation_angles[GIFCOUNT] = 0.0;
+    }
+  } else if (area->rotation_angles[GIFCOUNT] == 1) {
+    area->rotation_angles[GIFCOUNT]--;
+    ge_close_gif(area->gif_pointer);
+    area->gif_pointer = NULL;
   }
 
   glFlush ();

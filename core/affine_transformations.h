@@ -21,7 +21,9 @@ enum {
   Z_MOVE,
   SCALE,
 
-  N_AXIS
+  N_AXIS,
+  GIFCOUNT,
+  END
 };
 
 void affineTransform(GLuint shaderProgram, float *rotationAngles, bool is_orthogonal);

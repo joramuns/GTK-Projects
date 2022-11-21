@@ -2,6 +2,7 @@
  *  \brief Main application window implementation
  */
 #include "window.h"
+#include "include/gifenc.h"
 
 #include "core/obj_parser.h"
 #include "glibconfig.h"
@@ -15,10 +16,11 @@ struct _VviewerAppWindow
   GtkMenuButton *gears;
   GtkButton *open_file_button;
   GtkButton *screenshot_button;
+  GtkButton *gif_button;
   GtkBox *model_view;
   GtkButton *reset_axis;
   GtkBox *axis_box;
-  GLfloat rotation_angles[N_AXIS];
+  GLfloat rotation_angles[END];
   GtkAdjustment *axises[N_AXIS];
   GtkLabel *filename_text;
   GtkLabel *vertices_text;
@@ -27,6 +29,15 @@ struct _VviewerAppWindow
 
 G_DEFINE_TYPE (VviewerAppWindow, vviewer_app_window,
                GTK_TYPE_APPLICATION_WINDOW);
+
+static void
+gif_cb (VviewerAppWindow *win, GtkButton *button)
+{
+  GtkWidget *glarea = gtk_widget_get_first_child (GTK_WIDGET(win->model_view));
+  if (glarea) {
+    win->rotation_angles[GIFCOUNT] = 50;
+  }
+}
 
 static void axis_change_cb (GtkAdjustment *adjustment, gpointer data) {
   VviewerAppWindow *win = (VviewerAppWindow *) data;
@@ -166,20 +177,25 @@ open_prefs_screenshot_cb (VviewerAppWindow *win, GtkButton *button)
   options[0] = "privet";
   options[1] = "poka";
   char *option_labels[2];
-  option_labels[0] = "kaka";
+  option_labels[0] = "privet";
   option_labels[1] = "bika";
-  gtk_file_chooser_add_choice(GTK_FILE_CHOOSER(dialog), "1", "hello", (const char **)options, (const char **)option_labels);
+  gtk_file_chooser_add_choice(GTK_FILE_CHOOSER(dialog), "privet", ("hello"), (const char **)options, (const char **)option_labels);
+  gtk_file_chooser_set_choice(GTK_FILE_CHOOSER(dialog), "privet", "privet");
   gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
 }
 
 static void
 read_obj_file_cb (VviewerAppWindow *win, GtkButton *button)
 {
-  GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
-      "Select a file", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_OPEN, "_Open", "_Cancel");
-  g_signal_connect (dialog, "response", G_CALLBACK (open_dialog_response_cb),
-                    win);
-  gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
+  if (!win->rotation_angles[GIFCOUNT]) {
+    GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
+        "Select a file", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_OPEN, "_Open", "_Cancel");
+    g_signal_connect (dialog, "response", G_CALLBACK (open_dialog_response_cb),
+                      win);
+    gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
+  } else {
+/* add alert window */
+  }
 }
 
 static void
@@ -217,6 +233,10 @@ vviewer_app_window_class_init (VviewerAppWindowClass *class)
                                         VviewerAppWindow, screenshot_button);
   gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (class),
                                            open_prefs_screenshot_cb);
+  gtk_widget_class_bind_template_child (GTK_WIDGET_CLASS (class),
+                                        VviewerAppWindow, gif_button);
+  gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (class),
+                                           gif_cb);
   gtk_widget_class_bind_template_child (GTK_WIDGET_CLASS (class),
                                         VviewerAppWindow, reset_axis);
   gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (class),
