@@ -1,13 +1,13 @@
 #include "affine_transformations.h"
 
-void affineTransform(GLuint shaderProgram, float *rotationAngles, bool is_orthogonal) {
+void affineTransform(GLuint shaderProgram, float *rotationAngles, bool isOrthogonal, float aspectRatio) {
   GLuint uniform_location; 
 
   uniform_location = glGetUniformLocation(shaderProgram, "projection");
   float projection[16] = {0};
   fillIdentityMatrix(projection);
-  if (is_orthogonal) {
-    perspectiveProjection(projection, NEAR, FAR, RIGHT, TOP);
+  if (isOrthogonal) {
+    perspectiveProjection(projection, NEAR, FAR, RIGHT * aspectRatio, TOP);
   }
   glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &projection[0]);
 

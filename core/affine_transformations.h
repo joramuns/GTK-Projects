@@ -3,8 +3,8 @@
 
 #define NEAR 10
 #define FAR 90
-#define RIGHT 0.5
-#define TOP 0.5
+#define RIGHT 0.1
+#define TOP 0.1
 
 enum {
   AFF_TRANSLATION,
@@ -26,7 +26,7 @@ enum {
   END
 };
 
-void affineTransform(GLuint shaderProgram, float *rotationAngles, bool is_orthogonal);
+void affineTransform(GLuint shaderProgram, float *rotationAngles, bool isOrthogonal, float aspectRatio);
 void perspectiveProjection(float *dest, float near, float far, float right, float top);
 void fillXaxis(float *res, float *rotation_angles);
 void fillYaxis(float *res, float *rotation_angles);
