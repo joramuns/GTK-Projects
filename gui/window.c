@@ -25,17 +25,73 @@ struct _VviewerAppWindow
   GtkLabel *filename_text;
   GtkLabel *vertices_text;
   GtkLabel *edges_text;
+  ge_GIF *gif_pointer;
 };
 
 G_DEFINE_TYPE (VviewerAppWindow, vviewer_app_window,
                GTK_TYPE_APPLICATION_WINDOW);
 
 static void
+close_gif_file(VviewerAppWindow *win) {
+  gtk_button_set_label(win->gif_button, "GIF");
+  win->rotation_angles[GIFCOUNT] = 0; 
+  ge_close_gif(win->gif_pointer);
+  win->gif_pointer = NULL;
+}
+
+static void
+open_gif_file(VviewerAppWindow *win) {
+  gtk_button_set_label(win->gif_button, "REC");
+  win->rotation_angles[GIFCOUNT] = 50;
+  win->gif_pointer = ge_new_gif(
+      "kek1.gif",  /* file name */
+      GIFWIDTH, GIFHEIGHT,           /* canvas size */
+      (uint8_t []) {  /* palette */
+      0x00, 0x00, 0x00, /* 0 -> black */ 
+      0xFF, 0x00, 0x00, /* 1 -> red */ 
+      0x00, 0xFF, 0x00, /* 2 -> green */ 
+      0x00, 0x00, 0xFF, /* 3 -> blue */
+      },
+      2,              /* palette depth == log2(# of colors) */
+      -1,             /* no transparency */
+      0               /* infinite loop */
+  );
+}
+
+static void
+add_gif_frame(VviewerAppWindow *win, ModelGLArea *area) {
+  int pixels_amount = GIFWIDTH * GIFHEIGHT;
+  GdkPixbuf *orig_pixbuf = get_pixbuf(GTK_WIDGET(area));
+  GdkPixbuf *pixbuf = gdk_pixbuf_scale_simple(orig_pixbuf, GIFWIDTH, GIFHEIGHT, GDK_INTERP_BILINEAR);
+  guchar *image = gdk_pixbuf_get_pixels(pixbuf);
+
+  uint8_t image_gif[pixels_amount];
+  for (int i = 0; i < pixels_amount; i++) {
+    guchar red = (image[i * 4] * 8) / 256;
+    guchar green = (image[i * 4 + 1] * 8) / 256;
+    guchar blue = (image[i * 4 + 2] * 4) / 256;
+    image_gif[i] = (red << 5) | (green << 2) | blue;
+  }
+  memcpy(win->gif_pointer->frame, image_gif, sizeof(image_gif));
+  ge_add_frame(win->gif_pointer, 6);
+  win->rotation_angles[GIFCOUNT]--;
+  if (win->rotation_angles[GIFCOUNT] < 1)
+    close_gif_file(win);
+
+  g_object_unref(pixbuf);
+  g_object_unref(orig_pixbuf);
+}
+
+static void
 gif_cb (VviewerAppWindow *win, GtkButton *button)
 {
   GtkWidget *glarea = gtk_widget_get_first_child (GTK_WIDGET(win->model_view));
   if (glarea) {
-    win->rotation_angles[GIFCOUNT] = 50;
+    if (win->rotation_angles[GIFCOUNT] > 0) {
+      close_gif_file(win);
+    } else {
+      open_gif_file(win);
+    }
   }
 }
 
@@ -47,6 +103,8 @@ static void axis_change_cb (GtkAdjustment *adjustment, gpointer data) {
   GtkWidget *glarea = gtk_widget_get_first_child (GTK_WIDGET(win->model_view));
   if (glarea) {
     gtk_widget_queue_draw(glarea);
+    if (win->rotation_angles[GIFCOUNT] > 0)
+      add_gif_frame(win, (ModelGLArea *)glarea);
   }
 }
 
@@ -187,15 +245,14 @@ open_prefs_screenshot_cb (VviewerAppWindow *win, GtkButton *button)
 static void
 read_obj_file_cb (VviewerAppWindow *win, GtkButton *button)
 {
-  if (!win->rotation_angles[GIFCOUNT]) {
+  if (win->rotation_angles[GIFCOUNT] > 0) {
+    close_gif_file(win);
+  } 
     GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
         "Select a file", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_OPEN, "_Open", "_Cancel");
     g_signal_connect (dialog, "response", G_CALLBACK (open_dialog_response_cb),
                       win);
     gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
-  } else {
-/* add alert window */
-  }
 }
 
 static void

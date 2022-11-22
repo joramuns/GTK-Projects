@@ -3,6 +3,8 @@
 
 #define WIDTH 500
 #define HEIGHT 500
+#define GIFWIDTH 640
+#define GIFHEIGHT 480
 
 #include "app.h"
 #include "../core/affine_transformations.h"
