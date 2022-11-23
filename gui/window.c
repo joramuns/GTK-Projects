@@ -46,13 +46,8 @@ open_gif_file(VviewerAppWindow *win) {
   win->gif_pointer = ge_new_gif(
       "kek1.gif",  /* file name */
       GIFWIDTH, GIFHEIGHT,           /* canvas size */
-      (uint8_t []) {  /* palette */
-      0x00, 0x00, 0x00, /* 0 -> black */ 
-      0xFF, 0x00, 0x00, /* 1 -> red */ 
-      0x00, 0xFF, 0x00, /* 2 -> green */ 
-      0x00, 0x00, 0xFF, /* 3 -> blue */
-      },
-      2,              /* palette depth == log2(# of colors) */
+      NULL,           /* standart VGA palette */
+      8,              /* palette depth == log2(# of colors) */
       -1,             /* no transparency */
       0               /* infinite loop */
   );
@@ -67,9 +62,9 @@ add_gif_frame(VviewerAppWindow *win, ModelGLArea *area) {
 
   uint8_t image_gif[pixels_amount];
   for (int i = 0; i < pixels_amount; i++) {
-    guchar red = (image[i * 4] * 8) / 256;
+    guchar red = (image[i * 4 + 2] * 8) / 256;
     guchar green = (image[i * 4 + 1] * 8) / 256;
-    guchar blue = (image[i * 4 + 2] * 4) / 256;
+    guchar blue = (image[i * 4 + 0] * 4) / 256;
     image_gif[i] = (red << 5) | (green << 2) | blue;
   }
   memcpy(win->gif_pointer->frame, image_gif, sizeof(image_gif));
@@ -229,6 +224,19 @@ open_prefs_screenshot_cb (VviewerAppWindow *win, GtkButton *button)
 {
   GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
       "Select a path", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_SAVE, "_Save", "_Cancel");
+
+  GtkFileFilter *filter_jpg = gtk_file_filter_new();
+  gtk_file_filter_add_pattern(filter_jpg, "*.jpeg");
+  gtk_file_filter_set_name(filter_jpg, "JPEG file");
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter_jpg);
+  g_object_unref(filter_jpg);
+
+  GtkFileFilter *filter_bmp = gtk_file_filter_new();
+  gtk_file_filter_add_pattern(filter_bmp, "*.bmp");
+  gtk_file_filter_set_name(filter_bmp, "BMP file");
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter_bmp);
+  g_object_unref(filter_bmp);
+
   g_signal_connect (dialog, "response", G_CALLBACK (save_dialog_response_cb),
                     win);
   char *options[2];
@@ -250,6 +258,19 @@ read_obj_file_cb (VviewerAppWindow *win, GtkButton *button)
   } 
     GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
         "Select a file", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_OPEN, "_Open", "_Cancel");
+
+    GtkFileFilter *filter_obj = gtk_file_filter_new();
+    gtk_file_filter_add_pattern(filter_obj, "*.obj");
+    gtk_file_filter_set_name(filter_obj, "Wavefront OBJ");
+    gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter_obj);
+    g_object_unref(filter_obj);
+
+    GtkFileFilter *filter_all = gtk_file_filter_new();
+    gtk_file_filter_add_pattern(filter_all, "*");
+    gtk_file_filter_set_name(filter_all, "All files");
+    gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter_all);
+    g_object_unref(filter_all);
+
     g_signal_connect (dialog, "response", G_CALLBACK (open_dialog_response_cb),
                       win);
     gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
