@@ -40,17 +40,27 @@ close_gif_file(VviewerAppWindow *win) {
 }
 
 static void
-open_gif_file(VviewerAppWindow *win) {
-  gtk_button_set_label(win->gif_button, "REC");
-  win->rotation_angles[GIFCOUNT] = 50;
-  win->gif_pointer = ge_new_gif(
-      "kek1.gif",  /* file name */
-      GIFWIDTH, GIFHEIGHT,           /* canvas size */
-      NULL,           /* standart VGA palette */
-      8,              /* palette depth == log2(# of colors) */
-      -1,             /* no transparency */
-      0               /* infinite loop */
-  );
+gif_dialog_response_cb(GtkNativeDialog *dialog, int response,
+                         VviewerAppWindow *win) {
+  gtk_native_dialog_hide (dialog);
+  if (response == GTK_RESPONSE_ACCEPT) {
+    GFile *file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
+    char *filename = g_file_get_path (file);
+
+    gtk_button_set_label(win->gif_button, "REC");
+    win->rotation_angles[GIFCOUNT] = 50;
+    win->gif_pointer = ge_new_gif(
+        filename,  /* file name */
+        GIFWIDTH, GIFHEIGHT,           /* canvas size */
+        NULL,           /* standart VGA palette */
+        8,              /* palette depth == log2(# of colors) */
+        -1,             /* no transparency */
+        0               /* infinite loop */
+    );
+    g_free (filename);
+    g_object_unref (G_OBJECT (file));
+  }
+  gtk_native_dialog_destroy (dialog);
 }
 
 static void
@@ -85,7 +95,18 @@ gif_cb (VviewerAppWindow *win, GtkButton *button)
     if (win->rotation_angles[GIFCOUNT] > 0) {
       close_gif_file(win);
     } else {
-      open_gif_file(win);
+      GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
+          "Select a path to save GIF file", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_SAVE, "_Save", "_Cancel");
+
+      GtkFileFilter *filter_gif = gtk_file_filter_new();
+      gtk_file_filter_add_pattern(filter_gif, "*.gif");
+      gtk_file_filter_set_name(filter_gif, "GIF file");
+      gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter_gif);
+      g_object_unref(filter_gif);
+
+      g_signal_connect (dialog, "response", G_CALLBACK (gif_dialog_response_cb),
+                        win);
+      gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
     }
   }
 }
@@ -220,6 +241,11 @@ save_dialog_response_cb (GtkNativeDialog *dialog, int response,
 }
 
 static void
+gif_dialog_cb (VviewerAppWindow *win, GtkButton *button)
+{
+}
+
+static void
 open_prefs_screenshot_cb (VviewerAppWindow *win, GtkButton *button)
 {
   GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
@@ -239,14 +265,6 @@ open_prefs_screenshot_cb (VviewerAppWindow *win, GtkButton *button)
 
   g_signal_connect (dialog, "response", G_CALLBACK (save_dialog_response_cb),
                     win);
-  char *options[2];
-  options[0] = "privet";
-  options[1] = "poka";
-  char *option_labels[2];
-  option_labels[0] = "privet";
-  option_labels[1] = "bika";
-  gtk_file_chooser_add_choice(GTK_FILE_CHOOSER(dialog), "privet", ("hello"), (const char **)options, (const char **)option_labels);
-  gtk_file_chooser_set_choice(GTK_FILE_CHOOSER(dialog), "privet", "privet");
   gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
 }
 
