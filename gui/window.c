@@ -215,6 +215,18 @@ open_dialog_response_cb (GtkNativeDialog *dialog, int response,
   gtk_native_dialog_destroy (dialog);
 }
 
+static char *image_type(char *filename) {
+  char *result = {0};
+  size_t len = strlen(filename);
+  if (filename[len - 1] == 'g') {
+    result = "jpeg";
+  } else {
+    result = "bmp";
+  }
+
+  return result;
+}
+
 static void
 save_dialog_response_cb (GtkNativeDialog *dialog, int response,
                          VviewerAppWindow *win)
@@ -228,7 +240,7 @@ save_dialog_response_cb (GtkNativeDialog *dialog, int response,
       if (glarea) {
         GdkPixbuf *pixbuf = get_pixbuf(glarea);
         GError* error = NULL;
-        gdk_pixbuf_save(pixbuf, filename, "jpeg", &error, NULL);
+        gdk_pixbuf_save(pixbuf, filename, image_type(filename), &error, NULL);
         if (error != NULL)
           g_print ("%s\n", error->message);
         g_object_unref(pixbuf);
