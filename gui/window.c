@@ -253,31 +253,29 @@ save_dialog_response_cb (GtkNativeDialog *dialog, int response,
 }
 
 static void
-gif_dialog_cb (VviewerAppWindow *win, GtkButton *button)
-{
-}
-
-static void
 open_prefs_screenshot_cb (VviewerAppWindow *win, GtkButton *button)
 {
-  GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
-      "Select a path", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_SAVE, "_Save", "_Cancel");
+  GtkWidget *glarea = gtk_widget_get_first_child (GTK_WIDGET(win->model_view));
+  if (glarea) {
+    GtkFileChooserNative *dialog = gtk_file_chooser_native_new (
+        "Select a path", GTK_WINDOW(win), GTK_FILE_CHOOSER_ACTION_SAVE, "_Save", "_Cancel");
 
-  GtkFileFilter *filter_jpg = gtk_file_filter_new();
-  gtk_file_filter_add_pattern(filter_jpg, "*.jpeg");
-  gtk_file_filter_set_name(filter_jpg, "JPEG file");
-  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter_jpg);
-  g_object_unref(filter_jpg);
+    GtkFileFilter *filter_jpg = gtk_file_filter_new();
+    gtk_file_filter_add_pattern(filter_jpg, "*.jpeg");
+    gtk_file_filter_set_name(filter_jpg, "JPEG file");
+    gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter_jpg);
+    g_object_unref(filter_jpg);
 
-  GtkFileFilter *filter_bmp = gtk_file_filter_new();
-  gtk_file_filter_add_pattern(filter_bmp, "*.bmp");
-  gtk_file_filter_set_name(filter_bmp, "BMP file");
-  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter_bmp);
-  g_object_unref(filter_bmp);
+    GtkFileFilter *filter_bmp = gtk_file_filter_new();
+    gtk_file_filter_add_pattern(filter_bmp, "*.bmp");
+    gtk_file_filter_set_name(filter_bmp, "BMP file");
+    gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter_bmp);
+    g_object_unref(filter_bmp);
 
-  g_signal_connect (dialog, "response", G_CALLBACK (save_dialog_response_cb),
-                    win);
-  gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
+    g_signal_connect (dialog, "response", G_CALLBACK (save_dialog_response_cb),
+                      win);
+    gtk_native_dialog_show (GTK_NATIVE_DIALOG (dialog));
+  }
 }
 
 static void
