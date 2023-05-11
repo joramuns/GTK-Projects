@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <object id="window_credit_calc" class="GtkWindow">
+        <!--    <property name="default-width">500</property>-->
+<!--        <property name="default-height">990</property>-->
+        <property name="title">DUCKIN SMART CALC</property>
+        <child>
+            <object id="grid" class="GtkGrid">
+                <property name="column-spacing">5</property>
+                <property name="row-spacing">5</property>
+                <property name="margin-top">10</property>
+                <property name="margin-bottom">10</property>
+                <property name="margin-start">10</property>
+                <property name="margin-end">10</property>
+                <child>
+                    <object id="sum_entry" class="GtkEntry">
+                        <property name="can-focus">TRUE</property>
+                        <property name="editable">TRUE</property>
+                        <property name="placeholder-text">Deposit amount</property>
+                        <property name="xalign">1</property>
+                        <layout>
+                            <property name="column">2</property>
+                            <property name="column-span">3</property>
+                            <property name="row">0</property>
+                        </layout>
+                    </object>
+                </child>
+                <child>
+                    <object id="term_entry" class="GtkEntry">
+                        <property name="can-focus">TRUE</property>
+                        <property name="editable">TRUE</property>
+                        <property name="placeholder-text">Deposit term</property>
+                        <property name="xalign">1</property>
+                        <layout>
+                            <property name="column">2</property>
+                            <property name="column-span">3</property>
+                            <property name="row">1</property>
+                        </layout>
+                    </object>
+                </child>
+                <child>
+                    <object id="currency" class="GtkComboBoxText">
+                        <layout>
+                            <property name="column">5</property>
+                            <property name="column-span">1</property>
+                            <property name="row">0</property>
+                        </layout>
+                        <items>
+                          <item id="currency_id">rubles</item>
+                        </items>
+                    </object>
+                </child>
+                <child>
+                    <object id="years_or_months" class="GtkComboBoxText">
+                        <layout>
+                            <property name="column">5</property>
+                            <property name="column-span">1</property>
+                            <property name="row">1</property>
+                        </layout>
+                        <items>
+                          <item id="days">days</item>
+                          <item id="monthes">monthes</item>
+                          <item id="years">years</item>
+                        </items>
+                    </object>
+                </child>
+                <child>
+                    <object id="percents" class="GtkComboBoxText">
+                        <layout>
+                            <property name="column">3</property>
+                            <property name="column-span">1</property>
+                            <property name="row">2</property>
+                        </layout>
+                        <items>
+                          <item id="percents_id">%</item>
+                        </items>
+                    </object>
+                </child>
+                <child>
+                    <object id="rate_entry" class="GtkEntry">
+                        <property name="can-focus">TRUE</property>
+                        <property name="editable">TRUE</property>
+                        <property name="placeholder-text">Interest rate</property>
+                        <property name="xalign">1</property>
+                        <layout>
+                            <property name="column">2</property>
+                            <property name="column-span">1</property>
+                            <property name="row">2</property>
+                        </layout>
+                    </object>
+                </child>
+                <child>
+                    <object id="tax_percents" class="GtkComboBoxText">
+                        <layout>
+                            <property name="column">3</property>
+                            <property name="column-span">1</property>
+                            <property name="row">3</property>
+                        </layout>
+                        <items>
+                          <item id="percents_id">%</item>
+                        </items>
+                    </object>
+                </child>
+                <child>
+                    <object id="tax_rate_entry" class="GtkEntry">
+                        <property name="can-focus">TRUE</property>
+                        <property name="editable">TRUE</property>
+                        <property name="placeholder-text">Tax rate</property>
+                        <property name="xalign">1</property>
+                        <layout>
+                            <property name="column">2</property>
+                            <property name="column-span">1</property>
+                            <property name="row">3</property>
+                        </layout>
+                    </object>
+                </child>
+                <child>
+                    <object id="type_choice" class="GtkToggleButton">
+                        <property name="label">Capitalization</property>
+                        <layout>
+                            <property name="column">0</property>
+                            <property name="column-span">3</property>
+                            <property name="row">4</property>
+                        </layout>
+                    </object>
+                </child>
+                <child>
+                    <object id="type_payouts" class="GtkComboBoxText">
+                        <layout>
+                            <property name="column">3</property>
+                            <property name="column-span">3</property>
+                            <property name="row">4</property>
+                        </layout>
+                        <items>
+                          <item id="po_daily">daily</item>
+                          <item id="po_weekly">weekly</item>
+                          <item id="po_monthly">monthly</item>
+                          <item id="po_quarterly">quarterly</item>
+                          <item id="po_yearly">yearly</item>
+                        </items>
+                    </object>
+                </child>
+                <child>
+                    <object id="withdrawal_list" class="GtkScrolledWindow">
+                        <!-- <property name="max-content-height">150</property> -->
+                        <property name="has-frame">1</property>
+                        <layout>
+                            <property name="row">5</property>
+                            <property name="column">0</property>
+                            <property name="column-span">6</property>
+                            <property name="row-span">2</property>
+                        </layout>
+                    </object>
+                </child>
+                <child>
+                    <object id="withdrawal_minus" class="GtkButton">
+                        <property name="label">-</property>
+                        <layout>
+                            <property name="column">1</property>
+                            <property name="column-span">1</property>
+                            <property name="row">7</property>
+                        </layout>
+                    </object>
+                </child>
+                <child>
+                    <object id="withdrawal_plus" class="GtkButton">
+                        <property name="label">+</property>
+                        <layout>
+                            <property name="column">0</property>
+                            <property name="column-span">1</property>
+                            <property name="row">7</property>
+                        </layout>
+                    </object>
+                </child>
+                <child>
+                    <object id="sum_withdrawal_entry" class="GtkEntry">
+                        <property name="can-focus">TRUE</property>
+                        <property name="editable">TRUE</property>
+                        <property name="xalign">1</property>
+                        <layout>
+                            <property name="column">3</property>
+                            <property name="column-span">3</property>
+                            <property name="row">7</property>
+                        </layout>
+                    </object>
+                </child>
+                <child>
+                    <object id="sum_withdrawal_date" class="GtkEntry">
+                        <property name="can-focus">1</property>
+                        <property name="editable">1</property>
+                        <property name="xalign">1</property>
+                        <layout>
+                            <property name="column">2</property>
+                            <property name="column-span">1</property>
+                            <property name="row">7</property>
+                        </layout>
+                    </object>
+                </child>
+                <child>
+                    <object id="resultbox" class="GtkScrolledWindow">
+                        <property name="min-content-height">150</property>
+
+                        <property name="has-frame">1</property>
+                        <layout>
+                            <property name="row">8</property>
+                            <property name="column">0</property>
+                            <property name="column-span">6</property>
+                            <property name="row-span">3</property>
+                        </layout>
+                        <child>
+                            <object id="result" class="GtkTextView">
+                            <property name="editable">1</property>
+                            <property name="cursor-visible">0</property>
+                            <property name="wrap-mode">GTK_WRAP_WORD</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object id="execute_credit_calc" class="GtkButton">
+                        <property name="label">Execute</property>
+                        <layout>
+                            <property name="column">0</property>
+                            <property name="row">11</property>
+                            <property name="column-span">6</property>
+                        </layout>
+                    </object>
+                </child>
+                <child>
+                    <object id="quit_credit_calc" class="GtkButton">
+                        <property name="label">Quit</property>
+                        <layout>
+                            <property name="column">0</property>
+                            <property name="row">12</property>
+                            <property name="column-span">6</property>
+                        </layout>
+                    </object>
+                </child>
+            </object>
+        </child>
+    </object>
+</interface>
