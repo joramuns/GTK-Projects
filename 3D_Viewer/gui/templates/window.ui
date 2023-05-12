@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <template class="VviewerAppWindow" parent="GtkApplicationWindow">
+        <property name="title">3DViewer</property>
+        <child type="titlebar">
+            <object id="header" class="GtkHeaderBar">
+                <child type="start">
+                  <object class="GtkButton" id="open_file_button">
+                    <property name="label">Open</property>
+                    <signal name="clicked" handler="read_obj_file_cb" object="VviewerAppWindow" swapped="yes"/>
+                  </object>
+                </child>
+                <child type="end">
+                    <object id="gears" class="GtkMenuButton">
+                        <property name="direction">none</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+        <child type="menu">
+            <menu id="menu">
+                <section>
+                    <item>
+                        <attribute name="label">_Quit</attribute>
+                        <attribute name="action">app.quit</attribute>
+                    </item>
+                </section>
+            </menu>
+        </child>
+
+        <child>
+            <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkBox" id="model_view">
+                    <property name="width-request">500</property>
+                    <property name="height-request">500</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox" id="axis_box">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-bottom">6</property>
+                    <child>
+                      <object class="GtkButton" id="reset_axis">
+                        <property name="label">Reset axises</property>
+                        <signal name="clicked" handler="reset_axis_cb" object="VviewerAppWindow" swapped="yes"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="hexpand">YES</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <child>
+                      <object class="GtkLabel" id="filenameText">
+                        <property name="height-request">20</property>
+                        <property name="label">Choose obj file</property>
+                        <property name="hexpand">YES</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="hexpand">YES</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <child>
+                      <object class="GtkLabel" id="verticesText">
+                        <property name="height-request">20</property>
+                        <property name="xalign">0</property>
+                        <property name="label">Vertices: 0</property>
+                        <property name="hexpand">YES</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="vexpand">YES</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="edgesText">
+                        <property name="height-request">20</property>
+                        <property name="xalign">1</property>
+                        <property name="label">Edges: 0</property>
+                        <property name="hexpand">YES</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+            </object>
+        </child>
+
+    </template>
+</interface>
