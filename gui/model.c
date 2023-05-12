@@ -217,8 +217,6 @@ render (ModelGLArea *area, GdkGLContext *context)
     draw_points(area);
   }
 
-  screenshot();
-
   glFlush ();
   gtk_gl_area_queue_render (GTK_GL_AREA (area));
   return TRUE;

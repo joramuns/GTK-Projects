@@ -1,5 +1,46 @@
 #include "affine_transformations.h"
 
+void affineTransform(GLuint shaderProgram, float *rotationAngles, bool isOrthogonal, float aspectRatio) {
+  GLuint uniform_location;
+
+  uniform_location = glGetUniformLocation(shaderProgram, "projection");
+  float projection[16] = {0};
+  fillIdentityMatrix(projection);
+  if (isOrthogonal) {
+    perspectiveProjection(projection, NEAR, FAR, RIGHT * aspectRatio, TOP);
+  }
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &projection[0]);
+
+  uniform_location = glGetUniformLocation(shaderProgram, "rotX");
+  float rotX[16] = {0};
+  fillIdentityMatrix(rotX);
+  fillXaxis(rotX, rotationAngles);
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &rotX[0]);
+
+  uniform_location = glGetUniformLocation(shaderProgram, "rotY");
+  float rotY[16] = {0};
+  fillIdentityMatrix(rotY);
+  fillYaxis(rotY, rotationAngles);
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &rotY[0]);
+
+  uniform_location = glGetUniformLocation(shaderProgram, "rotZ");
+  float rotZ[16] = {0};
+  fillIdentityMatrix(rotZ);
+  fillZaxis(rotZ, rotationAngles);
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &rotZ[0]);
+
+  uniform_location = glGetUniformLocation(shaderProgram, "scale");
+  float scale[16] = {0};
+  fillIdentityMatrix(scale);
+  fillScale(scale, rotationAngles);
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &scale[0]);
+
+  uniform_location = glGetUniformLocation(shaderProgram, "moveXYZ");
+  float moveXYZ[16] = {0};
+  fillIdentityMatrix(moveXYZ);
+  fillMove(moveXYZ, rotationAngles);
+  glUniformMatrix4fv(uniform_location, 1, GL_FALSE, &moveXYZ[0]);
+}
 /**
  * @brief Creates matrix that transforms model to perspective projection
  *
