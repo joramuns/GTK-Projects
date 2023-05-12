@@ -21,9 +21,12 @@ enum {
   Z_MOVE,
   SCALE,
 
-  N_AXIS
+  N_AXIS,
+  GIFCOUNT,
+  END
 };
 
+void affineTransform(GLuint shaderProgram, float *rotationAngles, bool isOrthogonal, float aspectRatio);
 void perspectiveProjection(float *dest, float near, float far, float right, float top);
 void fillXaxis(float *res, float *rotation_angles);
 void fillYaxis(float *res, float *rotation_angles);

@@ -5,8 +5,7 @@ VERSION := 0.1
 KERN := $(shell uname -s)
 
 CC         := gcc
-CFLAGS     := -Wall -Wextra -g3 --coverage
-GTK_FLAGS  := -g3
+CFLAGS     := -g3 --coverage #-Wall -Wextra
 ifdef ASAN
 	CFLAGS += -fsanitize=address
 endif
@@ -54,12 +53,15 @@ CORE_SRCS := $(shell find core -name "*.c")
 CORE_H := $(shell find core -name "*.h")
 GUI_SRCS := $(shell find gui -name "*.c")
 GUI_H := $(shell find gui -name "*.h")
+INCLUDE_SRCS := $(shell find include -name "*.c")
+INCLUDE_H := $(shell find include -name "*.h")
 MAIN := main.c
 TEST_SRCS :=$(shell find tests -name "*.c") 
 TEST_H :=$(shell find tests -name "*.h") 
-GRESOURCES := 3dviewer.gresource.xml
-GRESOURCES_SRC := resources.c
-LIB_SRCS := $(shell find core -name "*.a")
+GRESOURCES := viewer.gresource.xml
+GSCHEMA := com.github.Gwarek2.Viewer.gschema.xml
+GRESOURCES_CMP := resources.c
+GSCHEMA_CMP := gschemas.compiled
 
 # Executables and objects
 APP := 3DViewer
@@ -69,5 +71,6 @@ COV_DIR := coverage
 COV_REPORT := $(COV_DIR)/index.html
 ALL_GCDA := $(shell find . -name "*.gcda")
 ALL_GCNO := $(shell find . -name "*.gcno")
+ALL_GSYM := $(shell find . -name "*.dSYM")
 
 DOXYFILE := Doxyfile

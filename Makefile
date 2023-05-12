@@ -4,13 +4,18 @@ include config.mk
 
 all: test gcov_report build
 
-build: $(G_RESOURCES) $(CORE_SRCS) $(GUI_SRCS) $(CORE_H) $(GUI_H)
-	glib-compile-resources $(GRESOURCES) --target=$(GRESOURCES_SRC) --generate-source
+build: $(GRESOURCES_CMP) $(GSCHEMA_CMP) $(CORE_SRCS) $(GUI_SRCS) $(MAIN) $(CORE_H) $(GUI_H)
 	$(CC) $(CFLAGS) $(GTK_CFLAGS) $(GL_CFLAGS) -I. \
-		$(CORE_SRCS) $(LIB_SRCS) $(GRESOURCES_SRC) $(GUI_SRCS) \
+		$(CORE_SRCS) $(GRESOURCES_CMP) $(GUI_SRCS) $(INCLUDE_SRCS)\
 		$(MAIN) $(GTK_LIBS) $(GL_LIBS) -o $(APP)
 
-test: $(CORE_SRCS) $(TEST_SRCS) $(CORE_H) $(TEST_H)
+$(GRESOURCES_CMP): $(GRESOURCES)
+	glib-compile-resources $^ --target=$@ --generate-source
+
+$(GSCHEMA_CMP): $(GSCHEMA)
+	glib-compile-schemas .
+
+test: $(CORE_SRCS) $(TEST_SRCS) $(CORE_H) $(TEST_H) $(INCLUDE_H)
 	-$(CC) $(CFLAGS) $(CHECK_CFLAGS) $(GLIB_CFLAGS) $(GL_CFLAGS) -I. \
 		$(CORE_SRCS) $(TEST_SRCS) $(CHECK_LIBS) $(GLIB_LIBS) $(GL_LIBS) -o $(TEST_RUNNER)
 	-$(MEM_CHECK) ./$(TEST_RUNNER)
@@ -33,4 +38,4 @@ lint:
 
 clean:
 	@rm -rf $(ALL_GCDA) $(ALL_GCNO) $(APP) $(TEST_RUNNER) \
-		docs coverage $(GRESOURCES_SRC)
+		docs coverage $(GRESOURCES_CMP) $(GSCHEMA_CMP) $(ALL_GSYM)
